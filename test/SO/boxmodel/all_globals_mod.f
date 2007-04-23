@@ -1,6 +1,8 @@
       module all_globals_mod
         integer ndim
         parameter ( ndim = 3 )
+        integer kdim
+        parameter ( kdim = 3 )
 
         integer n_max
 
