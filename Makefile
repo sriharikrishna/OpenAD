@@ -77,15 +77,21 @@ veryclean: open64_veryclean oa_veryclean xercesc_veryclean \
 
 #############################################################################
 
-open64_build:
-	@if [ -d $(OPEN64ROOT) ]; then \
-	  echo "*** Building Open64 ***" ; \
-	  cd $(OPEN64ROOT)/crayf90/sgi && $(MAKE) ; \
-	  cd $(OPEN64ROOT)/whirl2f && $(MAKE) ; \
-	  cd $(OPEN64ROOT)/ir_tools && $(MAKE) ; \
-	else \
-	  echo "*** Building Open64 -- NON-EXISTENT ***" ; \
-	fi
+ifndef OPEN64ROOT
+  $(error "Error: OPEN64ROOT not set!")
+endif 
+
+open64_build: open64_fe_build open64_be_build open64_tools_build
+
+open64_fe_build:
+	cd $(OPEN64ROOT)/crayf90/sgi && $(MAKE) 
+
+open64_be_build:
+	cd $(OPEN64ROOT)/whirl2f && $(MAKE)
+
+open64_tools_build: 
+	cd $(OPEN64ROOT)/ir_tools && $(MAKE)
+
 
 open64_clean:
 	@if [ -d $(OPEN64ROOT) ]; then \
@@ -103,7 +109,7 @@ open64_veryclean:
 	  echo "*** Very-Cleaning -- NON-EXISTENT ***" ; \
 	fi
 
-.PHONY : open64_build open64_clean open64_veryclean 
+.PHONY : open64_build open64_fe_build open64_be_build open64_tools_build open64_clean open64_veryclean 
 
 ############################################################
 
