@@ -83,14 +83,12 @@ def svnChanged(rep):
 
 def hgChanged(rep):
     fName=tempfile.mktemp()
-    os.system('hg id > '+fName)
-    infoFile=open(fName)
-    infoLine=infoFile.readline()
-    if (re.search('\+ tip',infoLine) is None):
-        sys.stdout.write('\t')
-    else:
+    os.system('hg status > '+fName)
+    info=os.stat(fName)
+    if info[6]>0 :
         sys.stdout.write('\tC')
-    infoFile.close()    
+    else:
+        sys.stdout.write('\t')
 
 def hgPending(rep):
     fName=tempfile.mktemp()

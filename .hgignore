@@ -1,0 +1,12 @@
+syntax: glob
+*.o
+*.a
+*~
+angel*
+boost*
+Open64*
+OpenADFortTk*
+OpenAnalysis*
+xaif*
+xaifBooster*
+xercesc*
