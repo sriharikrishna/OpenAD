@@ -32,7 +32,7 @@ def cvsParent(rep):
 
 def svnParent(rep):
     fName=tempfile.mktemp()
-    system('svn info > '+fName)
+    os.system('svn info > '+fName)
     infoFile=open(fName)
     infoString=''
     while 1:
