@@ -124,7 +124,7 @@ def main():
   if (os.path.basename(cwd) != 'OpenAD'):
       print 'the current working directory has to the the OpenAD root directory'
       return -1
-  repList=['../OpenAD','angel','boost','Open64','OpenADFortTk','OpenAnalysis','xaif','xaifBooster','xercesc']
+  repList=['../OpenAD','angel','boost','OpenADFortTk','OpenAnalysis','xaif','xaifBooster','Open64','xercesc']
   maxNameLength=max([len(r) for r in repList])
   repDict={}
   repDict['cvs']=(cvsParent,cvsChanged,noPending)
