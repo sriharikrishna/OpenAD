@@ -111,8 +111,7 @@ def hgPending(rep):
     sys.stdout.write('\t'+status)
 
 def main():
-  usage = '%prog [options]'
-  opt = OptionParser(usage=usage)
+  opt = OptionParser()
   opt.add_option('-q','--quick',dest='quick',
                  help="don't check for uncommited changes or pending pushes",
                  action='store_true',default=False)
@@ -122,7 +121,7 @@ def main():
     doQuick=True
   cwd=os.getcwd()
   if (os.path.basename(cwd) != 'OpenAD'):
-      print 'the current working directory has to the the OpenAD root directory'
+      opt.error('the current working directory has to the the OpenAD root directory')
       return -1
   repList=['../OpenAD','angel','boost','OpenADFortTk','OpenAnalysis','xaif','xaifBooster','Open64','xercesc']
   maxNameLength=max([len(r) for r in repList])
