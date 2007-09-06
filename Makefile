@@ -83,31 +83,21 @@ endif
 
 open64_build: open64_fe_build open64_be_build open64_tools_build
 
-open64_fe_build:
+open64_fe_build: 
 	cd $(OPEN64ROOT)/crayf90/sgi && $(MAKE) 
 
-open64_be_build:
+open64_be_build: 
 	cd $(OPEN64ROOT)/whirl2f && $(MAKE)
 
 open64_tools_build: 
 	cd $(OPEN64ROOT)/ir_tools && $(MAKE)
 
 
-open64_clean:
-	@if [ -d $(OPEN64ROOT) ]; then \
-	  echo "*** Cleaning Open64 ***" ; \
-	  cd $(OPEN64ROOT) && $(MAKE) clean ; \
-	else \
-	  echo "*** Cleaning Open64 -- NON-EXISTENT ***" ; \
-	fi
+open64_clean: 
+	cd $(OPEN64ROOT) && $(MAKE) clean 
 
-open64_veryclean:
-	@if [ -d $(OPEN64ROOT) ]; then \
-	  echo "*** Very-Cleaning Open64 ***" ; \
-	  cd $(OPEN64ROOT) && $(MAKE) clobber ; \
-	else \
-	  echo "*** Very-Cleaning -- NON-EXISTENT ***" ; \
-	fi
+open64_veryclean: 
+	cd $(OPEN64ROOT) && $(MAKE) clobber 
 
 .PHONY : open64_build open64_fe_build open64_be_build open64_tools_build open64_clean open64_veryclean 
 
