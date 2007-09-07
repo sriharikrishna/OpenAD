@@ -1,15 +1,4 @@
 # $Header: /Volumes/cvsrep/developer/OpenAD/Makefile,v 1.13 2007/04/11 13:28:12 utke Exp $
-# -*-makefile-*-
-## * BeginCopyright *********************************************************
-## 
-## 
-## *********************************************************** EndCopyright *
-
-#############################################################################
-# $Source: /Volumes/cvsrep/developer/OpenAD/Makefile,v $
-#############################################################################
-
-#############################################################################
 
 SHELL = /bin/sh
 WD := $(shell pwd)
@@ -63,15 +52,15 @@ configure:
 	@echo "*** Configuring (doing nothing) ***"
 
 build: open64_build oa_build xercesc_build openadforttk_build \
-	xaifbooster_build
+	angel_build xaifBooster_build
 
 # clean build files only
 clean: open64_clean oa_clean xercesc_clean openadforttk_clean \
-	xaifbooster_clean
+	angel_clean xaifBooster_clean
 
 # clean everything
 veryclean: open64_veryclean oa_veryclean xercesc_veryclean \
-	openadforttk_veryclean xaifbooster_veryclean
+	openadforttk_veryclean angel_veryclean xaifBooster_veryclean
 
 .PHONY : configure build clean
 
@@ -104,7 +93,7 @@ open64_veryclean:
 ############################################################
 
 # FIXME: make a rebuild target for OA and Xercesc Makefiles
-# FIXME: reinstalling this stuff will cause exes like xaifbooster to relink!
+# FIXME: reinstalling this stuff will cause exes like xaifBooster to relink!
 OA_OPT = -f Makefile.quick CXX="$(CXX)"
 
 oa_build:
@@ -185,33 +174,57 @@ openadforttk_veryclean: openadforttk_clean
 
 ############################################################
 
-xaifbooster_build:
-	@if [ -d $(XAIFBOOSTER_BASE) -a -d $(ANGEL_BASE) ]; then \
+angel_build:
+	@if [ -d $(ANGEL_BASE) ]; then \
+	  echo "*** Building angel ***" ; \
+	  cd $(ANGEL_BASE) && $(MAKE) ; \
+	else \
+	  echo "*** Building angel -- NON-EXISTENT ***" ; \
+	fi
+
+angel_clean:
+	@if [ -d $(ANGEL_BASE) ]; then \
+	  echo "*** Cleaning angel (skipping) ***" ; \
+	else \
+	  echo "*** Cleaning angel -- NON-EXISTENT ***" ; \
+	fi
+
+angel_veryclean:
+	@if [ -d $(ANGEL_BASE) ]; then \
+	  echo "*** Very-Cleaning angel ***" ; \
+	  cd $(ANGEL_BASE) && $(MAKE) clean ; \
+	else \
+	  echo "*** Very-Cleaning angel -- NON-EXISTENT ***" ; \
+	fi
+
+.PHONY : angel_build angel_clean angel_veryclean
+
+############################################################
+
+xaifBooster_build:
+	@if [ -d $(XAIFBOOSTER_BASE) ]; then \
 	  echo "*** Building xaifBooster ***" ; \
 	  cd $(XAIFBOOSTER_BASE) && $(MAKE) ; \
-	  cd $(ANGEL_BASE) && $(MAKE) ; \
-	  cd $(XAIFBOOSTER_BASE) && $(MAKE) test ; \
 	else \
 	  echo "*** Building xaifBooster -- NON-EXISTENT ***" ; \
 	fi
 
-xaifbooster_clean:
-	@if [ -d $(XAIFBOOSTER_BASE) -a -d $(ANGEL_BASE) ]; then \
+xaifBooster_clean:
+	@if [ -d $(XAIFBOOSTER_BASE) ]; then \
 	  echo "*** Cleaning xaifBooster (skipping) ***" ; \
 	else \
 	  echo "*** Cleaning xaifBooster -- NON-EXISTENT ***" ; \
 	fi
 
-xaifbooster_veryclean:
-	@if [ -d $(XAIFBOOSTER_BASE) -a -d $(ANGEL_BASE) ]; then \
+xaifBooster_veryclean:
+	@if [ -d $(XAIFBOOSTER_BASE) ]; then \
 	  echo "*** Very-Cleaning xaifBooster ***" ; \
-	  cd $(ANGEL_BASE) && $(MAKE) clean ; \
 	  cd $(XAIFBOOSTER_BASE) && $(MAKE) clean ; \
 	else \
 	  echo "*** Very-Cleaning xaifBooster -- NON-EXISTENT ***" ; \
 	fi
 
-.PHONY : xaifbooster_build xaifbooster_clean xaifbooster_veryclean
+.PHONY : xaifBooster_build xaifBooster_clean xaifBooster_veryclean
 
 ############################################################
 
