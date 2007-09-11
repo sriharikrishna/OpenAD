@@ -92,22 +92,30 @@ def hgChanged(rep):
 
 def hgPending(rep):
     fName=tempfile.mktemp()
-    os.system('hg outgoing > '+fName)
+    ret=os.system('hg outgoing > '+fName)
+    haveRemote=True
+    if (ret): 
+      haveRemote=False
     infoFile=open(fName)
     outgoing=infoFile.readlines()
     infoFile.close()    
-    os.system('hg incoming > '+fName)
-    infoFile=open(fName)
-    incoming=infoFile.readlines()
-    infoFile.close()
-    status=""
-    if (re.search('no changes found',outgoing[2]) is None):
-        status="O"
-    if (re.search('no changes found',incoming[2]) is None):
-        if (status == "0") :  
-            status="P"
-        else:    
-            status="I"
+    ret=os.system('hg incoming > '+fName)
+    if (ret): 
+      haveRemote=False
+    if (haveRemote):   
+        infoFile=open(fName)
+        incoming=infoFile.readlines()
+        infoFile.close()
+        status=""
+        if (re.search('no changes found',outgoing[2]) is None):
+            status="O"
+        if (re.search('no changes found',incoming[2]) is None):
+            if (status == "0") :  
+                status="P"
+            else:    
+                status="I"
+    else:
+        status="?"
     sys.stdout.write('\t'+status)
 
 def main():
