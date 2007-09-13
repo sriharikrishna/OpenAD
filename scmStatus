@@ -94,13 +94,13 @@ def hgPending(rep):
     fName=tempfile.mktemp()
     ret=os.system('hg outgoing > '+fName)
     haveRemote=True
-    if (ret): 
+    if (ret!=0 and ret!=256): 
       haveRemote=False
     infoFile=open(fName)
     outgoing=infoFile.readlines()
     infoFile.close()    
     ret=os.system('hg incoming > '+fName)
-    if (ret): 
+    if (ret!=0 and ret!=256): 
       haveRemote=False
     if (haveRemote):   
         infoFile=open(fName)
