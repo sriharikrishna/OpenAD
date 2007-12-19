@@ -109,7 +109,7 @@ BEGIN {
   @RootEnvVars =
       (
        ['OPEN64ROOT',       '${OPEN64_BASE}/osprey1.0/${o64targ}'],
-       ['OPENADFORTTKROOT', '${OPENADFORTTK_BASE}'],
+       ['OPENADFORTTKROOT', '${OPENADFORTTK_BASE}/OpenADFortTk-${PLATFORM}'],
        ['OPENANALYSISROOT', '${OPENANALYSIS_BASE}/${PLATFORM}'],
        ['XERCESCROOT',      '${XERCESC_BASE}/${PLATFORM}'],
        ['XAIFBOOSTERROOT',  '${XAIFBOOSTER_BASE}/..'],
@@ -121,7 +121,7 @@ BEGIN {
   
   @OtherEnvVars =
       (
-       ['OPENADFORTTK',        '${OPENADFORTTKROOT}/OpenADFortTk-${PLATFORM}'],
+       ['OPENADFORTTK',            '${OPENADFORTTKROOT}'],
        ['OPENADFORTTK_OPEN64BASE', '${OPEN64_BASE}/osprey1.0'],
        ['OPENADFORTTK_OPEN64',     '${OPEN64ROOT}'],
        ['OPENADFORTTK_OA',         '${OPENANALYSISROOT}'],
@@ -129,7 +129,7 @@ BEGIN {
        [ undef,                    undef],
        [ undef,                    undef],
        [ undef,                    undef],
-       [ 'OPENAD_BUILD',              'yes' ],
+       [ undef,                    undef],
        [ undef,                    undef],
        );
   
