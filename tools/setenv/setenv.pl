@@ -97,7 +97,7 @@ BEGIN {
       (
        'alpha-OSF1'  => 'targ_alpha_tru64', 
        'x86-Linux'   => 'targ_ia32_ia64_linux',
-       'x86_64-Linux'=> 'targ_ia32_ia64_linux',
+       'x86_64-Linux'=> 'targ_ia64_ia64_linux',
        'x86-Cygwin'  => 'targ_ia32_ia64_linux',
        'ia64-Linux'  => 'targ_ia64_ia64_linux',
        'mips-IRIX64' => 'targ_mips_irix',
@@ -126,7 +126,7 @@ BEGIN {
        ['OPENADFORTTK_OPEN64',     '${OPEN64ROOT}'],
        ['OPENADFORTTK_OA',         '${OPENANALYSISROOT}'],
        ['OPENADFORTTK_XERCESC',    '${XERCESCROOT}'],
-       ['OPENADFORTTK_BOOST',      '${BOOSTROOT}'],
+       [ undef,                    undef],
        [ undef,                    undef],
        [ undef,                    undef],
        [ 'OPENAD_BUILD',              'yes' ],
