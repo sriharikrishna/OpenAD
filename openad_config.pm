@@ -124,7 +124,7 @@ $OPENAD_BOOST->{name}  = 'boost';
 $OPENAD_BOOST->{path}  = "$TheRealBin";
 $OPENAD_BOOST->{subdir}= "boost";
 $OPENAD_BOOST->{repos} = $OPENAD_REPO_SF_BOOST;
-$OPENAD_BOOST->{tag}   = '{date}2005/03/21';
+$OPENAD_BOOST->{tag}   = 'Version_1_34_1';
 $OPENAD_BOOST->{var}   = 'BOOST_BASE';
 
 #############################################################################
