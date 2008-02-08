@@ -2,22 +2,16 @@ program driver
  use mpi
  implicit none
  double precision  x, f
- integer myid, numprocs, i, rc, ierr
- double precision, dimension(:), allocatable :: x0
+ integer myid, ierr
  call MPI_INIT(ierr)
  call MPI_COMM_RANK(MPI_COMM_WORLD, myid, ierr)
- call MPI_COMM_SIZE(MPI_COMM_WORLD, numprocs, ierr)
- x=myid*0.5
- call ring(x) 
- call MPI_REDUCE(x,f,1,MPI_DOUBLE_PRECISION,MPI_SUM,0,&
-      MPI_COMM_WORLD,ierr)
+ ! init x
+ call init(x)
+ ! compute f
+ call compute(x,f)
  ! node 0 prints the answer.
  if (myid .eq. 0) then
-    write(6, *) f
+    print *, f
  endif
- call MPI_FINALIZE(rc)
+ call MPI_FINALIZE(ierr)
 end
-
-
-
-
