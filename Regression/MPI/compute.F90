@@ -1,6 +1,12 @@
+#include "OADmpi.inc"
+
 subroutine ring(x)
- use mpi
- implicit none
+!$openad xxx template oad_t_split.f
+
+ ! use mpi
+ implicit none ! after 'use' before 'include'
+ include 'mpif.h'
+
  double precision  x, lx, rx
  integer myid, numprocs, i, rc, ierr, leftId, rightId,req(4)
  call MPI_COMM_RANK(MPI_COMM_WORLD, myid, ierr)
@@ -12,10 +18,10 @@ subroutine ring(x)
     leftId=MODULO(myId-1,numprocs)
     rightId=MODULO(myId+1,numprocs)
     ! send to left
-    call MPI_ISEND(x,1,MPI_DOUBLE_PRECISION,leftId,0,& 
+    call OAD_MPI_ISEND(x,1,MPI_DOUBLE_PRECISION,leftId,0,& 
          MPI_COMM_WORLD,req(1),ierr) 
     ! send to right
-    call MPI_ISEND(x,1,MPI_DOUBLE_PRECISION,rightId,0,& 
+    call OAD_MPI_ISEND(x,1,MPI_DOUBLE_PRECISION,rightId,0,& 
          MPI_COMM_WORLD,req(2),ierr)
     ! recv from left
     call MPI_IRECV(lx,1,MPI_DOUBLE_PRECISION,leftId,0,& 
@@ -30,6 +36,18 @@ subroutine ring(x)
  end do
 end
 
+subroutine compute(x,f)
+!$openad xxx template oad_t_split.f
 
+ ! use mpi
+ implicit none ! after 'use' before 'include'
+ include 'mpif.h'
 
-
+ double precision  x, f
+ integer ierr
+ ! openad independent(x)
+ call ring(x) 
+ call MPI_REDUCE(x,f,1,MPI_DOUBLE_PRECISION,MPI_SUM,0,&
+      MPI_COMM_WORLD,ierr)
+ ! openad dependent(y)
+end

@@ -1,6 +1,7 @@
 subroutine init(x)
- use mpi
  implicit none
+ include 'mpif.h'
+ ! use mpi
  double precision  x
  integer myid, ierr
  call MPI_COMM_RANK(MPI_COMM_WORLD, myid, ierr)

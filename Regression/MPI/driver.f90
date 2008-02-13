@@ -1,6 +1,9 @@
 program driver
- use mpi
+
+ ! use mpi
  implicit none
+ include 'mpif.h'
+
  double precision  x, f
  integer myid, ierr
  call MPI_INIT(ierr)
@@ -14,4 +17,5 @@ program driver
     print *, f
  endif
  call MPI_FINALIZE(ierr)
+
 end
