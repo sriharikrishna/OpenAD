@@ -10,14 +10,14 @@ driver: driver.o compute.o init.o
 %.o : %.f90
 	$(FC) $(FFLAGS) -c $<
 
-%.f90 : %.F90
+%.f90 : %.F90 OADmpi.inc
 	$(FC) $(FFLAGS) -o $@ -E $< 
 
 driverAdm: w2f__types.o OADactive.o OADtape.o OADrev.o driverAdm.o compute.xb.x2w.w2f.pp.o init.o
 	$(FC) -o $@ $^ $(LDFLAGS) $(LIBS)
 
 # F -> WHIRL
-compute.B: compute.F90
+compute.B: compute.F90 OADmpi.inc
 	${OPEN64ROOT}/crayf90/sgi/mfef90 -DOAD_TRANS -z -I$(MPIROOT)/include -F -N132 $<
 
 # WHIRL -> XAIF
@@ -41,4 +41,4 @@ compute.xb.x2w.w2f.pp.f: compute.xb.x2w.w2f.f
 	perl ${OPENADFORTTKROOT}/bin/multi-pp.pl $<
 
 clean:
-	rm -f *.o driver driverAdm compute.x* compute.B *.mod *.mod-whirl
+	rm -f *.o driver driverAdm compute.x* compute.B compute.f90 *.mod *.mod-whirl

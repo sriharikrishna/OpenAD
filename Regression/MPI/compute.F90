@@ -17,6 +17,8 @@ subroutine ring(x)
     ! get the neighbor id
     leftId=MODULO(myId-1,numprocs)
     rightId=MODULO(myId+1,numprocs)
+    ! antiwait for all non-blocking requests
+    call OAD_MPI_AWAITALL(4,req,MPI_STATUSES_IGNORE,ierr)
     ! send to left
     call OAD_MPI_ISEND(x,1,MPI_DOUBLE_PRECISION,leftId,0,& 
          MPI_COMM_WORLD,req(1),ierr) 
@@ -24,13 +26,13 @@ subroutine ring(x)
     call OAD_MPI_ISEND(x,1,MPI_DOUBLE_PRECISION,rightId,0,& 
          MPI_COMM_WORLD,req(2),ierr)
     ! recv from left
-    call MPI_IRECV(lx,1,MPI_DOUBLE_PRECISION,leftId,0,& 
+    call OAD_MPI_IRECV(lx,1,MPI_DOUBLE_PRECISION,leftId,0,& 
          MPI_COMM_WORLD,req(3),ierr) 
     ! recv from right
-    call MPI_IRECV(rx,1,MPI_DOUBLE_PRECISION,rightId,0,& 
+    call OAD_MPI_IRECV(rx,1,MPI_DOUBLE_PRECISION,rightId,0,& 
          MPI_COMM_WORLD,req(4),ierr)
     ! wait for all non-blocking requests
-    call MPI_WAITALL(4,req,MPI_STATUSES_IGNORE,ierr)
+    call OAD_MPI_WAITALL(4,req,MPI_STATUSES_IGNORE,ierr)
     ! add the neighbors contributions
     x=x+rx+lx
  end do
@@ -45,9 +47,9 @@ subroutine compute(x,f)
 
  double precision  x, f
  integer ierr
- ! openad independent(x)
+!$openad independent(x)
  call ring(x) 
- call MPI_REDUCE(x,f,1,MPI_DOUBLE_PRECISION,MPI_SUM,0,&
+ call OAD_MPI_REDUCE(x,f,1,MPI_DOUBLE_PRECISION,MPI_SUM,0,&
       MPI_COMM_WORLD,ierr)
- ! openad dependent(y)
+!$openad dependent(f)
 end

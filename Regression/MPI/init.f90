@@ -5,5 +5,5 @@ subroutine init(x)
  double precision  x
  integer myid, ierr
  call MPI_COMM_RANK(MPI_COMM_WORLD, myid, ierr)
- x=myid*0.5
+ x=(myid+1)*0.5
 end
