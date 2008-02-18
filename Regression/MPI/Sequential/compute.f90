@@ -1,5 +1,5 @@
 subroutine ring(x,numProcs)
-!$openad xxx template oad_t_split.f
+!$openad xxx template ../oad_t_split.f
 
  implicit none 
  double precision  x(numProcs), oldx(numProcs)
@@ -18,7 +18,7 @@ subroutine ring(x,numProcs)
 end
 
 subroutine compute(x,f,numProcs)
-!$openad xxx template oad_t_split.f
+!$openad xxx template ../oad_t_split.f
 
  implicit none 
  double precision x(*)
