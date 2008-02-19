@@ -1,5 +1,6 @@
 #include <malloc.h>
 #include <string.h>
+#include <stdio.h>
 #include "mpi.h"
 
 struct rBufAssoc { 
@@ -7,19 +8,60 @@ struct rBufAssoc {
   void * taddr;
   int length;
   int req;
-}; 
+  struct rBufAssoc* next;
+} rBufFirst = {0,0,0,0}; 
 
 struct sBufAssoc { 
   void * addr;
   int length;
   int req;
-}; 
+  struct sBufAssoc* next;
+} sBufFirst = {0,0,0}; 
 
-static struct rBufAssoc rBufAssoc_p[100];
-static struct sBufAssoc sBufAssoc_p[100];
+static struct rBufAssoc* rBufAssoc_head=&rBufFirst;
+static struct sBufAssoc* sBufAssoc_head=&sBufFirst;
 
-static int rBufAssocIndex=0;
-static int sBufAssocIndex=0;
+void associateR(void* buf, 
+		void* tBuf,
+		int count, 
+		int req) {
+  struct rBufAssoc* thisAssoc=rBufAssoc_head;
+  while (1) { 
+    if (thisAssoc->req==0)
+      break; 
+    if (thisAssoc->next==0)
+      break;
+    thisAssoc=thisAssoc->next;
+  }
+  if (thisAssoc->req!=0) { 
+    thisAssoc->next=(struct rBufAssoc*)malloc(sizeof(struct rBufAssoc));
+    thisAssoc=thisAssoc->next;
+  }
+  thisAssoc->addr  =buf;
+  thisAssoc->taddr =tBuf;
+  thisAssoc->length=count;
+  thisAssoc->req   =req;
+}
+
+void associateS(void* buf, 
+		int count, 
+		int req) {
+  struct sBufAssoc* thisAssoc=sBufAssoc_head;
+  while (1) { 
+    if (thisAssoc->req==0)
+      break; 
+    if (thisAssoc->next==0)
+      break;
+    thisAssoc=thisAssoc->next;
+  }
+  if (thisAssoc->req!=0) { 
+    thisAssoc->next=(struct sBufAssoc*)malloc(sizeof(struct sBufAssoc));
+    thisAssoc=thisAssoc->next;
+  }
+  thisAssoc->addr  =buf;
+  thisAssoc->length=count;
+  thisAssoc->req   =req;
+}
 
 /* 
  combine temporary buffer allocation 
@@ -33,7 +75,9 @@ void oadtirecv_(void *buf,
 		int *comm, 
 		int *req, 
 		int *ierror) {
-  double * tBuf; 
+  double * tBuf;
+  int myId;
+  *ierror = MPI_Comm_rank(MPI_COMM_WORLD, &myId);
   tBuf=malloc(*count*sizeof(double));
   *ierror = MPI_Irecv( tBuf, 
 		       *count, 
@@ -42,12 +86,8 @@ void oadtirecv_(void *buf,
 		       *tag, 
 		       (MPI_Comm)(*comm), 
 		       (MPI_Request *)(req));
-  printf("irecv b:%x t:%x c:%i r:%i\n",buf,(void*)tBuf,*count, *req);
-  rBufAssoc_p[rBufAssocIndex].addr=buf;
-  rBufAssoc_p[rBufAssocIndex].taddr=(void*)tBuf;
-  rBufAssoc_p[rBufAssocIndex].length=*count;
-  rBufAssoc_p[rBufAssocIndex].req=*req;
-  rBufAssocIndex+=1;
+  printf("%i: irecv b:%x t:%x c:%i s:%i r:%i\n",myId, buf,(void*)tBuf,*count, *src, *req);
+  associateR(buf, tBuf,*count, *req);
 } 
 
 /* 
@@ -62,6 +102,8 @@ void oadtisend_(void *buf,
 		int *comm, 
 		int *req, 
 		int *ierror) {
+  int myId;
+  *ierror = MPI_Comm_rank(MPI_COMM_WORLD, &myId);
   *ierror = MPI_Isend( buf, 
 		       *count, 
 		       (MPI_Datatype)(*datatype), 
@@ -69,11 +111,8 @@ void oadtisend_(void *buf,
 		       *tag, 
 		       (MPI_Comm)(*comm), 
 		       (MPI_Request *)(req));
-  printf("isend b:%x c:%i r:%i\n",buf,*count, *req);
-  sBufAssoc_p[sBufAssocIndex].addr=buf;
-  sBufAssoc_p[sBufAssocIndex].length=*count;
-  sBufAssoc_p[sBufAssocIndex].req=*req;
-  sBufAssocIndex+=1;
+  printf("%i: isend b:%x c:%i d:%i r:%i\n",myId, buf,*count, *dest, *req);
+  associateS(buf,*count, *req);
 } 
 
 void oadhandlerequest_ (int *r) { 
@@ -81,25 +120,38 @@ void oadhandlerequest_ (int *r) {
   double *tBuf;
   double *rBuf;
   int i,j;
-  for(i=0; i<sBufAssocIndex; i++) { 
-    if (*r==sBufAssoc_p[i].req) { 
-      memset(sBufAssoc_p[i].addr,0,
-	     sBufAssoc_p[i].length*sizeof(double));
-      done=1;
-      break; 
+  int myId,ierror;
+  struct rBufAssoc* rAssoc=rBufAssoc_head;
+  struct sBufAssoc* sAssoc=sBufAssoc_head;
+  ierror = MPI_Comm_rank(MPI_COMM_WORLD, &myId);
+  while(sAssoc) { 
+    if (*r==sAssoc->req) { 
+	memset(sAssoc->addr,0,
+	       sAssoc->length*sizeof(double));
+	sAssoc->req=0; 
+	done=1;
+	printf("%i: handle S request r:%i\n",myId, *r);
+	break; 
     }
+    sAssoc=sAssoc->next;
   }
   if (done)
     return;
-  for(i=0; i<rBufAssocIndex; i++) { 
-    if (*r==rBufAssoc_p[i].req) { 
-      tBuf=(double *)rBufAssoc_p[i].taddr;
-      rBuf=(double *)rBufAssoc_p[i].addr;
-      for(j=0;j<rBufAssoc_p[i].length;j++) { 
+  while(rAssoc) { 
+    if (*r==rAssoc->req) { 
+      tBuf=(double *)rAssoc->taddr;
+      rBuf=(double *)rAssoc->addr;
+      for(j=0;j<rAssoc->length;j++) { 
 	rBuf[i]+=tBuf[i];
       }
       free(tBuf);
+      rAssoc->req=0;
+      printf("%i: handle R request r:%i\n",myId, *r);
+      done=1;
       break; 
     }
+    rAssoc=rAssoc->next;
   }
+  if (!done)
+    printf("%i: cannot handle request r:%i\n",myId, *r);
 }

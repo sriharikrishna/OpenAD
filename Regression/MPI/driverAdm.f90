@@ -18,13 +18,15 @@ program driverAdm
  our_rev_mode%plain=.FALSE.
  our_rev_mode%tape=.TRUE.
  call compute(x,f)
- ! all nodes print the function.
- print *, myid, ": f : ", f%v
+ ! root prints the function.
+ if (myid .eq. 0) then 
+    print *, 'function value before starting adjoint: ', f%v
+ end if
  our_rev_mode%tape=.FALSE.
  our_rev_mode%adjoint=.TRUE.
  f%d=1.0
  call compute(x,f)
- ! all nodes print the adjoints.
+ ! all nodes print their adjoints.
  print *, myid, ":", x%d
  call MPI_FINALIZE(ierr)
 end
