@@ -18,6 +18,8 @@ program driverAdm
  our_rev_mode%plain=.FALSE.
  our_rev_mode%tape=.TRUE.
  call compute(x,f)
+ ! all nodes print the function.
+ print *, myid, ": f : ", f%v
  our_rev_mode%tape=.FALSE.
  our_rev_mode%adjoint=.TRUE.
  f%d=1.0

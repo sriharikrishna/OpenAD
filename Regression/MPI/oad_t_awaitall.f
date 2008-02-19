@@ -6,6 +6,7 @@
 
           integer iaddr
           external iaddr
+          integer i
 
          if (our_rev_mode%plain) then
 ! original function
@@ -22,5 +23,8 @@
      +      requests, 
      +      statuses, 
      +      ierror)
+            do i=1,count
+               call oadhandlerequest(requests(i))
+            end do
           end if 
         end subroutine template

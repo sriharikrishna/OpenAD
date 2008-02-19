@@ -7,13 +7,13 @@
           integer lroot
           integer lcount
           integer lId
-          double precision t(count)
-
+          double precision, dimension(:), allocatable :: t
+          
          if (our_rev_mode%plain) then
 ! original function
             call mpi_reduce( 
-     +      sbuf%v,
-     +      rbuf%v, 
+     +      sbuf(1:count)%v,
+     +      rbuf(1:count)%v, 
      +      count, 
      +      datatype, 
      +      op, 
@@ -27,7 +27,6 @@
           integer_tape_pointer = integer_tape_pointer+1
           integer_tape(integer_tape_pointer) = root
           integer_tape_pointer = integer_tape_pointer+1
-          print *, sbuf(1:count)%v
             call mpi_reduce( 
      +      sbuf(1:count)%v,
      +      rbuf(1:count)%v, 
@@ -45,20 +44,22 @@
           lroot = integer_tape(integer_tape_pointer)
           integer_tape_pointer = integer_tape_pointer-1
           lcount = integer_tape(integer_tape_pointer)
-
+          allocate(t(lcount))
           call MPI_COMM_RANK(comm, lId, ierror)
           if (lId.eq.lroot) then 
             t(1:count)=rbuf(1:count)%d
             rbuf(1:count)%d=0.0
           end if
           call mpi_bcast( 
-     +      t(1:count), 
+     +      t, 
      +      lcount, 
      +      datatype, 
      +      lroot, 
      +      comm, 
      +      ierror)
           sbuf(1:count)%d=sbuf(1:count)%d+t
+          deallocate(t)
+
 ! don't need to do anything else for summation op
           end if 
         end subroutine template

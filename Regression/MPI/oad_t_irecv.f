@@ -4,6 +4,8 @@
 
 !$TEMPLATE_PRAGMA_DECLARATIONS
 
+          integer lcount
+          integer lsrc
           integer iaddr
           external iaddr
 
@@ -11,7 +13,7 @@
 ! original function
             call mpi_irecv( 
      +      buf,  
-     +      count, 
+     +      count*2, 
      +      datatype, 
      +      src, 
      +      tag, 
@@ -21,9 +23,13 @@
           end if
           if (our_rev_mode%tape) then
 ! taping
+          integer_tape(integer_tape_pointer) = count
+          integer_tape_pointer = integer_tape_pointer+1
+          integer_tape(integer_tape_pointer) = src
+          integer_tape_pointer = integer_tape_pointer+1
             call mpi_irecv( 
      +      buf,  
-     +      count, 
+     +      count*2, 
      +      datatype, 
      +      src, 
      +      tag, 
@@ -33,14 +39,19 @@
           end if 
           if (our_rev_mode%adjoint) then
 ! adjoint
-            call mpi_isend( 
+          integer_tape_pointer = integer_tape_pointer-1
+          lsrc = integer_tape(integer_tape_pointer)
+          integer_tape_pointer = integer_tape_pointer-1
+          lcount = integer_tape(integer_tape_pointer)
+            call oadtisend( 
      +      buf,  
-     +      count, 
+     +      lcount*2, 
      +      datatype, 
-     +      src, 
+     +      lsrc, 
      +      tag, 
      +      comm, 
      +      request, 
      +      ierror)
           end if 
+
         end subroutine template

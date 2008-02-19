@@ -1,8 +1,8 @@
-module oad_mpi_wrapper_helper
+module oadMPIwrapper
 
-public :: oad_buffer_helper
+public :: oadGBuf
 
-double precision oad_buffer_helper(1) 
+double precision oadGBuf(1)
 
 end 
 
@@ -40,7 +40,7 @@ subroutine  oad_mpi_isend ( &
      ierror)
 !$openad xxx template oad_t_isend.f
 
-  use oad_mpi_wrapper_helper
+  use oadMPIwrapper
 
   double precision buf(*)
   integer count
@@ -52,7 +52,7 @@ subroutine  oad_mpi_isend ( &
   integer ierror  
 
 #ifdef OAD_TRANS  
-  oad_buffer_helper(1)=buf(1)
+  oadGBuf(1)=buf(1)
 #else
   call mpi_isend( &
      buf, & 
@@ -81,7 +81,7 @@ subroutine  oad_mpi_irecv ( &
      ierror)
 !$openad xxx template oad_t_irecv.f
 
-  use oad_mpi_wrapper_helper
+  use oadMPIwrapper
 
   double precision buf(*)
   integer count
@@ -93,7 +93,7 @@ subroutine  oad_mpi_irecv ( &
   integer ierror  
 
 #ifdef OAD_TRANS  
-  buf(1)=oad_buffer_helper(1)
+  buf(1)=oadGBuf(1)
 #else
   call mpi_irecv( &
      buf, & 

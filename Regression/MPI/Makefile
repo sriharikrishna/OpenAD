@@ -1,6 +1,8 @@
 MPICHDIR = ../..
 FC       = $(MPIROOT)/bin/mpif90
+CC       = $(MPIROOT)/bin/mpicc
 FFLAGS   = -g -O0
+CFLAGS   = -g -O0
 
 all: driver driverAdm
 
@@ -10,10 +12,13 @@ driver: driver.o compute.o init.o
 %.o : %.f90
 	$(FC) $(FFLAGS) -c $<
 
+%.o : %.c
+	$(CC) $(CFLAGS) -c $<
+
 %.f90 : %.F90 OADmpi.inc
 	$(FC) $(FFLAGS) -o $@ -E $< 
 
-driverAdm: w2f__types.o OADactive.o OADtape.o OADrev.o driverAdm.o compute.xb.x2w.w2f.pp.o init.o
+driverAdm: w2f__types.o OADactive.o OADtape.o OADrev.o OADmpiBK.o driverAdm.o compute.xb.x2w.w2f.pp.o init.o iaddr.o
 	$(FC) -o $@ $^ $(LDFLAGS) $(LIBS)
 
 # F -> WHIRL
