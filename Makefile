@@ -127,7 +127,7 @@ XERCESC_OPT = CXX="$(CXX)" CC="$(CC)"
 xercesc_build:
 	@if [ -d $(XERCESC_BASE) ]; then \
 	  echo "*** Building xercesc ***" ; \
-	  if [ -d $(XERCESC_BASE)/xerces-c-src_2_6_0/obj/$(XERCESPLATFORM) ]; then \
+	  if [ -d $(XERCESC_BASE)/xerces-c-src/obj/$(XERCESPLATFORM) ]; then \
 	    cd $(XERCESC_BASE) && $(MAKE) $(XERCESC_OPT) build install ; \
 	  else \
 	    cd $(XERCESC_BASE) && $(MAKE) $(XERCESC_OPT) ; \
