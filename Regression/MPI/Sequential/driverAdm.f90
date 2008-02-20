@@ -27,6 +27,6 @@ program driverAdm
  call compute(x,f,numProcs)
  ! all nodes print the adjoints.
  do i = 1, numProcs
-    print *, i, ":", x(i)%d
+    print *, i-1, ":", x(i)%d
  end do
 end

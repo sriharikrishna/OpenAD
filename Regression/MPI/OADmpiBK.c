@@ -119,7 +119,7 @@ void oadhandlerequest_ (int *r) {
   int done=0;
   double *tBuf;
   double *rBuf;
-  int i,j;
+  int i;
   int myId,ierror;
   struct rBufAssoc* rAssoc=rBufAssoc_head;
   struct sBufAssoc* sAssoc=sBufAssoc_head;
@@ -141,7 +141,7 @@ void oadhandlerequest_ (int *r) {
     if (*r==rAssoc->req) { 
       tBuf=(double *)rAssoc->taddr;
       rBuf=(double *)rAssoc->addr;
-      for(j=0;j<rAssoc->length;j++) { 
+      for(i=0;i<rAssoc->length;i++) { 
 	rBuf[i]+=tBuf[i];
       }
       free(tBuf);
