@@ -317,7 +317,7 @@ sub undefEnvVarErr
     push @{$cmdDescVecRef}, $desc;
 
     $desc = { %RunCmds::CmdDesc, }; 
-    $desc->{cmd} = "$MFEF90 -F -N132 '${base}.pre.${ext}'";
+    $desc->{cmd} = "$MFEF90 -z -F -N132 '${base}.pre.${ext}'";
     $desc->{desc} = "Fortran to WHIRL: '${base}.pre.${ext}' -> '${base}.pre.B'";
     push @{$cmdDescVecRef}, $desc;
     
