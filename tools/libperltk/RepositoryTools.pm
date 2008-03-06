@@ -1,6 +1,5 @@
 # -*-Mode: perl;-*-
 
-# $Header: /Volumes/cvsrep/developer/shared/libperltk/RepositoryTools.pm,v 1.8 2007/03/07 21:19:53 utke Exp $
 ## * BeginCopyright *********************************************************
 ## 
 ## 
@@ -94,8 +93,8 @@ sub RunRepositoryUpdate
     
     $desc = { %RunCmds::CmdDesc, };  
     my $env = 'CVS_RSH="' . "${selfRoot}/tools/sshcvs/sshcvs-hipersoft-anon" .  '"';
-    $desc->{cmd} = cd ${selfRoot} && ${env} cvs update ${selfFiles}";
-    $desc->{desc} = "cvs update ${selfRoot}";
+    $desc->{cmd} = "cd ${selfRoot} && ${env} cvs update ${selfFiles}";
+    $desc->{desc} = $desc->{cmd};
     push(@{$cmdDescVecRef}, $desc); 
 
   # --------------------------------------------------------
