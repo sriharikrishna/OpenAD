@@ -1,4 +1,4 @@
-# -*-Mode: perl;-*-
+p -*-Mode: perl;-*-
 
 # $Header: /Volumes/cvsrep/developer/shared/libperltk/RepositoryTools.pm,v 1.8 2007/03/07 21:19:53 utke Exp $
 ## * BeginCopyright *********************************************************
@@ -105,7 +105,6 @@ sub RunRepositoryUpdate
   # Generate commands for sub repositories
   # --------------------------------------------------------
   
-  if (!$selfonly) {
     for my $repo (@{$repositories}) {
       # if we don't have repository info, then this is external to us
       next if (!defined($repo->{repos}));
@@ -163,7 +162,6 @@ sub RunRepositoryUpdate
       
       push(@{$cmdDescVecRef}, $desc);
     }
-  }
   
   # --------------------------------------------------------
   # Run commands
