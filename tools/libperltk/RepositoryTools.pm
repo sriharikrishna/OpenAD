@@ -1,4 +1,4 @@
-p -*-Mode: perl;-*-
+# -*-Mode: perl;-*-
 
 # $Header: /Volumes/cvsrep/developer/shared/libperltk/RepositoryTools.pm,v 1.8 2007/03/07 21:19:53 utke Exp $
 ## * BeginCopyright *********************************************************
