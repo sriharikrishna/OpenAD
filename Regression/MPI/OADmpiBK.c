@@ -36,6 +36,7 @@ void associateR(void* buf,
   if (thisAssoc->req!=0) { 
     thisAssoc->next=(struct rBufAssoc*)malloc(sizeof(struct rBufAssoc));
     thisAssoc=thisAssoc->next;
+    thisAssoc->next=0;
   }
   thisAssoc->addr  =buf;
   thisAssoc->taddr =tBuf;
@@ -57,6 +58,7 @@ void associateS(void* buf,
   if (thisAssoc->req!=0) { 
     thisAssoc->next=(struct sBufAssoc*)malloc(sizeof(struct sBufAssoc));
     thisAssoc=thisAssoc->next;
+    thisAssoc->next=0;
   }
   thisAssoc->addr  =buf;
   thisAssoc->length=count;
@@ -114,6 +116,27 @@ void oadtisend_(void *buf,
   printf("%i: isend b:%x c:%i d:%i r:%i\n",myId, buf,*count, *dest, *req);
   associateS(buf,*count, *req);
 } 
+
+void oadtsend_(void *buf,
+	       int *count, 
+	       int *datatype, 
+	       int *dest, 
+	       int *tag, 
+	       int *comm, 
+	       int *ierror) {
+  int myId;
+  *ierror = MPI_Comm_rank(MPI_COMM_WORLD, &myId);
+  printf("%i: send b:%x c:%i dt:%i d:%i \n",myId, buf,*count, *datatype, *dest);
+  *ierror = MPI_Send( buf, 
+		      *count, 
+		      (MPI_Datatype)(*datatype), 
+		      *dest, 
+		      *tag, 
+		      (MPI_Comm)(*comm));
+  memset(buf,0,
+	 *count*sizeof(double));
+} 
+
 
 void oadhandlerequest_ (int *r) { 
   int done=0;

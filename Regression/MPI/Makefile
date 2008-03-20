@@ -1,4 +1,7 @@
-MPICHDIR = ../..
+ifndef MPIROOT
+ $(error "Error:  environment variable MPIROOT not defined!")
+endif
+
 FC       = $(MPIROOT)/bin/mpif90
 CC       = $(MPIROOT)/bin/mpicc
 FFLAGS   = -g -O0
