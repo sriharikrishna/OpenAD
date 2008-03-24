@@ -1,6 +1,5 @@
 # -*-Mode: perl;-*-
 
-# $Header: /Volumes/cvsrep/developer/shared/libperltk/RepositoryTools.pm,v 1.8 2007/03/07 21:19:53 utke Exp $
 ## * BeginCopyright *********************************************************
 ## 
 ## 
@@ -65,7 +64,6 @@ STDOUT->autoflush(1);
 #   selfCVSFiles - list of shell globs representing the shell CVS repository
 #   repositories - list of 'RepositoryDesc'
 #   opts         - a hash of options
-#     'selfonly'    - update only the shell repository (boolean)
 #     'skipupdate'  - do not update an existing repository (boolean)
 #     'interactive' - run commands interactively (boolean)
 #     'verbose'     - 0 (no), 1 (moderate) or 2 (extreme)
@@ -79,7 +77,6 @@ sub RunRepositoryUpdate
   my $cmdDescVecRef = [ ];
   my $desc = undef;
   
-  my $selfonly   = (defined($opts->{selfonly})) ? $opts->{selfonly} : 0;
   my $skipupdate = (defined($opts->{skipupdate})) ? $opts->{skipupdate} : 0;
   my $interactv  = (defined($opts->{interactive})) ? $opts->{interactive} : 0;
   my $verbose    = (defined($opts->{verbose})) ? $opts->{verbose} : 0;
@@ -89,23 +86,21 @@ sub RunRepositoryUpdate
   # Generate commands for self (always a cvs update)
   # --------------------------------------------------------
 
-  if ($selfonly) {
     my $selfFiles = '';
     for my $x (@{$selfCVSFiles}) {
       $selfFiles .= ' ' . $x;
     }
     
     $desc = { %RunCmds::CmdDesc, };  
-    $desc->{cmd} = "cd ${selfRoot} && cvs update ${selfFiles}";
-    $desc->{desc} = "cvs update ${selfRoot}";
+    my $env = 'CVS_RSH="' . "${selfRoot}/tools/sshcvs/sshcvs-hipersoft-anon" .  '"';
+    $desc->{cmd} = "cd ${selfRoot} && ${env} cvs update ${selfFiles}";
+    $desc->{desc} = $desc->{cmd};
     push(@{$cmdDescVecRef}, $desc); 
-  }
 
   # --------------------------------------------------------
   # Generate commands for sub repositories
   # --------------------------------------------------------
   
-  if (!$selfonly) {
     for my $repo (@{$repositories}) {
       # if we don't have repository info, then this is external to us
       next if (!defined($repo->{repos}));
@@ -163,7 +158,6 @@ sub RunRepositoryUpdate
       
       push(@{$cmdDescVecRef}, $desc);
     }
-  }
   
   # --------------------------------------------------------
   # Run commands
