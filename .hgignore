@@ -4,10 +4,11 @@ syntax: glob
 *~
 angel*
 boost*
-Open64*
 OpenADFortTk*
 OpenAnalysis*
 xaif*
 xaifBooster*
 xercesc*
 UseOA-Open64*
+syntax: regexp
+^Open64/*
