@@ -19,7 +19,7 @@ driver: driver.o compute.o init.o
 	$(CC) $(CFLAGS) -c $<
 
 %.f90 : %.F90 OADmpi.inc
-	$(FC) $(FFLAGS) -o $@ -E $< 
+	$(FC) $(FFLAGS) -E $<  > $@
 
 driverAdm: w2f__types.o OADactive.o OADtape.o OADrev.o OADmpiBK.o driverAdm.o compute.xb.x2w.w2f.pp.o init.o iaddr.o
 	$(FC) -o $@ $^ $(LDFLAGS) $(LIBS)

@@ -1,4 +1,6 @@
-FC       = gfortran
+ifndef FC    
+FC  = gfortran
+endif
 FFLAGS   = -g -O0
 MODS = w2f__types OADactive OADtape OADrev
 TARGETS=driver driverFd driverAdm
