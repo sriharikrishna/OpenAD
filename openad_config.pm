@@ -110,7 +110,6 @@ my $OPENAD_ANGEL = { %RepositoryTools::RepositoryDesc, };
 $OPENAD_ANGEL->{name}  = 'angel';
 $OPENAD_ANGEL->{path}  = "$TheRealBin";
 $OPENAD_ANGEL->{repos} = $OPENAD_REPO_SF_ANGEL;
-$OPENAD_ANGEL->{tag}   = '{date}2008/02/27';
 $OPENAD_ANGEL->{var}   = 'ANGEL_BASE';
 
 my $OPENAD_XAIF = { %RepositoryTools::RepositoryDesc, };
