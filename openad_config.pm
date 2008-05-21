@@ -1,6 +1,4 @@
 # -*-Mode: perl;-*-
-# $Header: /Volumes/cvsrep/developer/OpenAD/openad_config.pm,v 1.19 2007/03/06 23:18:48 utke Exp $
-
 #############################################################################
 ##
 ## OpenAD configuration information for subpackages.
