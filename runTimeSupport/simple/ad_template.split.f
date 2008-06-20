@@ -51,8 +51,8 @@ C This work is partially supported by:
 C 	NSF-ITR grant OCE-0205590
 C ========== end copyright notice ==============
         subroutine template()
-          use OpenAD_tape
-          use OpenAD_rev
+          use OAD_tape
+          use OAD_rev
 
           ! original arguments get inserted before version
           ! and declared here together with all local variables

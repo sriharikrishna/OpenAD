@@ -50,7 +50,7 @@
 ! This work is partially supported by:
 ! 	NSF-ITR grant OCE-0205590
 ! ========== end copyright notice ==============
-module OpenAD_rev
+module OAD_rev
 
 implicit none
 
@@ -161,4 +161,4 @@ type(modeType), save :: our_rev_mode
 !   our_rev_mode=our_orig_mode
 ! end subroutine 
 	
-end module OpenAD_rev
+end module OAD_rev

@@ -50,74 +50,37 @@
 ! This work is partially supported by:
 ! 	NSF-ITR grant OCE-0205590
 ! ========== end copyright notice ==============
-module OAD_tape
-
+module OAD_dct
   implicit none
 
   private
-  public :: double_tape, double_tape_pointer, &
-&           integer_tape, integer_tape_pointer, &
-&           logical_tape, logical_tape_pointer, &
-&           character_tape, character_tape_pointer, &
-&           stringlength_tape, stringlength_tape_pointer, &
-&           tape_init, tape_dump
+  public :: dct_node_child, dct_node, dct
 
-  integer, parameter :: max_double_tape_size  =10000000
-  integer, parameter :: max_integer_tape_size =10000000
-  integer, parameter :: max_logical_tape_size =10000
-  integer, parameter :: max_character_tape_size =1000000
-  integer, parameter :: max_stringlength_tape_size =1000
+  ! need a function pointer here
+  ! alternatively, one could write the dct as well as
+  ! the reversal scheme in C++
 
-  real(8)   :: double_tape (max_double_tape_size)
-  integer   :: integer_tape(max_integer_tape_size)
-  logical   :: logical_tape(max_logical_tape_size)
-  character(max_character_tape_size) :: character_tape
-  integer   :: stringlength_tape(max_stringlength_tape_size)
+  ! can be made more dynamic
+  integer, parameter :: max_nr_local_calls=100
 
-  integer double_tape_pointer,     &
-&         integer_tape_pointer,    &
-&         logical_tape_pointer,    &
-&         character_tape_pointer,  & 
-&         stringlength_tape_pointer 
+  type dct_node_child
+    type(dct_node), pointer :: child
+  end type dct_node_child
 
-  interface tape_init
-    module procedure init
-  end interface tape_init
+  type dct_node
+    character(80) :: subroutine_name
+    integer :: dble_tape_base=1
+    integer :: dble_argcp_base=1
+    integer :: dble_rescp_base=1
+    type(dct_node), pointer :: parent
+    type(dct_node_child) :: children(max_nr_local_calls)
+  end type dct_node
 
-  interface tape_dump
-    module procedure dump
-  end interface tape_dump
+  ! can be made more dynamic
+  integer, parameter :: max_nr_calls=1000
+  ! dct(1) is root
+  type(dct_node), dimension(max_nr_calls), save :: dct
+  ! current dct_node
+  integer current
 
-contains
-
-  subroutine init
-    double_tape_pointer       = 1
-    integer_tape_pointer      = 1
-    logical_tape_pointer      = 1
-    character_tape_pointer    = 1
-    stringlength_tape_pointer = 1
-  end subroutine init
-
-  subroutine dump
-    integer i
-    print*, "double tape"
-    do i=1,double_tape_pointer-1
-      print*, double_tape(i)
-    enddo
-    print*, "integer tape"
-    do i=1,integer_tape_pointer-1
-      print*, integer_tape(i)
-    enddo
-    print*, "logical tape"
-    do i=1,logical_tape_pointer-1
-      print*, logical_tape(i)
-    enddo
-    print*, "character tape"
-    print*, character_tape
-    print*, "stringlength tape"
-    do i=1,stringlength_tape_pointer-1
-      print*, stringlength_tape(i)
-    enddo
-  end subroutine dump
-
-end module OAD_tape
+end module OAD_dct
