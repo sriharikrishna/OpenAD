@@ -58,17 +58,17 @@
         private
         public :: active, saxpy, sax, setderiv, zero_deriv, &
 convert_p2a_scalar, convert_a2p_scalar, &
-convert_p2a_vector, convert_a2p_vector, &
-convert_p2a_matrix, convert_a2p_matrix, &
-convert_p2a_three_tensor, convert_a2p_three_tensor, &
-convert_p2a_four_tensor, convert_a2p_four_tensor, &
+convert_p2a_vector, convert_a2p_vector, & 
+convert_p2a_matrix, convert_a2p_matrix, & 
+convert_p2a_three_tensor, convert_a2p_three_tensor, & 
+convert_p2a_four_tensor, convert_a2p_four_tensor, & 
 convert_p2a_five_tensor, convert_a2p_five_tensor, & 
-convert_p2a_six_tensor, convert_a2p_six_tensor, &
-convert_p2a_seven_tensor, convert_a2p_seven_tensor, &
-oad_allocateMatching
+convert_p2a_six_tensor, convert_a2p_six_tensor, & 
+convert_p2a_seven_tensor, convert_a2p_seven_tensor, & 
+oad_allocateMatching 
 
-        integer :: count_mult = 0
-        integer :: count_add = 0
+        integer :: max_deriv_vec_len
+        parameter ( max_deriv_vec_len = 100 )
 
         !
         ! active needs to be a sequence type
@@ -76,18 +76,21 @@ oad_allocateMatching
         !
         type active
           sequence
-          real(w2f__8) :: v 
+          real(w2f__8) :: v
           ! initialization does not work for active variables
           ! inside of common block, such as in boxmodel
           ! initialization is required for correct adjoint
-          real(w2f__8) :: d=0.0
-          ! real(w2f__8) :: d
+          real(w2f__8), dimension(max_deriv_vec_len) :: d
         end type active
-        
+
         interface saxpy
-          module procedure saxpy_d_a_a, saxpy_i8_a_a, saxpy_i4_a_a
+          module procedure saxpy_a_a, saxpy_i4_a_a, saxpy_i8_a_a
         end interface
         
+        interface sax
+          module procedure sax_d_a_a, sax_i_a_a
+        end interface
+
         interface setderiv
           module procedure setderiv_a_a
           module procedure setderiv_av_av
@@ -97,10 +100,6 @@ oad_allocateMatching
           module procedure zero_deriv_a
         end interface
         
-        interface sax
-          module procedure sax_d_a_a, sax_i8_a_a, sax_i4_a_a
-        end interface
-
         interface convert_p2a_scalar
           module procedure convert_sp2a_scalar_impl
           module procedure convert_p2a_scalar_impl
@@ -183,27 +182,37 @@ oad_allocateMatching
         ! chain rule saxpy to be used in forward and reverse modes
         !
         
-        subroutine saxpy_d_a_a(a,x,y)
+        subroutine saxpy_a_a(a,x,y)
           real(w2f__8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
-          y%d=y%d+x%d*a
-        end subroutine saxpy_d_a_a
+          integer :: i
+          !do i=1,y%n
+          do i=1,max_deriv_vec_len
+            y%d(i) = y%d(i)+x%d(i)*a
+          end do
+        end subroutine saxpy_a_a
+
+        subroutine saxpy_i4_a_a(a,x,y)
+          integer(kind=w2f__i4), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), intent(inout) :: y
+          integer :: i
+          do i=1,max_deriv_vec_len
+            y%d(i) = y%d(i)+x%d(i)*a
+          end do
+        end subroutine saxpy_i4_a_a
         
         subroutine saxpy_i8_a_a(a,x,y)
           integer(kind=w2f__i8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
-          y%d=y%d+x%d*a
+          integer :: i
+          do i=1,max_deriv_vec_len
+            y%d(i) = y%d(i)+x%d(i)*a
+          end do
         end subroutine saxpy_i8_a_a
-        
-        subroutine saxpy_i4_a_a(a,x,y)
-          integer(kind=w2f__i4), intent(in) :: a
-          type(active), intent(in) :: x
-          type(active), intent(inout) :: y
-          y%d=y%d+x%d*a
-        end subroutine saxpy_i4_a_a
-        
+
         !
         ! chain rule saxpy to be used in forward and reverse modes
         ! derivative component of y is equal to zero initially
@@ -215,22 +224,21 @@ oad_allocateMatching
           real(w2f__8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
-          y%d=x%d*a
+          integer :: i
+          do i=1,max_deriv_vec_len
+            y%d(i) = x%d(i)*a
+          end do
         end subroutine sax_d_a_a
 
-        subroutine sax_i8_a_a(a,x,y)
+        subroutine sax_i_a_a(a,x,y)
           integer(kind=w2f__i8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
-          y%d=x%d*a
-        end subroutine sax_i8_a_a
-        
-        subroutine sax_i4_a_a(a,x,y)
-          integer(kind=w2f__i4), intent(in) :: a
-          type(active), intent(in) :: x
-          type(active), intent(inout) :: y
-          y%d=x%d*a
-        end subroutine sax_i4_a_a
+          integer :: i
+          do i=1,max_deriv_vec_len
+            y%d(i) = x%d(i)*a
+          end do
+        end subroutine sax_i_a_a
         
         !
         ! set derivative of y to be equal to derivative of x
@@ -241,14 +249,19 @@ oad_allocateMatching
         subroutine setderiv_a_a(y,x)
           type(active), intent(inout) :: y
           type(active), intent(in) :: x
-          y%d=x%d
+          integer :: i
+          do i=1,max_deriv_vec_len
+            y%d(i) = x%d(i)
+          end do
         end subroutine setderiv_a_a
 
         subroutine setderiv_av_av(y,x)
           type(active), intent(inout), dimension(:) :: y
           type(active), intent(in), dimension(:) :: x
-
-          y%d=x%d
+          integer :: i
+          do i=1,max_deriv_vec_len
+            y%d(i) = x%d(i)
+          end do
         end subroutine setderiv_av_av
 
         !
@@ -256,7 +269,11 @@ oad_allocateMatching
         !
         subroutine zero_deriv_a(x)
           type(active), intent(inout) :: x
-          x%d=0.0d0
+          integer :: i
+          !do i=1,x%n
+          do i=1,max_deriv_vec_len
+            x%d(i) = 0.0d0
+          end do
         end subroutine zero_deriv_a
 
         !
