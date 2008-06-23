@@ -92,7 +92,7 @@ my ($mode_verb_silent,
     (0, 1, 2, 3, 4);
 
 my $cvsSelfRepo = 
-    [ 'bin', 'config', 'doc', 'test', 'tools', 'Regression', 
+    [ 'bin', 'config', 'doc', 'test', 'tools', 
       'Makefile*', 'openad_config.pm', 'README*', 'setenv.*' ];
 
 
