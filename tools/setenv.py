@@ -1,0 +1,148 @@
+#!/usr/bin/env python
+
+###############################################################################
+import os
+import sys
+import warnings
+import subprocess
+import getopt
+# Assumes executing script is in main OpenAD directory
+OpenADRoot = os.getcwd()
+sys.path.append(OpenADRoot)
+import openad_config
+sys.path.append(os.path.join(OpenADRoot, "tools/libpythontk/"))
+import libsetenv
+
+class setenv:
+  def __init__(self):
+
+###############################################################################
+    self.the_program = os.path.basename(sys.argv[0])
+    self.the_usage='usage: '+self.the_program+' [options] <shell> \
+        Required arguments: \
+        -s, --shell=<shell-type> : sh | csh\
+    \
+      General options:\
+        -h, --help : print help\
+      \n'
+
+    self.the_options = 'shell:s=s,help:h'
+    self.opt_shell = 'undef'
+    self.help ="Try "+self.the_program+" --help' for more information.\n"
+
+
+###############################################################################
+# parse the command line
+###############################################################################
+
+    self.parseCmdLine(sys.argv) #assigns self.opt_shell, or exits on error
+    self.libsetenv_instance = libsetenv.libsetenv(self.opt_shell)
+
+###############################################################################
+# GenEnvSettings
+###############################################################################
+
+# GenEnvSettings: Generate code to setup CVS repository variables
+  def GenEnvSettings(self):
+    self.config=openad_config.openad_config()
+###############################################################################
+# Generate BASE variables for sub repositories
+###############################################################################
+    print self.libsetenv_instance.genSetEnvVar('OPENAD_BASE',OpenADRoot)
+    OpenADRepos = self.config.getRepos()
+
+    for key,repo in (OpenADRepos.items()):
+      repoPath = repo.getPath()+'/'+repo.getName()
+#    Please define all base vars, even if dir is non-existant
+      var = repo.getVar()
+      val=repoPath
+      print self.libsetenv_instance.genSetEnvVar(var,val)
+      
+# --------------------------------------------------------
+# Generate environment vars for sub repositories
+# --------------------------------------------------------
+    print self.libsetenv_instance.genSetEnvVar('OPENADROOT', OpenADRoot)
+    for var,val in self.config.RootEnvVars.items():
+      try:
+        print self.libsetenv_instance.genSetEnvVar(var,val)
+      except NameError, e:
+        print e
+        pass
+
+# --------------------------------------------------------
+# Generate other environment stuff
+# --------------------------------------------------------
+    print self.libsetenv_instance.genAppendEnvVar('PATH','${OPENADFORTTK}/bin')
+    print self.libsetenv_instance.genAppendEnvVar('PATH','${OPENADROOT}/bin')
+    if(os.environ['platform'] is 'i686-Cygwin'):
+      path = '${XERCESCROOT}/bin:${XERCESCROOT}/lib:${OPEN64ROOT}/be:${OPEN64ROOT}/whirl2f:{$PATH}'
+      print self.libsetenv_instance.genSetEnvVar('path', path)
+    else:
+      ldlib='${OPEN64ROOT}/whirl2f'
+      print self.libsetenv_instance.genAppendEnvVar('LD_LIBRARY_PATH', ldlib)
+    if (os.environ['platform'] is 'i686-Cygwin'):
+      print self.libsetenv_instance.genSetVar('ii_xaif', '\`cygpath -w ${ii_xaif}\`')
+    
+  # --------------------------------------------------------
+  # Generate aliases
+  # --------------------------------------------------------
+    for var,val in self.config.Aliases.items():
+      try:
+        command = self.libsetenv_instance.genSetAlias(var, val)
+        print command
+      except NameError, e:
+        print e
+        pass
+    print self.libsetenv_instance.genUnSetVar('platform')
+    print self.libsetenv_instance.genUnSetVar('o64targ')
+    print self.libsetenv_instance.genUnSetVar('xbase')
+    print self.libsetenv_instance.genUnSetVar('ii_xaif')
+
+
+# parseCmdLine: process args and assign self.opt_shell variable, or print error message
+  def parseCmdLine(self, command):
+    # Get optional arguments
+    opts=[]
+    opts,ret = getopt.getopt(command[1:],'s:h',['shell=','help'])
+    ## the getopt call  removes options from ARGV and 
+    ## there should be nothing left in ret.
+    if len(ret) != 0:
+      self.printErrorAndExit()
+    # Get optional arguments: help
+      try:
+        self.printUsageAndExit()
+      except RuntimeError, e:
+        print e
+        pass
+
+  # ----------------------------------------------------------
+  # Required arguments
+  # ----------------------------------------------------------
+  # Shell type
+    for opt in opts:
+      arg, self.opt_shell = opt
+      if arg == "--shell":
+        break
+    if self.opt_shell == 'undef':
+      self.printErrorAndExit("Shell option missing\n")
+    testShell = libsetenv.libsetenv(self.opt_shell)
+    if not (testShell.is_sh() or testShell.is_csh()):
+       self.printErrorAndExit("Shell "+self.opt_shell+" is not a sh or csh type shell.\n")
+
+
+
+  def printUsageAndExit(self):
+    print self.the_usage
+    sys.exit()
+
+  def printErrorAndExit(self,msg=help):
+    print msg
+    sys.exit()
+
+
+# ----------------------------------------------------------
+# Run
+# ----------------------------------------------------------
+
+setenv=setenv()
+setenv.GenEnvSettings()
