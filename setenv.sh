@@ -15,7 +15,7 @@
 #    basename="/usr/bin/basename"
 #fi
 
-prog="./tools/setenv/setenv.pl"
+prog="./tools/setenv/setenv.py"
 shell="--shell=sh"
 
 #############################################################################
