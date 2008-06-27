@@ -15,15 +15,13 @@ import string
 ## can handle the consequences.
 ##
 ##############################################################################
-#Get path of directory containing this file
-OpenADRoot=os.path.abspath(os.getcwd())
+#Get path of file's directory (it should be called from the directory it's in)
+OpenADRoot=os.path.dirname(__file__)
 #Calling script should be located in OpenAD root directory
 libpythontk = os.path.join(OpenADRoot, 'tools/libpythontk')
 sys.path.append(libpythontk)
-os.chdir(libpythontk)
 import RunCmds
 from RepositoryTools import RepositoryDesc, CVSReposDesc
-os.chdir(OpenADRoot)
 
 #############################################################################
 ## Subpackage configuration information
@@ -127,15 +125,15 @@ class openad_config:
 ######################################################################
 # define RootEnvVars
 ######################################################################
-    self.RootEnvVars = {'OPEN64ROOT':'${OPEN64_BASE}/osprey1.0/'+o64targ,
-       'OPENADFORTTKROOT':'${OPENADFORTTK_BASE}/OpenADFortTk-'+platform,
-       'OPENANALYSISROOT':'${OPENANALYSIS_BASE}/'+platform,
-       'XERCESCROOT':'${XERCESC_BASE}/'+platform,
-       'XAIFBOOSTERROOT':'${XAIFBOOSTER_BASE}/..',
-       'BOOSTROOT':'${BOOST_BASE}',
-       'ANGELROOT':'${ANGEL_BASE}',
-       'XAIFSCHEMAROOT':'${XAIFSCHEMA_BASE}',
-       'OPENADFORTTK':'${OPENADFORTTK_BASE}/OpenADFortTk-'+platform}
+    self.RootEnvVars = {'OPEN64ROOT':os.path.join(os.environ['OPEN64_BASE'],'osprey1.0',o64targ),
+       'OPENADFORTTKROOT':os.path.join(os.environ['OPENADFORTTK_BASE'],'OpenADFortTk-'+platform),
+       'OPENANALYSISROOT':os.path.join(os.environ['OPENANALYSIS_BASE'],platform),
+       'XERCESCROOT':os.path.join(os.environ['XERCESC_BASE'],platform),
+       'XAIFBOOSTERROOT':os.path.join(os.environ['XAIFBOOSTER_BASE'],'..'),
+       'BOOSTROOT':os.environ['BOOST_BASE'],
+       'ANGELROOT':os.environ['ANGEL_BASE'],
+       'XAIFSCHEMAROOT':os.environ['XAIFSCHEMA_BASE'],
+       'OPENADFORTTK':os.path.join(os.environ['OPENADFORTTK_BASE'],'OpenADFortTk-'+platform)}
 
 ######################################################################
 # set RootEnvVars
@@ -162,15 +160,44 @@ class openad_config:
        'xboost_bbr':xbase+'/algorithms/BasicBlockPreaccumulationReverse/test/t -c '+ii_xaif,
        'xboost_cfr':xbase+'/algorithms/ControlFlowReversal/test/t -c '+ii_xaif}
 
+
+# set OpenAD environment variables in python environment (called in __init__)
+  def setPythonOpenADEnvVars(self):
+    for repo in self.OpenADRepos.values():
+      os.environ[repo.getVar()] = os.path.abspath(os.path.join(repo.getPath(), repo.getName()))
+    os.environ['OPENAD_BASE'] = OpenADRoot
+  
+# set Root environment variables in python environment (called in __init__)
+  def setPythonRootEnvVars(self):
+    for var,val in self.RootEnvVars.items():
+      os.environ[var] = os.path.abspath(val)
+    os.environ['OPENADROOT'] = os.environ['OPENAD_BASE']
+
+# set paths for python environment
+  def setPaths(self):
+    sys.path.append(os.path.join(os.environ['OPENADFORTTK'],'bin'))
+    sys.path.append(os.path.join(os.environ['OPENADROOT'],'bin'))
+    if(os.environ['platform'] is 'i686-Cygwin'):
+      path = os.path.join(os.environ['XERCESCROOT'],'bin:',os.environ['XERCESCROOT'],'lib:',os.environ['OPEN64ROOT'],'be:',os.environ['OPEN64ROOT'],'whirl2f:',os.environ['PATH'])
+      sys.path.append(path)
+    else:
+      ldlib = os.path.join(os.environ['OPEN64ROOT'],'whirl2f')
+      if os.getenv('LD_LIBRARY_PATH') == None:
+        os.environ['LD_LIBRARY_PATH'] = ldlib
+      else:
+        os.environ['LD_LIBRARY_PATH'] = os.getenv('LD_LIBRARY_PATH')+":"+ldlib
+
+# set symlinks for python environment
+  def setAliases(self):
+    for alias, path in self.Aliases.items():
+      os.symlink(path, alias)
+
+    # runtime support
+    os.symlink(os.path.join(os.environ['XAIFBOOSTER_BASE'],'testRoundTrip/active_module.f90'),'active_module.f90')
+    os.symlink(os.path.join(os.environ['XAIFBOOSTER_BASE'],'w2f__types.f'), 'w2__types.f')
+
+
 # getRepos: returns an array of 'RepositoryDesc' references
 #   containing the repository information
   def getRepos(self):
     return self.OpenADRepos
-
-  def setPythonOpenADEnvVars(self):
-    for repo in self.OpenADRepos.values():
-      os.environ[repo.getVar()] = repo.getPath()
-  
-  def setPythonRootEnvVars(self):
-    for var,val in self.RootEnvVars.items():
-      os.environ[var] = val

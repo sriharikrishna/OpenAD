@@ -4,8 +4,6 @@ import sys
 import RunCmds
 from RunCmds import CmdDesc
 
-os.chdir(os.getcwd())
-
 class RepositoryDesc:
 
   def __init__(self):

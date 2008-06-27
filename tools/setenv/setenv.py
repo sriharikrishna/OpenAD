@@ -7,16 +7,13 @@ import warnings
 import subprocess
 import getopt
 # Assumes executing script is in main OpenAD directory
-mydir = os.path.abspath(os.getcwd())
-OpenADRoot = mydir
+mydir = os.path.dirname(__file__)
+OpenADRoot = os.path.abspath(os.path.join(mydir, "../.."))
 sys.path.append(OpenADRoot)
-os.chdir(OpenADRoot)
 import openad_config
 libsetenvdir = os.path.join(OpenADRoot, "tools/libpythontk")
 sys.path.append(libsetenvdir)
-os.chdir(libsetenvdir)
 import libsetenv
-os.chdir(mydir)
 
 class setenv:
   def __init__(self):
@@ -81,12 +78,10 @@ class setenv:
     print self.libsetenv_instance.genAppendEnvVar('PATH','${OPENADROOT}/bin')
     if(os.environ['platform'] is 'i686-Cygwin'):
       path = '${XERCESCROOT}/bin:${XERCESCROOT}/lib:${OPEN64ROOT}/be:${OPEN64ROOT}/whirl2f:{$PATH}'
-      print self.libsetenv_instance.genSetEnvVar('path', path)
+      print self.libsetenv_instance.genAppendEnvVar('PATH', path)
     else:
       ldlib='${OPEN64ROOT}/whirl2f'
       print self.libsetenv_instance.genAppendEnvVar('LD_LIBRARY_PATH', ldlib)
-    if (os.environ['platform'] is 'i686-Cygwin'):
-      print self.libsetenv_instance.genSetVar('ii_xaif', '\`cygpath -w ${ii_xaif}\`')
     
   # --------------------------------------------------------
   # Generate aliases

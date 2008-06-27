@@ -88,9 +88,9 @@ class libsetenv:
     try:
       str=""
       if(self.is_sh()):
-        test="-z \""+var+"\""
+        test="-z \""+var+"\"" #"-z" checks if var is defined
       elif (self.is_csh()):
-        test="! $?"+var
+        test="! $?"+var # "$?" returns 1 if var name is set
       else:
         sys.stderr.write("Programming Error!")
         sys.exit()

@@ -5,13 +5,13 @@ import os
 import sys
 import time
 import getopt
-OpenADRoot = os.path.join(os.getcwd(),'../..')
-#The openad_config module should be executed from it's home directory
-os.chdir(OpenADRoot)
+mydir = os.path.dirname(__file__)
+OpenADRoot = os.path.abspath(os.path.join(mydir,'../..'))
 libpythontk = os.path.join(OpenADRoot+"/tools/libpythontk")
 sys.path.append(libpythontk)
 import RepositoryTools
 sys.path.append(OpenADRoot)
+# change directories to ensure correct path name assignments in openad_config
 import openad_config
 
 class goad:
