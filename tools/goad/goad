@@ -60,7 +60,7 @@ Development options:\
 ## main/driver
 #############################################################################
 
-    self.opt_verbose = 'undef'
+    self.opt_verbose = 1
     self.opt_interactive = 0
     self.opt_debug = 0
     self.opt_skipupdate = 0
@@ -80,7 +80,7 @@ Development options:\
     opts = { 
       'skipupdate' : self.opt_skipupdate,
       'interactive' : self.opt_interactive,
-      'verbose' : self.opt_verbose - self.mode_verb_terse, # normal goes to 1
+      'verbose' : self.opt_verbose,
       'logfnm' : self.prepareLogFile(),
       'debug' : self.opt_debug}
 
@@ -143,7 +143,6 @@ Development options:\
     (y,mon,d,h,min,s,dow, doy, i) = time.localtime()
     stamp = str(y)+"_"+str(mon)+"_"+str(d)+"_"+str(h)+"_"+str(min)+"_"+str(s)
     logfnm = dir+"/goad."+stamp+".log~"
-  #  logfnm.truncate([0])
   
     return logfnm;
 
