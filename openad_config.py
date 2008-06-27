@@ -15,13 +15,15 @@ import string
 ## can handle the consequences.
 ##
 ##############################################################################
-
-RealBin = os.path.abspath(os.getcwd())
-OpenADRoot = os.getcwd()
+#Get path of directory containing this file
+OpenADRoot=os.path.abspath(os.getcwd())
 #Calling script should be located in OpenAD root directory
-sys.path.append(os.path.join(OpenADRoot,"tools/libpythontk"))
+libpythontk = os.path.join(OpenADRoot, 'tools/libpythontk')
+sys.path.append(libpythontk)
+os.chdir(libpythontk)
 import RunCmds
 from RepositoryTools import RepositoryDesc, CVSReposDesc
+os.chdir(OpenADRoot)
 
 #############################################################################
 ## Subpackage configuration information

@@ -7,11 +7,16 @@ import warnings
 import subprocess
 import getopt
 # Assumes executing script is in main OpenAD directory
-OpenADRoot = os.getcwd()
+mydir = os.path.abspath(os.getcwd())
+OpenADRoot = mydir
 sys.path.append(OpenADRoot)
+os.chdir(OpenADRoot)
 import openad_config
-sys.path.append(os.path.join(OpenADRoot, "tools/libpythontk/"))
+libsetenvdir = os.path.join(OpenADRoot, "tools/libpythontk")
+sys.path.append(libsetenvdir)
+os.chdir(libsetenvdir)
 import libsetenv
+os.chdir(mydir)
 
 class setenv:
   def __init__(self):
