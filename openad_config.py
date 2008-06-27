@@ -125,6 +125,7 @@ class openad_config:
 ######################################################################
 # define RootEnvVars
 ######################################################################
+
     self.RootEnvVars = {'OPEN64ROOT':os.path.join(os.environ['OPEN64_BASE'],'osprey1.0',o64targ),
        'OPENADFORTTKROOT':os.path.join(os.environ['OPENADFORTTK_BASE'],'OpenADFortTk-'+platform),
        'OPENANALYSISROOT':os.path.join(os.environ['OPENANALYSIS_BASE'],platform),
@@ -147,12 +148,13 @@ class openad_config:
     ii_xaif=os.path.join(os.environ['XAIFSCHEMAROOT'],'schema/examples/inlinable_intrinsics.xaif')
     if (os.environ['platform'] is 'i686-Cygwin'):
       ii_xaif = '\`cygpath -w ${ii_xaif}\`'
+    print os.environ['OPEN64ROOT']
     self.Aliases = {
-       'mfef90':os.path.join(os.environ['OPEN64ROOT'],'/crayf90/sgi/mfef90'),
-       'whirl2f':os.path.join(os.environ['OPEN64ROOT'],'/whirl2f/whirl2f'),
-       'whirl2f90':os.path.join(os.environ['OPEN64ROOT'],'/whirl2f/whirl2f90'),
-       'ir_b2a':os.path.join(os.environ['OPEN64ROOT'],'/ir_tools/ir_b2a'),
-       'ir_size':os.path.join(os.environ['OPEN64ROOT'],'/ir_tools/ir_size'),
+       'mfef90':os.path.join(os.environ['OPEN64ROOT'],'crayf90/sgi/mfef90'),
+       'whirl2f':os.path.join(os.environ['OPEN64ROOT'],'whirl2f/whirl2f'),
+       'whirl2f90':os.path.join(os.environ['OPEN64ROOT'],'whirl2f/whirl2f90'),
+       'ir_b2a':os.path.join(os.environ['OPEN64ROOT'],'ir_tools/ir_b2a'),
+       'ir_size':os.path.join(os.environ['OPEN64ROOT'],'ir_tools/ir_size'),
        'xboostread':xbase+'/system/test/t -c '+ii_xaif,
        'xboost_l':xbase+'/algorithms/Linearization/test/t -c '+ii_xaif,
        'xboost_bb':xbase+'/algorithms/BasicBlockPreaccumulation/test/t -c '+ii_xaif,
@@ -190,6 +192,7 @@ class openad_config:
 # set symlinks for python environment
   def setAliases(self):
     for alias, path in self.Aliases.items():
+      print alias + " " + path
       os.symlink(path, alias)
 
     # runtime support
