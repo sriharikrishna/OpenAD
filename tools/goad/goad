@@ -1,0 +1,156 @@
+#!/usr/bin/env python
+#-*-Mode: python;-*-
+
+import os
+import sys
+import time
+import getopt
+OpenADRoot = os.path.join(os.getcwd(),'../..')
+#The openad_config module should be executed from it's home directory
+os.chdir(OpenADRoot)
+libpythontk = os.path.join(OpenADRoot+"/tools/libpythontk")
+sys.path.append(libpythontk)
+import RepositoryTools
+sys.path.append(OpenADRoot)
+import openad_config
+
+class goad:
+  def __init__(self):
+    self.the_program = os.path.basename(sys.argv[0])
+    self.the_usage = "usage: "+self.the_program+" [options] \
+\
+Get (or update) OpenAD repositories.  Requires cvs and bitkeeper.\
+  \
+Options:\
+  --skip-update  : do not update existing repositories; only get new ones\
+\
+  -v [lvl], --verbose [lvl]\
+    Set verbosity level.  If no level is supplied, defaults to 2.\
+    0: Play the silent game\
+    1: Pouty (terse message)\
+    2: Sanguine (standard activity messages) [Default]\
+    3: Chatty\
+    4: Talk your ear off\
+  -h, --help         print help\
+\
+Development options:\
+  -i, --interactive  \
+    prompt user to authorize each command\n"
+
+    self.help = "Try "+self.the_program+" --help' for more information.\n"
+
+#############################################################################
+
+#my %VerboseTypes = (
+#		    "silent"    => 0,
+#		    "terse"     => 1,
+#		    "normal"    => 2,
+#		    "chatty"    => 3,
+#		    "teengirls" => 4,
+#		    );
+    self.mode_verb_silent=0
+    self.mode_verb_terse=1
+    self.mode_verb_normal=2
+    self.mode_verb_chatty=3
+    self.mode_verb_teengirls=4
+
+    self.cvsSelfRepo =['bin','config','doc','test','tools','Regression','Makefile*','openad_config.pm','README*','setenv.*' ]
+
+#############################################################################
+## main/driver
+#############################################################################
+
+    self.opt_verbose = 'undef'
+    self.opt_interactive = 0
+    self.opt_debug = 0
+    self.opt_skipupdate = 0
+
+# ----------------------------------------------------------
+# Parse the command line
+# ----------------------------------------------------------
+
+    self.parseOptions(sys.argv)
+
+# ----------------------------------------------------------
+# Run function
+# ----------------------------------------------------------
+  def Run(self):
+    config = openad_config.openad_config()
+    repositories =config.getRepos();
+    opts = { 
+      'skipupdate' : self.opt_skipupdate,
+      'interactive' : self.opt_interactive,
+      'verbose' : self.opt_verbose - self.mode_verb_terse, # normal goes to 1
+      'logfnm' : self.prepareLogFile(),
+      'debug' : self.opt_debug}
+
+    print "Sending output to \"" + opts['logfnm'] + "\"\n";
+    
+    RepositoryTools.RepositoryTools().RunRepositoryUpdate(OpenADRoot,self.cvsSelfRepo,repositories, opts);
+    
+    sys.exit(0);
+
+#############################################################################
+## parseOptions
+#############################################################################
+
+  def parseOptions(self, command):
+    # Get optional arguments
+    opts,ret = getopt.getopt(command[1:],'v:hid:',["skip-update","verbose=","help","interactive","debug="])
+    if len(ret) != 0:
+      self.printErrorAndExit()
+  
+    # Get optional arguments: verbose, help
+    self.opt_verbose = self.mode_verb_normal # default
+    for opt in opts:
+      arg, val = opt
+      if arg == "--verbose":
+        self.opt_verbose = val
+      if arg == "--help":
+        self.printUsageAndExit(the_program)
+      if arg == "--debug":
+        self.opt_debug = val
+      # Get optional arguments: interactive
+      if arg == "--interactive":
+        self.opt_interactive = 1 
+      # Get optional arguments: skip-update
+      if arg == "--skip-update":
+        self.opt_skipupdate = 1
+
+  # printUsageAndExit
+  def printUsageAndExit(self):
+    print the_usage
+    sys.exit()
+
+  # printErrorAndExit
+  def printErrorAndExit(self, msg=help):
+    print msg
+    sys.exit()
+
+  # printUsageAndExit
+  def undefEnvVarErr(self, var):
+    print "Undefined environment variable '"+var+"'\n"
+    sys.exit()
+
+
+#############################################################################
+## Subroutines
+#############################################################################
+
+  # Returns the name of a log file that has size 0 in the filesystem.
+  def prepareLogFile(self):
+    dir = os.getcwd();
+    (y,mon,d,h,min,s,dow, doy, i) = time.localtime()
+    stamp = str(y)+"_"+str(mon)+"_"+str(d)+"_"+str(h)+"_"+str(min)+"_"+str(s)
+    logfnm = dir+"/goad."+stamp+".log~"
+  #  logfnm.truncate([0])
+  
+    return logfnm;
+
+#############################################################################
+# ----------------------------------------------------------
+# Run
+# ----------------------------------------------------------
+
+goad = goad()
+goad.Run()
