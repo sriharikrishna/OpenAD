@@ -45,14 +45,16 @@ except NameError, e:
 
 riceUser = 'anoncvs'
 
-OPENAD_REPO_RICECVS_rsh = os.path.join(OpenADRoot,"tools/sshcvs/sshcvs-hipersoft-anon")
-OPENAD_REPO_RICECVS_Root = ':ext:'+riceUser+'@koolkat2.cs.rice.edu:/Volumes/cvsrep/developer'
+"""OPENAD_REPO_RICECVS_rsh = os.path.join(OpenADRoot,"tools/sshcvs/sshcvs-hipersoft-anon")
+OPENAD_REPO_RICECVS_Root = ':ext:'+riceUser+'@koolkat2.cs.rice.edu:/Volumes/cvsrep/developer'"""
+
+OPENAD_REPO_RICESVN_ROOT = 'http://hpc.svn.rice.edu/r'
 
 ##################################################
 # SourceForge CVS Repositories
 ##################################################
 OPENAD_REPO_SF_ANGEL_rsh = 'pserver'
-OPENAD_REPO_SF_ANGEL_Root = ':pserver:anonymous@boost.cvs.sourceforge.net:/cvsroot/boost'
+OPENAD_REPO_SF_ANGEL_Root = ':pserver:anonymous@angellib.cvs.sourceforge.net:/cvsroot/angellib'
 
 OPENAD_REPO_SF_BOOST_rsh = 'pserver'
 OPENAD_REPO_SF_BOOST_Root = ':pserver:anonymous@boost.cvs.sourceforge.net:/cvsroot/boost'
@@ -87,13 +89,13 @@ class openad_config:
     os.environ['o64targ']=o64targ
     os.environ['platform']=platform
 
-    self.OPENAD_OPEN64 = Repository.CVSRepository()
-    self.OPENAD_OPENADFORTTK = Repository.CVSRepository()
-    self.OPENAD_OPENANALYSIS = Repository.CVSRepository()
-    self.OPENAD_XERCESC = Repository.CVSRepository()
-    self.OPENAD_XAIFBOOSTER = Repository.CVSRepository()
+    self.OPENAD_OPEN64 = Repository.SVNRepository()
+    self.OPENAD_OPENADFORTTK = Repository.SVNRepository()
+    self.OPENAD_OPENANALYSIS = Repository.SVNRepository()
+    self.OPENAD_XERCESC = Repository.SVNRepository()
+    self.OPENAD_XAIFBOOSTER = Repository.SVNRepository()
     self.OPENAD_ANGEL = Repository.CVSRepository()
-    self.OPENAD_XAIF = Repository.CVSRepository()
+    self.OPENAD_XAIF = Repository.SVNRepository()
     self.OPENAD_BOOST = Repository.CVSRepository()
     self.OpenADRepos = {"OPENAD_OPEN64":self.OPENAD_OPEN64,
                         "OPENAD_OPENADFORTTK":self.OPENAD_OPENADFORTTK,
@@ -107,14 +109,14 @@ class openad_config:
 # set OpenAD Repositories
 ###################################################################### 
 
-    self.OPENAD_OPEN64.setAll('Open64',OpenADRoot,"none","OpenAD","OPEN64_BASE",OPENAD_REPO_RICECVS_rsh, OPENAD_REPO_RICECVS_Root)
-    self.OPENAD_OPENADFORTTK.setAll('OpenADFortTk',OpenADRoot,"none","none",'OPENADFORTTK_BASE',OPENAD_REPO_RICECVS_rsh, OPENAD_REPO_RICECVS_Root)
-    self.OPENAD_OPENANALYSIS.setAll('OpenAnalysis',OpenADRoot,"none","none",'OPENANALYSIS_BASE',OPENAD_REPO_RICECVS_rsh, OPENAD_REPO_RICECVS_Root)
-    self.OPENAD_XERCESC.setAll('xercesc', OpenADRoot,"none","none",'XERCESC_BASE',OPENAD_REPO_RICECVS_rsh, OPENAD_REPO_RICECVS_Root)
-    self.OPENAD_XAIFBOOSTER.setAll('xaifBooster',OpenADRoot,"none","none",'XAIFBOOSTER_BASE',OPENAD_REPO_RICECVS_rsh, OPENAD_REPO_RICECVS_Root)
+    self.OPENAD_OPEN64.setAll('Open64',OpenADRoot,"none","OpenAD","OPEN64_BASE",OPENAD_REPO_RICESVN_ROOT+'/open64/trunk/')
+    self.OPENAD_OPENADFORTTK.setAll('OpenADFortTk',OpenADRoot,"none","none",'OPENADFORTTK_BASE',OPENAD_REPO_RICESVN_ROOT+'OpenADFortTK/trunk')
+    self.OPENAD_OPENANALYSIS.setAll('OpenAnalysis',OpenADRoot,"none","none",'OPENANALYSIS_BASE',OPENAD_REPO_RICESVN_ROOT+'open-analysis/tags/version-openad')
+    self.OPENAD_XERCESC.setAll('xercesc', OpenADRoot,"none","none",'XERCESC_BASE',OPENAD_REPO_RICESVN_ROOT+'xercesc/tags/version-openad')
+    self.OPENAD_XAIFBOOSTER.setAll('xaifBooster',OpenADRoot,"none","none",'XAIFBOOSTER_BASE',OPENAD_REPO_RICESVN_ROOT+'xaifBooster/trunk')
     self.OPENAD_ANGEL.setAll('angel',OpenADRoot,"none","none",'ANGEL_BASE',OPENAD_REPO_SF_ANGEL_rsh,OPENAD_REPO_SF_ANGEL_Root)
-    self.OPENAD_XAIF.setAll('xaif',OpenADRoot,"none","none",'XAIFSCHEMA_BASE',OPENAD_REPO_RICECVS_rsh, OPENAD_REPO_RICECVS_Root)
-    self.OPENAD_BOOST.setAll('boost',OpenADRoot,"boost",'Version_1_34_1','BOOST_BASE',OPENAD_REPO_SF_BOOST_rsh,OPENAD_REPO_SF_BOOST_Root)
+    self.OPENAD_XAIF.setAll('xaif',OpenADRoot,"none","none",'XAIFSCHEMA_BASE',OPENAD_REPO_RICESVN_ROOT+'xaif/trunk')
+    self.OPENAD_BOOST.setAll('-r Version_1_34_1 boost/boost',OpenADRoot,"boost",'Version_1_34_1','BOOST_BASE',OPENAD_REPO_SF_BOOST_rsh,OPENAD_REPO_SF_BOOST_Root)
 ######################################################################
 # set OpenAD Environment Variables
 ######################################################################
@@ -163,7 +165,7 @@ class openad_config:
 # set OpenAD environment variables in python environment (called in __init__)
   def setPythonOpenADEnvVars(self):
     for repo in self.OpenADRepos.values():
-      os.environ[repo.getVar()] = os.path.abspath(os.path.join(repo.getPath(), repo.getName()))
+      os.environ[repo.getVar()] = os.path.abspath(os.path.join(repo.getComponentPath(), repo.getName()))
     os.environ['OPENAD_BASE'] = OpenADRoot
   
 # set Root environment variables in python environment (called in __init__)
@@ -185,17 +187,6 @@ class openad_config:
         os.environ['LD_LIBRARY_PATH'] = ldlib
       else:
         os.environ['LD_LIBRARY_PATH'] = os.getenv('LD_LIBRARY_PATH')+":"+ldlib
-
-# set symlinks for python environment
-  def setAliases(self):
-    for alias, path in self.Aliases.items():
-      print alias + " " + path
-      os.symlink(path, alias)
-
-    # runtime support
-    os.symlink(os.path.join(os.environ['XAIFBOOSTER_BASE'],'testRoundTrip/active_module.f90'),'active_module.f90')
-    os.symlink(os.path.join(os.environ['XAIFBOOSTER_BASE'],'w2f__types.f'), 'w2__types.f')
-
 
 # getRepos: returns an array of 'RepositoryDesc' references
 #   containing the repository information

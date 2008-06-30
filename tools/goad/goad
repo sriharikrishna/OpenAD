@@ -11,7 +11,6 @@ libpythontk = os.path.join(OpenADRoot+"/tools/libpythontk")
 sys.path.append(libpythontk)
 import RepositoryTools
 sys.path.append(OpenADRoot)
-# change directories to ensure correct path name assignments in openad_config
 import openad_config
 
 class goad:
@@ -104,14 +103,14 @@ Development options:\
     self.opt_verbose = self.mode_verb_normal # default
     for opt in opts:
       arg, val = opt
-      if arg == "--verbose":
+      if arg == "--verbose" or arg == "-v":
         self.opt_verbose = val
-      if arg == "--help":
-        self.printUsageAndExit(the_program)
-      if arg == "--debug":
+      if arg == "--help" or arg == "-h":
+        self.printUsageAndExit()
+      if arg == "--debug" or arg == "-d":
         self.opt_debug = val
       # Get optional arguments: interactive
-      if arg == "--interactive":
+      if arg == "--interactive" or arg == "-i":
         self.opt_interactive = 1 
       # Get optional arguments: skip-update
       if arg == "--skip-update":
@@ -119,7 +118,7 @@ Development options:\
 
   # printUsageAndExit
   def printUsageAndExit(self):
-    print the_usage
+    print self.the_usage
     sys.exit()
 
   # printErrorAndExit
