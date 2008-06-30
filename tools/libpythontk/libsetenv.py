@@ -6,10 +6,6 @@ import traceback
 
 #############################################################################
 ##
-## $Source: /Volumes/cvsrep/developer/shared/libperltk/setenv.pm,v $ 
-##
-##   Nathan Tallent.
-##
 ##   This module contains routines to dynamically generate shell
 ##   commands that modify one's environment.  Much effort has been
 ##   invested to ensure that the output can either be sent to a file
@@ -53,29 +49,6 @@ class libsetenv:
     except NameError:
       return self.genUnSetEnvVar(var)
     return str
-
-# genSetVar: Same as above but the variable is not exported to the
-#   environment.
-# returns: a string
-# effect: nothing
-# assumes: nothing
-
-  def genSetVar(self, var, value):
-     # Return an unset of $value is undefined
-     # Otherwise return a variable assignment
-    try:
-      str=""
-      if(self.is_sh()):
-        str += var+"=\""+value+"\"\n"
-      elif (self.is_csh()):
-        str += "set "+var+"=\""+value+"\""
-      else:
-        sys.stderr.write("Programming Error!")
-        sys.exit()
-    except NameError:
-      return self.genUnSetVar(var)
-    return str
-
  
 # genAppendEnvVar: Given a variable name 'var', its value 'value' and
 #   a shell type (sh or csh), generate a string that will append that
@@ -120,22 +93,6 @@ class libsetenv:
       sys.exit()
     return str
 
-
-# genUnSetVar: Same as above but for a variable that has not been
-#   exported to the environment.
-# returns: a string
-# effect: nothing
-# assumes: nothing
-  def genUnSetVar(self,var):
-    str=""
-    if(self.is_sh() or self.is_csh()):
-      str += "unset "+var
-    else:
-      sys.stderr.write("Programming Error!")
-      sys.exit()
-
-    return str
-
 # genPrintEnvVar: Given a variable name 'var' and a shell type (sh or
 #   csh), generate a string that will print that value with syntax for
 #   the given shell.
@@ -156,15 +113,6 @@ class libsetenv:
       sys.stderr.write("Programming Error!")
       sys.exit()
     return str
-
-# genPrintVar: Same as above but for a variable that has not been
-#   exported to the environment.
-# returns: a string
-# effect: nothing
-# assumes: nothing
-  def genPrintVar(self, var):
-    return self.genPrintEnvVar(var)
-
 
 # genSetAlias: Generate an alias appropriate to the shell.  If 'value' is
 # equal to undef, then the alias will be *unset*.

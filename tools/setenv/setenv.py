@@ -74,13 +74,13 @@ class setenv:
 # --------------------------------------------------------
 # Generate other environment stuff
 # --------------------------------------------------------
-    print self.libsetenv_instance.genAppendEnvVar('PATH','${OPENADFORTTK}/bin')
-    print self.libsetenv_instance.genAppendEnvVar('PATH','${OPENADROOT}/bin')
+    print self.libsetenv_instance.genAppendEnvVar('PATH',os.path.join(os.environ['OPENADFORTTK']+'bin'))
+    print self.libsetenv_instance.genAppendEnvVar('PATH',os.path.join(os.environ['OPENADROOT'],'bin'))
     if(os.environ['platform'] is 'i686-Cygwin'):
-      path = '${XERCESCROOT}/bin:${XERCESCROOT}/lib:${OPEN64ROOT}/be:${OPEN64ROOT}/whirl2f:{$PATH}'
+      path = os.environ['XERCESCROOT']+'/bin:'+os.environ['XERCESCROOT']+'/lib:'+os.environ['OPEN64ROOT']+'/be:'+os.environ['OPEN64ROOT']+'whirl2f:'+os.environ['PATH']
       print self.libsetenv_instance.genAppendEnvVar('PATH', path)
     else:
-      ldlib='${OPEN64ROOT}/whirl2f'
+      ldlib=os.environ['OPEN64ROOT']+'/whirl2f'
       print self.libsetenv_instance.genAppendEnvVar('LD_LIBRARY_PATH', ldlib)
     
   # --------------------------------------------------------
@@ -93,11 +93,6 @@ class setenv:
       except NameError, e:
         print e
         pass
-    print self.libsetenv_instance.genUnSetVar('platform')
-    print self.libsetenv_instance.genUnSetVar('o64targ')
-    print self.libsetenv_instance.genUnSetVar('xbase')
-    print self.libsetenv_instance.genUnSetVar('ii_xaif')
-
 
 # parseCmdLine: process args and assign self.opt_shell variable, or print error message
   def parseCmdLine(self, command):

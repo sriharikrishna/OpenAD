@@ -21,7 +21,8 @@ OpenADRoot=os.path.dirname(__file__)
 libpythontk = os.path.join(OpenADRoot, 'tools/libpythontk')
 sys.path.append(libpythontk)
 import RunCmds
-from RepositoryTools import RepositoryDesc, CVSReposDesc
+import Repository
+import RepositoryTools
 
 #############################################################################
 ## Subpackage configuration information
@@ -44,20 +45,17 @@ except NameError, e:
 
 riceUser = 'anoncvs'
 
-OPENAD_REPO_RICECVS = CVSReposDesc()
-OPENAD_REPO_RICECVS.set_rsh(os.path.join(OpenADRoot,"tools/sshcvs/sshcvs-hipersoft-anon"))
-OPENAD_REPO_RICECVS.set_root(':ext:'+riceUser+'@koolkat2.cs.rice.edu:/Volumes/cvsrep/developer')
+OPENAD_REPO_RICECVS_rsh = os.path.join(OpenADRoot,"tools/sshcvs/sshcvs-hipersoft-anon")
+OPENAD_REPO_RICECVS_Root = ':ext:'+riceUser+'@koolkat2.cs.rice.edu:/Volumes/cvsrep/developer'
 
 ##################################################
 # SourceForge CVS Repositories
 ##################################################
-OPENAD_REPO_SF_ANGEL = CVSReposDesc()
-OPENAD_REPO_SF_ANGEL.set_rsh('pserver')
-OPENAD_REPO_SF_ANGEL.set_root(':pserver:anonymous@boost.cvs.sourceforge.net:/cvsroot/boost')
+OPENAD_REPO_SF_ANGEL_rsh = 'pserver'
+OPENAD_REPO_SF_ANGEL_Root = ':pserver:anonymous@boost.cvs.sourceforge.net:/cvsroot/boost'
 
-OPENAD_REPO_SF_BOOST = CVSReposDesc()
-OPENAD_REPO_SF_BOOST.set_rsh( 'pserver')
-OPENAD_REPO_SF_BOOST.set_root(':pserver:anonymous@boost.cvs.sourceforge.net:/cvsroot/boost')
+OPENAD_REPO_SF_BOOST_rsh = 'pserver'
+OPENAD_REPO_SF_BOOST_Root = ':pserver:anonymous@boost.cvs.sourceforge.net:/cvsroot/boost'
 
 ######################################################################
 # OpenAD Repositories, Local Instances
@@ -68,7 +66,7 @@ OPENAD_REPO_SF_BOOST.set_root(':pserver:anonymous@boost.cvs.sourceforge.net:/cvs
 #############################################################################
 class openad_config:
 
-# A list of all repositories (RepositoryDesc) in this configuation of OpenAD
+# A list of all repositories in this configuation of OpenAD
   """def __init__(self):
     self.OpenADRepos= [OPENAD_OPEN64,OPENAD_OPENADFORTTK,OPENAD_OPENANALYSIS,OPENAD_XERCESC,OPENAD_XAIFBOOSTER,OPENAD_ANGEL,OPENAD_XAIF,OPENAD_BOOST]"""
 
@@ -89,14 +87,14 @@ class openad_config:
     os.environ['o64targ']=o64targ
     os.environ['platform']=platform
 
-    self.OPENAD_OPEN64 = RepositoryDesc()
-    self.OPENAD_OPENADFORTTK = RepositoryDesc()
-    self.OPENAD_OPENANALYSIS = RepositoryDesc()
-    self.OPENAD_XERCESC = RepositoryDesc()
-    self.OPENAD_XAIFBOOSTER = RepositoryDesc()
-    self.OPENAD_ANGEL = RepositoryDesc()
-    self.OPENAD_XAIF = RepositoryDesc()
-    self.OPENAD_BOOST = RepositoryDesc()
+    self.OPENAD_OPEN64 = Repository.CVSRepository()
+    self.OPENAD_OPENADFORTTK = Repository.CVSRepository()
+    self.OPENAD_OPENANALYSIS = Repository.CVSRepository()
+    self.OPENAD_XERCESC = Repository.CVSRepository()
+    self.OPENAD_XAIFBOOSTER = Repository.CVSRepository()
+    self.OPENAD_ANGEL = Repository.CVSRepository()
+    self.OPENAD_XAIF = Repository.CVSRepository()
+    self.OPENAD_BOOST = Repository.CVSRepository()
     self.OpenADRepos = {"OPENAD_OPEN64":self.OPENAD_OPEN64,
                         "OPENAD_OPENADFORTTK":self.OPENAD_OPENADFORTTK,
                         "OPENAD_OPENANALYSIS":self.OPENAD_OPENANALYSIS,
@@ -109,14 +107,14 @@ class openad_config:
 # set OpenAD Repositories
 ###################################################################### 
 
-    self.OPENAD_OPEN64.setAll('Open64',OpenADRoot,"none",OPENAD_REPO_RICECVS,"OpenAD","OPEN64_BASE")
-    self.OPENAD_OPENADFORTTK.setAll('OpenADFortTk',OpenADRoot,"none",OPENAD_REPO_RICECVS,"none",'OPENADFORTTK_BASE')
-    self.OPENAD_OPENANALYSIS.setAll('OpenAnalysis',OpenADRoot,"none",OPENAD_REPO_RICECVS,"none",'OPENANALYSIS_BASE')
-    self.OPENAD_XERCESC.setAll('xercesc', OpenADRoot,"none",OPENAD_REPO_RICECVS,"none",'XERCESC_BASE')
-    self.OPENAD_XAIFBOOSTER.setAll('xaifBooster',OpenADRoot,"none",OPENAD_REPO_RICECVS,"none",'XAIFBOOSTER_BASE')
-    self.OPENAD_ANGEL.setAll('angel',OpenADRoot,"none",OPENAD_REPO_SF_ANGEL,"none",'ANGEL_BASE')
-    self.OPENAD_XAIF.setAll('xaif',OpenADRoot,"none",OPENAD_REPO_RICECVS,"none",'XAIFSCHEMA_BASE')
-    self.OPENAD_BOOST.setAll('boost',OpenADRoot,"boost",OPENAD_REPO_SF_BOOST,'Version_1_34_1','BOOST_BASE')
+    self.OPENAD_OPEN64.setAll('Open64',OpenADRoot,"none","OpenAD","OPEN64_BASE",OPENAD_REPO_RICECVS_rsh, OPENAD_REPO_RICECVS_Root)
+    self.OPENAD_OPENADFORTTK.setAll('OpenADFortTk',OpenADRoot,"none","none",'OPENADFORTTK_BASE',OPENAD_REPO_RICECVS_rsh, OPENAD_REPO_RICECVS_Root)
+    self.OPENAD_OPENANALYSIS.setAll('OpenAnalysis',OpenADRoot,"none","none",'OPENANALYSIS_BASE',OPENAD_REPO_RICECVS_rsh, OPENAD_REPO_RICECVS_Root)
+    self.OPENAD_XERCESC.setAll('xercesc', OpenADRoot,"none","none",'XERCESC_BASE',OPENAD_REPO_RICECVS_rsh, OPENAD_REPO_RICECVS_Root)
+    self.OPENAD_XAIFBOOSTER.setAll('xaifBooster',OpenADRoot,"none","none",'XAIFBOOSTER_BASE',OPENAD_REPO_RICECVS_rsh, OPENAD_REPO_RICECVS_Root)
+    self.OPENAD_ANGEL.setAll('angel',OpenADRoot,"none","none",'ANGEL_BASE',OPENAD_REPO_SF_ANGEL_rsh,OPENAD_REPO_SF_ANGEL_Root)
+    self.OPENAD_XAIF.setAll('xaif',OpenADRoot,"none","none",'XAIFSCHEMA_BASE',OPENAD_REPO_RICECVS_rsh, OPENAD_REPO_RICECVS_Root)
+    self.OPENAD_BOOST.setAll('boost',OpenADRoot,"boost",'Version_1_34_1','BOOST_BASE',OPENAD_REPO_SF_BOOST_rsh,OPENAD_REPO_SF_BOOST_Root)
 ######################################################################
 # set OpenAD Environment Variables
 ######################################################################
@@ -148,7 +146,6 @@ class openad_config:
     ii_xaif=os.path.join(os.environ['XAIFSCHEMAROOT'],'schema/examples/inlinable_intrinsics.xaif')
     if (os.environ['platform'] is 'i686-Cygwin'):
       ii_xaif = '\`cygpath -w ${ii_xaif}\`'
-    print os.environ['OPEN64ROOT']
     self.Aliases = {
        'mfef90':os.path.join(os.environ['OPEN64ROOT'],'crayf90/sgi/mfef90'),
        'whirl2f':os.path.join(os.environ['OPEN64ROOT'],'whirl2f/whirl2f'),
