@@ -54,7 +54,7 @@ class setenv:
     OpenADRepos = self.config.getRepos()
 
     for key,repo in (OpenADRepos.items()):
-      repoPath = repo.getPath()+'/'+repo.getName()
+      repoPath = repo.getComponentPath()+'/'+repo.getName()
 #    Please define all base vars, even if dir is non-existant
       var = repo.getVar()
       val=repoPath
