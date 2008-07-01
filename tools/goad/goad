@@ -11,7 +11,6 @@ libpythontk = os.path.join(OpenADRoot+"/tools/libpythontk")
 sys.path.append(libpythontk)
 import RepositoryTools
 sys.path.append(OpenADRoot)
-import openad_config
 os.chdir(OpenADRoot)
 
 class goad:
@@ -74,6 +73,11 @@ Development options:\
 # ----------------------------------------------------------
 # Run function
 # ----------------------------------------------------------
+  
+  def updateOpenADRepository(self):
+    print "Updating OpenAD repository..."
+    os.system('svn update')
+
   def Run(self):
     config = openad_config.openad_config()
     repositories =config.getRepos();
@@ -152,4 +156,6 @@ Development options:\
 # ----------------------------------------------------------
 
 goad = goad()
+goad.updateOpenADRepository()
+import openad_config
 goad.Run()
