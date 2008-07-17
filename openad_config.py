@@ -37,6 +37,8 @@ class openad_config:
     self.OpenADRepos["xercesc"]=Repository.SVNRepository(riceSvnUrl+'xercesc/tags/version-openad',OpenADRoot,'xercesc', None, None,'XERCESC_BASE')
     # xaifBooster
     self.OpenADRepos["xaifBooster"]=Repository.SVNRepository(riceSvnUrl+'xaifBooster/trunk',OpenADRoot,'xaifBooster',None,None,'XAIFBOOSTER_BASE')
+    # xaif
+    self.OpenADRepos["xaif"]=Repository.SVNRepository(riceSvnUrl+'xaif/trunk',OpenADRoot,'xaif',None,None,'XAIFSCHEMA_BASE')
     # angel
     self.OpenADRepos["angel"]=Repository.CVSRepository('pserver',':pserver:anonymous@angellib.cvs.sourceforge.net:/cvsroot/angellib',OpenADRoot,'angel',None,None,'ANGEL_BASE')
     # boost
