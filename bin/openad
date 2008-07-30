@@ -115,7 +115,7 @@ class RunOpenAD:
         aCmdDesc.setCmd("perl "+os.path.join(os.environ['OPENADFORTTKROOT'],
                                              'bin',
                                              'multi-pp.pl')+
-                        " "+self.baseName+".xb.x2w.w2f."+self.extension)
+                        " "+self.baseName+".xb.x2w.w2f.f")
         aCmdDesc.setDesc("postprocessing transformed fortran")
         self.commandDescriptions.append(aCmdDesc)
         
