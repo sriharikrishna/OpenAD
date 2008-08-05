@@ -23,6 +23,10 @@ class RunOpenAD:
         snm="openad."+time.strftime('%Y-%m-%d_%H:%M:%S', time.localtime())+".log~"
         print "openad log: "+ snm
         self.logfnm = os.path.join(dir,snm)
+        if options.copy:
+            self.runTimeFileCmd="cp -f"
+        else:
+            self.runTimeFileCmd="ln -sf"
 
     def mfef90(self):
         aCmdDesc=RunCmds.CmdDesc()
@@ -51,8 +55,8 @@ class RunOpenAD:
                                               schemaFilesPattern))
         for file in schemaFileList:
             aCmdDesc=RunCmds.CmdDesc()
-            aCmdDesc.setCmd("ln -sf "+file+" ./")
-            aCmdDesc.setDesc("linking schema file "+file)
+            aCmdDesc.setCmd(self.runTimeFileCmd+" "+file+" ./")
+            aCmdDesc.setDesc("getting schema file "+file)
             self.commandDescriptions.append(aCmdDesc)
 
     def traceDiff(self):
@@ -78,18 +82,21 @@ class RunOpenAD:
                                      "OAD_active.f90"))
         fileList+=glob.glob(os.path.join(os.environ["OPENADROOT"],"runTimeSupport","all","*.f90"))
         fileList+=glob.glob(os.path.join(os.environ["OPENADROOT"],"runTimeSupport","all","*.c"))
+        fileList.append(os.path.join(os.environ["OPENADROOT"],"runTimeSupport","simple","OAD_rev.f90"))
+        fileList.append(os.path.join(os.environ["OPENADROOT"],"runTimeSupport","simple","OAD_trace.f90"))
         for file in fileList:
             aCmdDesc=RunCmds.CmdDesc()
-            aCmdDesc.setCmd("ln -sf "+file+" ./")
-            aCmdDesc.setDesc("linking runtime support file "+os.path.basename(file))
+            aCmdDesc.setCmd(self.runTimeFileCmd+" "+file+" ./")
+            aCmdDesc.setDesc(" getting runtime support file "+os.path.basename(file))
             self.commandDescriptions.append(aCmdDesc)
         # copy the template file
         aCmdDesc=RunCmds.CmdDesc()
-        aCmdDesc.setCmd("ln -sf "+os.path.join(os.environ["OPENADROOT"],
-                                               "runTimeSupport",
-                                               "simple",
-                                               "ad_template.trace.f")+" ad_template.f")
-        aCmdDesc.setDesc("linking template file ")
+        aCmdDesc.setCmd(self.runTimeFileCmd+" "+os.path.join(os.environ["OPENADROOT"],
+                                                             "runTimeSupport",
+                                                             "simple",
+                                                             "ad_template.trace.f")+
+                        " ad_template.f")
+        aCmdDesc.setDesc(" getting template file")
         self.commandDescriptions.append(aCmdDesc)
 
     def xaif2whirl(self):
@@ -153,6 +160,9 @@ def main():
                  action="store",default='0')
   opt.add_option('-i','--interactive',dest='interactive',
                  help="requires to confirm each command",
+                 action='store_true',default=False)
+  opt.add_option('-c','--copy',dest='copy',
+                 help="copy run time support files instead of linking them",
                  action='store_true',default=False)
   (options, args) = opt.parse_args()
   if (len(args)!=1) :
