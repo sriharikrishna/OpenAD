@@ -179,13 +179,19 @@ module OAD_trace
 contains
 
   subroutine oad_trace_init_i
+    use OAD_rev
     implicit none
     fileNumber=1
+    call mode_init() ! this comes from OAD_rev
   end subroutine
 
   subroutine oad_trace_open_i()
+    use OAD_rev
     implicit none
     character*128 fname ! file name
+    ! set the mode
+    our_rev_mode%plain=.FALSE.
+    our_rev_mode%tape=.TRUE.
     ! get unit
     call oad_trace_findunit()
     print *, 'OAD: opening trace file ', fileNumber
@@ -197,7 +203,11 @@ contains
   end subroutine 
 
   subroutine oad_trace_close_i()
+    use OAD_rev
     implicit none
+    ! reset the mode
+    our_rev_mode%plain=.TRUE.
+    our_rev_mode%tape=.FALSE.
     write(oad_trace_io_unit,'(A,I0,A)') '</Trace>'
     close( UNIT=oad_trace_io_unit)
   end subroutine
@@ -337,13 +347,13 @@ contains
   real(w2f__8) function oad_tan_d(x)
     real(w2f__8) :: x
     oad_tan_d=tan(x)
-    write(oad_trace_io_unit,'(A,I0,A)') '<Tan sd="',INT(x+PiHalf/Pi),'"/>'
+    write(oad_trace_io_unit,'(A,I0,A)') '<Tan sd="',INT((x+PiHalf)/Pi),'"/>'
   end function
 
   real(w2f__4) function oad_tan_s(x)
     real(w2f__4) :: x
     oad_tan_s=tan(x)
-    write(oad_trace_io_unit,'(A,I0,A)') '<Tan sd="',INT(x+PiHalf/Pi),'"/>'
+    write(oad_trace_io_unit,'(A,I0,A)') '<Tan sd="',INT((x+PiHalf)/Pi),'"/>'
   end function
 
 end module
