@@ -39,9 +39,32 @@ class Goad:
       if repo.repoExists():
         try: 
           repo.update() # sets CmdDesc to update repository
-        except (Repository.RepositoryException, RunCmds.RunnerException), e:
+        except (RunCmds.RunnerException), e:
           if self.keepGoing:
             sys.stderr.write('ERROR: '+str(e)+'... continuing\n')
+            continue
+          else:
+            raise e
+        except (Repository.RepositoryException), e:
+          if self.keepGoing:
+            sys.stderr.write('ERROR: '+str(e)+'... continue\n')
+            if isinstance(repo,Repository.CVSRepository) or isinstance(repo,Repository.SVNRepository):
+              sys.stderr.write('May be this is a Mercurial repository. Should I try an hg update (y)/n ? ')
+              ans = sys.stdin.read(1)
+              if ans == 'n' or ans == 'N':
+                continue
+              # see if this is a mercurial repo
+              mercRepo=Repository.MercurialRepository(repo.getUrl(),
+                                                      repo.getLocalPath(),
+                                                      repo.getLocalName(),
+                                                      repo.getSubdir(),
+                                                      repo.getTag(),
+                                                      repo.getVar())
+              try: 
+                mercRepo.update() 
+                cmdDescVecRef.append(mercRepo.cmdDesc)
+              except (Repository.RepositoryException), eInner:
+                sys.stderr.write('ERROR: '+str(eInner)+'... continue\n')
             continue
           else:
             raise e
