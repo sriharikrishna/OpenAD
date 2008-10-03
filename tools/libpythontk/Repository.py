@@ -107,10 +107,16 @@ class MercurialRepository(Repository):
     self.cmdDesc.setDesc("updating "+self.getLocalName())
 
   def checkout(self):
+    cmd=""
+    desc="cloning "
     if self.getSubdir() is not None:
       raise RepositoryException("For a Mercurial repository one cannot specify a subdirectory to be cloned")
+    if self.getLocalPath() is not None:
+      cmd="cd "+self.getLocalPath()+" && "
+      desc+=os.path.join(self.getLocalPath(),self.getLocalName())
     else:
-      name=self.getLocalName()
-    self.cmdDesc.setCmd("hg co "+self.getUrl()+" "+name)
-    self.cmdDesc.setDesc("cloning out "+self.getLocalName())
+      desc+=self.getLocalName()
+    cmd+="hg clone "+self.getUrl()+" "+self.getLocalName()
+    self.cmdDesc.setCmd(cmd)
+    self.cmdDesc.setDesc(desc)
 
