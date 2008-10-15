@@ -84,7 +84,7 @@ class Goad:
 def main():
   os.chdir(OpenADRoot)
   from optparse import OptionParser
-  usage = '%prog [options]'
+  usage = '%prog [options]\n\t get or update OpenAD repositories'
   opt = OptionParser(usage=usage)
   opt.add_option('-i','--interactive',dest='interactive',
                  help="requires to confirm each command",
