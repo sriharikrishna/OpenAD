@@ -237,7 +237,7 @@ C     +" IT:",integer_tape_pointer
            itoa = adjustl(itoa)
            write(itoa2, '(I)') tree%integers
            itoa2 = adjustl(itoa2)
-           write(10, '(I, A, A, A, A, A, A, A)'), iaddr(tree),
+           write(10, '(I8, A, A, A, A, A, A, A)'), iaddr(tree),
      + '[shape="box" height=.25 label="', trim(tree%value), ' ', 
      + trim(itoa), ':', trim(itoa2), '"];'
             Call graphprint(tree)
