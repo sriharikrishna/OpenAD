@@ -199,10 +199,10 @@
               itoa4 = adjustl(itoa4)
               write(itoa5, '(I10)') itr%called%ArgBools
               itoa5 = adjustl(itoa5)
-              write(10,'(I8,A,A,A,A,A,A,A)')iaddr(itr%called),&
+              write(10,'(Z8,A,A,A,A,A,A,A)')iaddr(itr%called),&
               '[shape="box" height=.25 label="',&
        trim(itr%called%value),' ', trim(itoa), ':', trim(itoa2), '"];'
-            write (10,'(I8, A,I8, A,A,A,A,A,A,A)') iaddr(invertex), '->',&
+            write (10,'(Z8, A,Z8, A,A,A,A,A,A,A)') iaddr(invertex), '->',&
        iaddr(itr%called), '[label="', trim(itoa3), ':', trim(itoa4),&
        ':', trim(itoa5), '"];' 
               call graphprint(itr%called)
@@ -227,11 +227,11 @@
               itoa4 = adjustl(itoa4)
               write(itoa5, '(I10)') invertex%first%called%ArgBools
               itoa5 = adjustl(itoa5)
-            write(10,'(I8,A,A,A,A,A,A,A)')iaddr(invertex%first%called),&
+            write(10,'(Z8,A,A,A,A,A,A,A)')iaddr(invertex%first%called),&
        '[shape="box" height=.25 label="',&
        trim(invertex%first%called%value), ' ', trim(itoa), ':',&
        trim(itoa2), '"];'
-              write (10,'(I8, A,I8, A,A,A,A,A,A,A)') iaddr(invertex), '->',&
+              write (10,'(Z8, A,Z8, A,A,A,A,A,A,A)') iaddr(invertex), '->',&
        iaddr(invertex%first%called), '[label="', trim(itoa3), ':',&
        trim(itoa4), ':', trim(itoa5), '"];'
 
