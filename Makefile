@@ -246,11 +246,11 @@ install: uninstall open64_install openadforttk_install xaif_install xaifBooster_
 	cp -f bin/openad ${INST_DIR}/bin
 	chmod a+rx ${INST_DIR}/bin/openad
 	cp -rf runTimeSupport ${INST_DIR}
-	chmod -R a+r runTimeSupport
+	chmod -R a+r ${INST_DIR}/runTimeSupport
 	cp -f setenv.csh ${INST_DIR}
-	chmod a+rx setenv.csh
+	chmod a+r ${INST_DIR}/setenv.csh
 	cp -f setenv.sh ${INST_DIR}
-	chmod a+rx setenv.sh
+	chmod a+r ${INST_DIR}/setenv.sh
 	mkdir -p ${INST_DIR}/tools/setenv
 	cp -f tools/setenv/setenv.py ${INST_DIR}/tools/setenv
 	chmod a+r ${INST_DIR}/tools/setenv/setenv.py
