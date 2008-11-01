@@ -3,6 +3,7 @@ syntax: glob
 *.a
 *.pyc
 *~
+*.orig
 angel*
 boost*
 OpenADFortTk*
