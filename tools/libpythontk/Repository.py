@@ -169,7 +169,7 @@ class SVNRepository(Repository):
 
   def locallyModified(self):
     fName=tempfile.mktemp()
-    os.system('cd '+self.getLocalRepoPath()+'; svn status | grep -vE \"^? \" > '+fName)
+    os.system('cd '+self.getLocalRepoPath()+'; svn status | grep -vE \"^\? \" > '+fName)
     info=os.stat(fName)
     os.remove(fName)
     return (info[6]>0)
