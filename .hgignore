@@ -3,6 +3,7 @@ syntax: glob
 *.a
 *.pyc
 *~
+*.swp
 *.orig
 angel*
 boost*
@@ -12,5 +13,7 @@ xaif*
 xaifBooster*
 xercesc*
 UseOA-Open64*
+Regression*
+
 syntax: regexp
 ^Open64/*
