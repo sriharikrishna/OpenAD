@@ -73,6 +73,7 @@ def main():
       maxNameLength=max([len(r) for r in repList])
       if (not options.tagsOnly):
           ldirName="local direct."
+	  maxNameLength=max(maxNameLength,len(ldirName))
           patchedName=ldirName+"".join([' ' for s in range(len(ldirName),maxNameLength)])
           sys.stdout.write(patchedName+'|Kind|R/W')
           if (not options.quick):
@@ -80,7 +81,7 @@ def main():
           sys.stdout.write('|URL\n')
           sys.stdout.flush()
       for i in repList:
-          repo=Repository.Detect.makeRepo(os.path.join(OpenADRoot,i))
+          repo=Repository.Detect.makeRepo(os.path.join(os.environ["OPENADROOT"],i))
           patchedName=i+"".join([' ' for s in range(len(i),maxNameLength)])
           if options.tagsOnly:
               sys.stdout.write('%s %s:%s\n' % (patchedName,repo.kind(),repo.getVersionTag(options.localTag)))
@@ -101,7 +102,7 @@ def main():
                       inOut(repo, False)
               sys.stdout.write('%s\n' % repo.getUrl().strip())
           sys.stdout.flush()
-          os.chdir(cwd)
+          os.chdir(os.environ["OPENADROOT"])
   except RuntimeError, e:
       print 'caught excetion: ',e
       return -1
