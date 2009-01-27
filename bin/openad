@@ -63,7 +63,7 @@ class RunOpenAD:
                         " -s "+os.path.join(os.environ["XAIFSCHEMAROOT"],"schema")+
                         " -i "+self.baseName+".xaif"+
                         " -o "+self.baseName+".xb.xaif")
-        aCmdDesc.setDesc("tracing transformation")
+        aCmdDesc.setDesc("tangent linear transformation")
         self.commandDescriptions.append(aCmdDesc)
         # link run time support files
         import glob
@@ -92,7 +92,7 @@ class RunOpenAD:
                         " -s "+os.path.join(os.environ["XAIFSCHEMAROOT"],"schema")+
                         " -i "+self.baseName+".xaif"+
                         " -o "+self.baseName+".xb.xaif")
-        aCmdDesc.setDesc("tracing transformation")
+        aCmdDesc.setDesc("adjoint transformation")
         self.commandDescriptions.append(aCmdDesc)
         # link run time support files
         import glob
