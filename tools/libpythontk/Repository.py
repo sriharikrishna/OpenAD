@@ -158,7 +158,7 @@ class CVSRepository(Repository):
     else:
       name=self.getLocalName()
     self.cmdDesc.setCmd(self.env+" cvs " + self.opt + " " + self.getUrl() + " co "+self.getCVSTagOpt()+" "+name)
-    self.cmdDesc.setDesc("checking out "+self.getLocalRepoPath())
+    self.cmdDesc.setDesc("checking out into "+self.getLocalRepoPath())
 
 class SVNRepository(Repository):
 
@@ -239,7 +239,7 @@ class SVNRepository(Repository):
     else:
       name=self.getLocalName()
     self.cmdDesc.setCmd("svn co "+url+" "+name)
-    self.cmdDesc.setDesc("checking out "+self.getLocalRepoPath())
+    self.cmdDesc.setDesc("checking out into "+self.getLocalRepoPath())
 
 class MercurialRepository(Repository):
 
@@ -331,7 +331,7 @@ class MercurialRepository(Repository):
 
   def checkout(self):
     cmd=""
-    desc="cloning "
+    desc="cloning into "
     if self.getSubdir() is not None:
       raise RepositoryException("For a Mercurial repository one cannot specify a subdirectory to be cloned")
     if self.getLocalPath() is not None:
