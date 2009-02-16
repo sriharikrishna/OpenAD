@@ -52,7 +52,7 @@ class openad_config:
     self.OpenADRepos["angel"]=Repository.CVSRepository('pserver',':pserver:anonymous@angellib.cvs.sourceforge.net:/cvsroot/angellib',OpenADRoot,'angel',None,None,'ANGEL_BASE')
     self.orderedRepoList.append("angel")
     # boost
-    self.OpenADRepos["boost"]=Repository.CVSRepository('pserver',':pserver:anonymous@boost.cvs.sourceforge.net:/cvsroot/boost',OpenADRoot,'boost','boost','Version_1_34_1','BOOST_BASE')
+    self.OpenADRepos["boost"]=Repository.SVNRepository('http://svn.boost.org/svn/boost/',OpenADRoot,'boost','boost','tags/release/Boost_1_37_0','BOOST_BASE')
     self.orderedRepoList.append("boost")
     if includeTests:
       ANLMercurialUrl = 'http://mercurial.mcs.anl.gov//ad/'
