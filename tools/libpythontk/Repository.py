@@ -179,7 +179,10 @@ class SVNRepository(Repository):
     if (not SVNRepository.isRepo(dir,subDir)):
       raise RepositoryException, dir+" is not an SVN repository"   
     fName=tempfile.mktemp()
-    os.system('cd '+dir+'; svn info > '+fName+'; cd ../')
+    path=dir
+    if subDir:
+      path=os.path.join(path,subDir)
+    os.system('cd '+path+'; svn info > '+fName)
     infoFile=open(fName)
     urlString=''
     urlRoot=''
@@ -202,7 +205,7 @@ class SVNRepository(Repository):
     (localPath,localName)=os.path.split(dir)
     tag=urlString[len(urlRoot)+1:]
     if subDir:
-      tag=tag[:len(subDir)]
+      tag=tag[:-(len(subDir)+1)]
     return SVNRepository(urlRoot,localPath,localName,subDir,tag,None)
 
   def __init__(self,url,localPath, localName,subdir,tag,var):

@@ -51,8 +51,12 @@ class Goad:
             repo.update() # sets CmdDesc to update repository
           else:
             if (self.options.development):
-              sys.stderr.write('NOTE: assume dev repo of type '+actRepo.__class__+' for '+actRepo.getLocalRepoPath()+'\n')
+              if (actRepo.getUrl()!=repo.getUrl()
+                  or
+                  actRepo.getTag()!=repo.getTag()):
+                sys.stderr.write('NOTE: development repo URL '+actRepo.getUrl()+' for '+actRepo.getLocalRepoPath()+'\n')
               actRepo.update() # sets CmdDesc to update the actual repository
+              repo=actRepo
             else:   
               sys.stderr.write('WARNING: mismatched ')
               if (str(actRepo.getUrl())!=str(repo.getUrl())) : 
