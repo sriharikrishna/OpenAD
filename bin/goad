@@ -58,7 +58,7 @@ class Goad:
               actRepo.update() # sets CmdDesc to update the actual repository
               repo=actRepo
             else:   
-              sys.stderr.write('WARNING: mismatched ')
+              sys.stderr.write('WARNING: for '+repo.getLocalName()+' mismatched ')
               if (str(actRepo.getUrl())!=str(repo.getUrl())) : 
                 sys.stderr.write('URL: \n\tcurrent: '+str(actRepo.getUrl())+'\n\tconfig : '+str(repo.getUrl())+'\n\t')
               elif (actRepo.getTag()!=repo.getTag()) : 
