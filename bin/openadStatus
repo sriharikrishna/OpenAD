@@ -43,7 +43,7 @@ def inOut(repo, writeable):
 
 def main():
   from optparse import OptionParser
-  usage = '%prog [options]\n\tdisplays OpenAD repository status\n\tKind:   hg, svn or cvs\n\tR/W:    R=read-only, W=writeable\n\tLocal:  C=locally changed or locally pending updates (hg only) \n\tRemote: O=outgoing changes , I=incoming changes'
+  usage = '%prog [options]\n\tdisplays OpenAD repository status\n\tKind:   hg, svn or cvs\n\tR/W:    R=read-only, W=writeable\n\tLocal:  C=locally changed or locally pending updates (hg only) \n\tRemote: O=outgoing changes , I=incoming changes\n\tA \'?\' is shown when the network/server takes too long.'
   opt = OptionParser(usage=usage)
   opt.add_option('-l','--localTag',dest='localTag',
                  help="inlcude the local revision tag where applicable (implies -t)",
@@ -65,7 +65,7 @@ def main():
       sys.stdout.write("running for OPENADROOT="+os.environ["OPENADROOT"]+"\n")
   try:
       os.chdir(os.environ["OPENADROOT"])
-      allRepList=['../OpenAD','Regression','Examples','OpenADFortTk','OpenADFortTk/Regression','OpenADFortTk/tools/SourceProcessing','OpenADFortTk/tools/SourceProcessing/Regression','OpenAnalysis','xaif','xaifBooster','angel','Open64','boost/boost','xercesc']
+      allRepList=['../OpenAD','OpenADFortTk','OpenADFortTk/tools/SourceProcessing','OpenAnalysis','xaif','xaifBooster','angel','Open64','boost/boost','xercesc','Regression','OpenADFortTk/Regression','OpenADFortTk/tools/SourceProcessing/Regression','RevolveF90','Examples']
       repList=[]
       for i in allRepList:
           if (os.path.exists(i)):
