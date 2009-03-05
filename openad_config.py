@@ -24,7 +24,7 @@ import Repository
 
 class openad_config:
   ''' A list of all repositories in this configuation of OpenAD '''
-  def __init__(self, includeTests=False):
+  def __init__(self, includeTests=False, includeExtras=False):
     self.orderedRepoList=[] # we need something that is explicitly ordered
     riceSvnUrl = 'http://hpc.svn.rice.edu/r/'
     self.skeletonRepo=Repository.SVNRepository(riceSvnUrl+'OpenAD',OpenADRoot,'.',None,'trunk',None)
@@ -54,14 +54,17 @@ class openad_config:
     # boost
     self.OpenADRepos["boost"]=Repository.SVNRepository('http://svn.boost.org/svn/boost',OpenADRoot,'boost','boost','tags/release/Boost_1_38_0','BOOST_BASE')
     self.orderedRepoList.append("boost")
+    ANLMercurialUrl = 'http://mercurial.mcs.anl.gov//ad/'
     if includeTests:
-      ANLMercurialUrl = 'http://mercurial.mcs.anl.gov//ad/'
       self.OpenADRepos["RegressionOpenAD"]=Repository.MercurialRepository(ANLMercurialUrl+'RegressionOpenAD',OpenADRoot,'Regression',None,None,None)
       self.orderedRepoList.append("RegressionOpenAD")
       self.OpenADRepos["RegressionOpenADFortTk"]=Repository.MercurialRepository(ANLMercurialUrl+'RegressionOpenADFortTk',os.path.join(OpenADRoot,'OpenADFortTk'),'Regression',None,None,None)
       self.orderedRepoList.append("RegressionOpenADFortTk")
       self.OpenADRepos["RegressionSourceProcessing"]=Repository.MercurialRepository(ANLMercurialUrl+'RegressionSourceProcessing',os.path.join(OpenADRoot,'OpenADFortTk','tools','SourceProcessing'),'Regression',None,None,None)
       self.orderedRepoList.append("RegressionSourceProcessing")
+    if includeExtras:
+      self.OpenADRepos["RevolveF9X"]=Repository.MercurialRepository(ANLMercurialUrl+'RevolveF9X',OpenADRoot,'RevolveF9X',None,None,None)
+      self.orderedRepoList.append("RevolveF9X")
       self.OpenADRepos["Examples"]=Repository.MercurialRepository(ANLMercurialUrl+'OpenADExamples',OpenADRoot,'Examples',None,None,None)
       self.orderedRepoList.append("Examples")
 
