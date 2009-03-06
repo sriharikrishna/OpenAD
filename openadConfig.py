@@ -32,7 +32,7 @@ class openadConfig:
     self.OpenADRepos[name]=Repository.SVNRepository(riceSvnUrl+name,OpenADRoot,'.',None,'trunk',None)
     name="Open64";        self.orderedRepoList.append(name)
     self.OpenADRepos[name]=Repository.SVNRepository(riceSvnUrl+'open64',OpenADRoot,name,None,'tags/version-openad',"OPEN64_BASE")
-    name="OpenAdFortTk";  self.orderedRepoList.append(name)
+    name="OpenADFortTk";  self.orderedRepoList.append(name)
     self.OpenADRepos[name]=Repository.SVNRepository(riceSvnUrl+name,OpenADRoot,name,None,'trunk','OPENADFORTTK_BASE')  
     name="OpenAnalysis";  self.orderedRepoList.append(name)
     self.OpenADRepos[name]=Repository.SVNRepository(riceSvnUrl+'open-analysis',OpenADRoot,name,None,'tags/version-openad','OPENANALYSIS_BASE')
