@@ -22,7 +22,7 @@ sys.path.append(os.path.join(OpenADRoot,'tools','libpythontk'))
 import RunCmds
 import Repository
 
-class openad_config:
+class openadConfig:
   ''' A list of all repositories in this configuation of OpenAD '''
   def __init__(self, includeTests=False, includeExtras=False):
     self.orderedRepoList=[] # we need something that is explicitly ordered
