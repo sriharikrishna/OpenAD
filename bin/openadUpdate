@@ -13,11 +13,11 @@ sys.path.append(os.path.join(os.environ["OPENADROOT"],"tools","libpythontk"))
 import RunCmds
 import Repository
 
-class Goad:
+class OpenadUpdate:
   def __init__(self,options):
     dir = os.getcwd();
-    snm="goad."+time.strftime('%Y-%m-%d_%H:%M:%S', time.localtime())+".log~"
-    print "goad log: "+ snm
+    snm="openadUpdate."+time.strftime('%Y-%m-%d_%H:%M:%S', time.localtime())+".log~"
+    print "openadUpdate log: "+ snm
     self.logfnm = os.path.join(dir,snm)
     self.runCmdsDebug=1
     if options.verbose :
@@ -25,9 +25,8 @@ class Goad:
     self.options=options
 
   def Run(self):
-    oaCfg=openadConfig.openadConfig(self.options.tests,self.options.extras)
-    repositories={'skeletonRepo':oaCfg.skeletonRepo}
-    repositories.update(oaCfg.getRepos())
+    oaCfg=openadConfig.openadConfig(self.options.tests,self.options.extras,self.options.development)
+    repositories=oaCfg.getRepos()
     cmdDescVecRef = []
     for key in oaCfg.orderedRepoList:
       repo=repositories[key]
@@ -133,12 +132,12 @@ def main():
   try: 
     os.chdir(os.environ["OPENADROOT"])
     cfgOldMtime=os.stat('openadConfig.py').st_mtime
-    goad = Goad(options)
-    goad.Run()
+    oadU = OpenadUpdate(options)
+    oadU.Run()
     if (cfgOldMtime!=os.stat('openadConfig.py').st_mtime):
       sys.stderr.write('NOTE: the update changed the repository configuration, rerunning the update.\n')
-      goad = Goad(options)
-      goad.Run()
+      oadU = OpenadUpdate(options)
+      oadU.Run()
   except (Repository.RepositoryException, RunCmds.RunnerException), e:
     sys.stderr.write('ERROR: '+str(e)+'\n')
     opt.print_help()
