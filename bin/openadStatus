@@ -6,6 +6,7 @@ if (not os.environ.has_key("OPENADROOT")):
   sys.stderr.write("ERROR: no OPENADROOT environment variable set, please use the setenv scripts and refer to the manual for details.\n")
   sys.exit(-1)
 sys.path.append(os.environ["OPENADROOT"])
+import openadConfig
 sys.path.append(os.path.join(os.environ["OPENADROOT"],"tools","libpythontk"))
 import Repository
 
@@ -64,11 +65,17 @@ def main():
   if (options.verbose):
       sys.stdout.write("running for OPENADROOT="+os.environ["OPENADROOT"]+"\n")
   try:
-      os.chdir(os.environ["OPENADROOT"])
-      allRepList=['../OpenAD','OpenADFortTk','OpenADFortTk/tools/SourceProcessing','OpenAnalysis','xaif','xaifBooster','angel','Open64','boost/boost','xercesc','Regression','OpenADFortTk/Regression','OpenADFortTk/tools/SourceProcessing/Regression','RevolveF90','Examples']
+      root=os.environ["OPENADROOT"]
+      os.chdir(root)
+      oaCfg=openadConfig.openadConfig(True,True)
+      repsDict=oaCfg.getRepos()
+      allRepList=[ (repsDict[k].getLocalRepoPath()[len(root)+1:] ) for k in oaCfg.orderedRepoList ] 
       repList=[]
       for i in allRepList:
           if (os.path.exists(i)):
+            if (i=='.'): # just to have something better in the output
+              repList.append(os.path.join('..','OpenAD'))
+            else:
               repList.append(i)
       maxNameLength=max([len(r) for r in repList])
       if (not options.tagsOnly):
