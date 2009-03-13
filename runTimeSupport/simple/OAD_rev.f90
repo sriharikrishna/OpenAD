@@ -55,7 +55,8 @@ module OAD_rev
   implicit none
 
   private
-  public :: modeType, our_rev_mode, mode_init
+  public :: modeType, our_rev_mode, OAD_revInit, &
+OAD_revStorePlain, OAD_revAdjoint, OAD_revRestoreTape
   
   type modeType
      logical :: arg_store=.FALSE.
@@ -69,13 +70,25 @@ module OAD_rev
   
   type(modeType), save :: our_rev_mode
   
-  interface mode_init
-     module procedure mode_init_i
+  interface OAD_revInit
+     module procedure init
+  end interface
+  
+  interface OAD_revStorePlain
+     module procedure StorePlain
+  end interface
+  
+  interface OAD_revAdjoint
+     module procedure Adjoint
+  end interface
+  
+  interface OAD_revRestoreTape
+     module procedure RestoreTape
   end interface
   
 contains
 
-  subroutine mode_init_i()
+  subroutine init()
     our_rev_mode%arg_store=.FALSE.
     our_rev_mode%arg_restore=.FALSE.
     our_rev_mode%res_store=.FALSE.
@@ -83,6 +96,36 @@ contains
     our_rev_mode%plain=.TRUE.
     our_rev_mode%tape=.FALSE.
     our_rev_mode%adjoint=.FALSE.
-  end subroutine mode_init_i
+  end subroutine 
+
+  subroutine StorePlain()
+    our_rev_mode%arg_store=.TRUE.
+    our_rev_mode%arg_restore=.FALSE.
+    our_rev_mode%res_store=.FALSE.
+    our_rev_mode%res_restore=.FALSE.
+    our_rev_mode%plain=.TRUE.
+    our_rev_mode%tape=.FALSE.
+    our_rev_mode%adjoint=.FALSE.
+  end subroutine 
+
+  subroutine Adjoint()
+    our_rev_mode%arg_store=.FALSE.
+    our_rev_mode%arg_restore=.FALSE.
+    our_rev_mode%res_store=.FALSE.
+    our_rev_mode%res_restore=.FALSE.
+    our_rev_mode%plain=.FALSE.
+    our_rev_mode%tape=.FALSE.
+    our_rev_mode%adjoint=.TRUE.
+  end subroutine 
+
+  subroutine RestoreTape()
+    our_rev_mode%arg_store=.FALSE.
+    our_rev_mode%arg_restore=.TRUE.
+    our_rev_mode%res_store=.FALSE.
+    our_rev_mode%res_restore=.FALSE.
+    our_rev_mode%plain=.FALSE.
+    our_rev_mode%tape=.TRUE.
+    our_rev_mode%adjoint=.FALSE.
+  end subroutine 
 
 end module OAD_rev
