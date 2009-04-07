@@ -84,11 +84,11 @@ oad_allocateMatching
         end type active
 
         interface saxpy
-          module procedure saxpy_a_a, saxpy_i4_a_a, saxpy_i8_a_a
+          module procedure saxpy_d_a_a, saxpy_i4_a_a, saxpy_i8_a_a
         end interface
         
         interface sax
-          module procedure sax_d_a_a, sax_i_a_a
+          module procedure sax_d_a_a, sax_i8_a_a
         end interface
 
         interface setderiv
@@ -182,14 +182,14 @@ oad_allocateMatching
         ! chain rule saxpy to be used in forward and reverse modes
         !
         
-        subroutine saxpy_a_a(a,x,y)
+        subroutine saxpy_d_a_a(a,x,y)
           real(w2f__8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
           integer :: i
           !do i=1,y%n
           do i=1,max_deriv_vec_len
-            y%d(i) = y%d(i)+x%d(i)*a
+            y%d(i) = y%d(i) + x%d(i)*a
           end do
         end subroutine saxpy_a_a
 
@@ -199,7 +199,7 @@ oad_allocateMatching
           type(active), intent(inout) :: y
           integer :: i
           do i=1,max_deriv_vec_len
-            y%d(i) = y%d(i)+x%d(i)*a
+            y%d(i) = y%d(i) + x%d(i)*a
           end do
         end subroutine saxpy_i4_a_a
         
@@ -209,7 +209,7 @@ oad_allocateMatching
           type(active), intent(inout) :: y
           integer :: i
           do i=1,max_deriv_vec_len
-            y%d(i) = y%d(i)+x%d(i)*a
+            y%d(i) = y%d(i) + x%d(i)*a
           end do
         end subroutine saxpy_i8_a_a
 
@@ -230,7 +230,7 @@ oad_allocateMatching
           end do
         end subroutine sax_d_a_a
 
-        subroutine sax_i_a_a(a,x,y)
+        subroutine sax_i8_a_a(a,x,y)
           integer(kind=w2f__i8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
