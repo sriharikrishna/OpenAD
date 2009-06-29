@@ -207,7 +207,7 @@ oad_allocateMatching
           do i=1,max_deriv_vec_len
             y%d(i) = y%d(i) + x%d(i)*a
           end do
-        end subroutine saxpy_a_a
+        end subroutine
 
         subroutine saxpy_i4_a_a(a,x,y)
           integer(kind=w2f__i4), intent(in) :: a
@@ -217,7 +217,7 @@ oad_allocateMatching
           do i=1,max_deriv_vec_len
             y%d(i) = y%d(i) + x%d(i)*a
           end do
-        end subroutine saxpy_i4_a_a
+        end subroutine
         
         subroutine saxpy_i8_a_a(a,x,y)
           integer(kind=w2f__i8), intent(in) :: a
@@ -227,7 +227,7 @@ oad_allocateMatching
           do i=1,max_deriv_vec_len
             y%d(i) = y%d(i) + x%d(i)*a
           end do
-        end subroutine saxpy_i8_a_a
+        end subroutine
 
         !
         ! chain rule saxpy to be used in forward and reverse modes
@@ -244,7 +244,7 @@ oad_allocateMatching
           do i=1,max_deriv_vec_len
             y%d(i) = x%d(i)*a
           end do
-        end subroutine sax_d_a_a
+        end subroutine
 
         subroutine sax_i8_a_a(a,x,y)
           integer(kind=w2f__i8), intent(in) :: a
@@ -254,7 +254,7 @@ oad_allocateMatching
           do i=1,max_deriv_vec_len
             y%d(i) = x%d(i)*a
           end do
-        end subroutine sax_i_a_a
+        end subroutine
         
         !
         ! set derivative of y to be equal to derivative of x
@@ -269,7 +269,7 @@ oad_allocateMatching
           do i=1,max_deriv_vec_len
             y%d(i) = x%d(i)
           end do
-        end subroutine setderiv_a_a
+        end subroutine
 
         subroutine setderiv_av_av(y,x)
           type(active), intent(inout), dimension(:) :: y
@@ -278,7 +278,7 @@ oad_allocateMatching
           do i=1,max_deriv_vec_len
             y%d(i) = x%d(i)
           end do
-        end subroutine setderiv_av_av
+        end subroutine
 
         !
         ! set the derivative of y to be the negated derivative of x
@@ -293,7 +293,7 @@ oad_allocateMatching
           do i=1,max_deriv_vec_len
             y%d(i) = -x%d(i)
           end do
-        end subroutine set_neg_deriv_a_a
+        end subroutine
 
         subroutine set_neg_deriv_av_av(y,x)
           type(active), intent(inout), dimension(:) :: y
@@ -302,7 +302,7 @@ oad_allocateMatching
           do i=1,max_deriv_vec_len
             y%d(i) = -x%d(i)
           end do
-        end subroutine set_neg_deriv_av_av
+        end subroutine
 
         !
         ! increment the derivative of y by the derivative of x
@@ -317,7 +317,7 @@ oad_allocateMatching
           do i = 1,max_deriv_vec_len
             y%d(i) = y%d(i) + x%d(i)
           end do
-        end subroutine inc_deriv_a_a
+        end subroutine
 
         subroutine inc_deriv_av_av(y,x)
           type(active), intent(inout), dimension(:) :: y
@@ -326,7 +326,7 @@ oad_allocateMatching
           do i = 1,max_deriv_vec_len
             y%d(i) = y%d(i) + x%d(i)
           end do
-        end subroutine inc_deriv_av_av
+        end subroutine
 
         !
         ! decrement the derivative of y by the derivative of x
@@ -341,7 +341,7 @@ oad_allocateMatching
           do i = 1,max_deriv_vec_len
             y%d(i) = y%d(i) - x%d(i)
           end do
-        end subroutine dec_deriv_a_a
+        end subroutine
 
         subroutine dec_deriv_av_av(y,x)
           type(active), intent(inout), dimension(:) :: y
@@ -350,7 +350,7 @@ oad_allocateMatching
           do i = 1,max_deriv_vec_len
             y%d(i) = y%d(i) - x%d(i)
           end do
-        end subroutine dec_deriv_av_av
+        end subroutine
 
         !
         ! set derivative components to 0.0
@@ -362,7 +362,7 @@ oad_allocateMatching
           do i=1,max_deriv_vec_len
             x%d(i) = 0.0d0
           end do
-        end subroutine zero_deriv_a
+        end subroutine
 
         !
         ! active/passive conversions
@@ -383,13 +383,13 @@ oad_allocateMatching
           real(w2f__4), intent(in) :: convertFrom
           type(active), intent(inout) :: convertTo
           convertTo%v=convertFrom
-        end subroutine 
+        end subroutine
 
         subroutine convert_p2a_scalar_impl(convertTo, convertFrom)
           real(w2f__8), intent(in) :: convertFrom
           type(active), intent(inout) :: convertTo
           convertTo%v=convertFrom
-        end subroutine 
+        end subroutine
 
         subroutine convert_a2sp_vector_impl(convertTo, convertFrom)
           type(active), dimension(:), intent(in) :: convertFrom
