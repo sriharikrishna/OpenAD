@@ -256,6 +256,10 @@ install: uninstall open64_install openadforttk_install xaif_install xaifBooster_
 	mkdir -p ${INST_DIR}/bin
 	cp -f bin/openad ${INST_DIR}/bin
 	chmod a+rx ${INST_DIR}/bin/openad
+	cp -f bin/openadStatus ${INST_DIR}/bin
+	chmod a+rx ${INST_DIR}/bin/openadStatus
+	cp -f bin/openadUpdate ${INST_DIR}/bin
+	chmod a+rx ${INST_DIR}/bin/openadUpdate
 	cp -rf runTimeSupport ${INST_DIR}
 	chmod -R a+r ${INST_DIR}/runTimeSupport
 	mkdir -p ${INST_DIR}/RevolveF9X
