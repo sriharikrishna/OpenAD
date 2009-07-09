@@ -15,6 +15,7 @@ xercesc*
 UseOA-Open64*
 Regression*
 Examples*
+UseOA_Open64*
 
 syntax: regexp
 ^Open64/*
