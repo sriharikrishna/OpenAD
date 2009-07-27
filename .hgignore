@@ -4,18 +4,17 @@ syntax: glob
 *.pyc
 *~
 *.swp
-*.orig
-angel*
-boost*
-OpenADFortTk*
-OpenAnalysis*
-xaif*
-xaifBooster*
-xercesc*
-UseOA-Open64*
-Regression*
-Examples*
-UseOA_Open64*
+angel
+boost
+OpenADFortTk
+OpenAnalysis
+xaif
+xaifBooster
+xercesc
+UseOA-Open64
+Regression
+Examples
+Revolve*
 
 syntax: regexp
 ^Open64/*
