@@ -22,6 +22,16 @@ def netAvail() :
     else :
 	return False	
 
+def isLink(path):
+  if(os.path.islink(path)):
+    return True
+  (head,tail)=os.path.split(path)
+  while (tail!="OpenAD" and head!=""):
+    if(os.path.islink(head)):
+      return True
+    (head,tail)=os.path.split(head)
+  return False
+
 def changed(repo):
     if (not netAvail()) :
     	sys.stdout.write('  ? |')
@@ -114,7 +124,7 @@ def main():
                 rwlString+='W'
               else:
                 rwlString+='R'
-              if (os.path.islink(i)):
+              if (isLink(i)):
                 rwlString+='L'
               else:  
                 rwlString+=' '
