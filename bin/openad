@@ -49,10 +49,16 @@ class RunOpenAD:
 
     def getRtFileActive(self):
       if self.mode.dShape==DShape.scalar:
-        return os.path.join(os.environ["OPENADROOT"],
-                            "runTimeSupport",
-                            "scalar",
-                            "OAD_active.f90")
+        if self.mode.major==MajorMode.forward:
+          return os.path.join(os.environ["OPENADROOT"],
+                              "runTimeSupport",
+                              "scalarF",
+                              "OAD_active.f90")
+        else : 
+          return os.path.join(os.environ["OPENADROOT"],
+                              "runTimeSupport",
+                              "scalar",
+                              "OAD_active.f90")
       elif self.mode.dShape==DShape.vector: 
         return os.path.join(os.environ["OPENADROOT"],
                             "runTimeSupport",
