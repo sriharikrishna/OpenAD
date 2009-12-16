@@ -146,7 +146,8 @@ oad_allocateMatching
         end interface
 
         interface oad_allocateMatching
-          module procedure oad_allocateMatchingV
+          module procedure oad_allocateMatching_av
+          module procedure oad_allocateMatching_pv
         end interface 
 
         contains
@@ -499,9 +500,16 @@ oad_allocateMatching
           convertTo%v=convertFrom
         end subroutine
 
-        subroutine oad_allocateMatchingV(toBeAllocated,allocateMatching)
+        subroutine oad_allocateMatching_av(toBeAllocated,allocateMatching)
           implicit none
           type(active), dimension(:), allocatable :: toBeAllocated
+          type(active), dimension(:) :: allocateMatching
+          allocate(toBeAllocated(size(allocateMatching)));
+        end subroutine
+
+        subroutine oad_allocateMatching_pv(toBeAllocated,allocateMatching)
+          implicit none
+          real(w2f__8), dimension(:), allocatable :: toBeAllocated
           type(active), dimension(:) :: allocateMatching
           allocate(toBeAllocated(size(allocateMatching)));
         end subroutine
