@@ -148,6 +148,12 @@ oad_allocateMatching
         interface oad_allocateMatching
           module procedure oad_allocateMatching_av
           module procedure oad_allocateMatching_pv
+          module procedure oad_allocateMatching_p4bv
+          module procedure oad_allocateMatching_am
+          module procedure oad_allocateMatching_pm
+          module procedure oad_allocateMatching_p4bm
+          module procedure oad_allocateMatching_at4
+          module procedure oad_allocateMatching_pt4
         end interface 
 
         contains
@@ -514,5 +520,55 @@ oad_allocateMatching
           allocate(toBeAllocated(size(allocateMatching)));
         end subroutine
 
-        end module OAD_active
+        subroutine oad_allocateMatching_p4bv(toBeAllocated,allocateMatching)
+          implicit none
+          real(w2f__4), dimension(:), allocatable :: toBeAllocated
+          type(active), dimension(:) :: allocateMatching
+          allocate(toBeAllocated(size(allocateMatching)));
+        end subroutine
 
+        subroutine oad_allocateMatching_am(toBeAllocated,allocateMatching)
+          implicit none
+          type(active), dimension(:,:), allocatable :: toBeAllocated
+          type(active), dimension(:,:) :: allocateMatching
+          allocate(toBeAllocated(size(allocateMatching,1), &
+               size(allocateMatching,2)))
+        end subroutine
+
+        subroutine oad_allocateMatching_pm(toBeAllocated,allocateMatching)
+          implicit none
+          real(w2f__8), dimension(:,:), allocatable :: toBeAllocated
+          type(active), dimension(:,:) :: allocateMatching
+          allocate(toBeAllocated(size(allocateMatching,1), &
+               size(allocateMatching,2)))
+        end subroutine
+
+        subroutine oad_allocateMatching_p4bm(toBeAllocated,allocateMatching)
+          implicit none
+          real(w2f__4), dimension(:,:), allocatable :: toBeAllocated
+          type(active), dimension(:,:) :: allocateMatching
+          allocate(toBeAllocated(size(allocateMatching,1), &
+               size(allocateMatching,2)))
+        end subroutine
+
+        subroutine oad_allocateMatching_at4(toBeAllocated,allocateMatching)
+          implicit none
+          type(active), dimension(:,:,:,:), allocatable :: toBeAllocated
+          type(active), dimension(:,:,:,:) :: allocateMatching
+          allocate(toBeAllocated(size(allocateMatching,1), &
+               size(allocateMatching,2),&
+               size(allocateMatching,3),&
+               size(allocateMatching,4)))
+        end subroutine
+
+        subroutine oad_allocateMatching_pt4(toBeAllocated,allocateMatching)
+          implicit none
+          real(w2f__8), dimension(:,:,:,:), allocatable :: toBeAllocated
+          type(active), dimension(:,:,:,:) :: allocateMatching
+          allocate(toBeAllocated(size(allocateMatching,1), &
+               size(allocateMatching,2),&
+               size(allocateMatching,3),&
+               size(allocateMatching,4)))
+        end subroutine
+
+        end module OAD_active
