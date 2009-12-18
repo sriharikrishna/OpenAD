@@ -67,6 +67,8 @@ oad_allocateMatching
           module procedure zero_deriv_am
           module procedure zero_deriv_am3
           module procedure zero_deriv_am4
+          module procedure oad_allocateMatching_at5
+          module procedure oad_allocateMatching_pt5
         end interface
         
         interface sax
@@ -569,6 +571,28 @@ oad_allocateMatching
                size(allocateMatching,2),&
                size(allocateMatching,3),&
                size(allocateMatching,4)))
+        end subroutine
+
+        subroutine oad_allocateMatching_at5(toBeAllocated,allocateMatching)
+          implicit none
+          type(active), dimension(:,:,:,:,:), allocatable :: toBeAllocated
+          type(active), dimension(:,:,:,:,:) :: allocateMatching
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
+               size(allocateMatching,2),&
+               size(allocateMatching,3),&
+               size(allocateMatching,4),&
+               size(allocateMatching,5)))
+        end subroutine
+
+        subroutine oad_allocateMatching_pt5(toBeAllocated,allocateMatching)
+          implicit none
+          real(w2f__8), dimension(:,:,:,:,:), allocatable :: toBeAllocated
+          type(active), dimension(:,:,:,:,:) :: allocateMatching
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
+               size(allocateMatching,2),&
+               size(allocateMatching,3),&
+               size(allocateMatching,4),&
+               size(allocateMatching,5)))
         end subroutine
 
         end module OAD_active
