@@ -510,28 +510,28 @@ oad_allocateMatching
           implicit none
           type(active), dimension(:), allocatable :: toBeAllocated
           type(active), dimension(:) :: allocateMatching
-          allocate(toBeAllocated(size(allocateMatching)));
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
         end subroutine
 
         subroutine oad_allocateMatching_pv(toBeAllocated,allocateMatching)
           implicit none
           real(w2f__8), dimension(:), allocatable :: toBeAllocated
           type(active), dimension(:) :: allocateMatching
-          allocate(toBeAllocated(size(allocateMatching)));
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
         end subroutine
 
         subroutine oad_allocateMatching_p4bv(toBeAllocated,allocateMatching)
           implicit none
           real(w2f__4), dimension(:), allocatable :: toBeAllocated
           type(active), dimension(:) :: allocateMatching
-          allocate(toBeAllocated(size(allocateMatching)));
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
         end subroutine
 
         subroutine oad_allocateMatching_am(toBeAllocated,allocateMatching)
           implicit none
           type(active), dimension(:,:), allocatable :: toBeAllocated
           type(active), dimension(:,:) :: allocateMatching
-          allocate(toBeAllocated(size(allocateMatching,1), &
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
                size(allocateMatching,2)))
         end subroutine
 
@@ -539,7 +539,7 @@ oad_allocateMatching
           implicit none
           real(w2f__8), dimension(:,:), allocatable :: toBeAllocated
           type(active), dimension(:,:) :: allocateMatching
-          allocate(toBeAllocated(size(allocateMatching,1), &
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
                size(allocateMatching,2)))
         end subroutine
 
@@ -547,7 +547,7 @@ oad_allocateMatching
           implicit none
           real(w2f__4), dimension(:,:), allocatable :: toBeAllocated
           type(active), dimension(:,:) :: allocateMatching
-          allocate(toBeAllocated(size(allocateMatching,1), &
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
                size(allocateMatching,2)))
         end subroutine
 
@@ -555,7 +555,7 @@ oad_allocateMatching
           implicit none
           type(active), dimension(:,:,:,:), allocatable :: toBeAllocated
           type(active), dimension(:,:,:,:) :: allocateMatching
-          allocate(toBeAllocated(size(allocateMatching,1), &
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
                size(allocateMatching,2),&
                size(allocateMatching,3),&
                size(allocateMatching,4)))
@@ -565,7 +565,7 @@ oad_allocateMatching
           implicit none
           real(w2f__8), dimension(:,:,:,:), allocatable :: toBeAllocated
           type(active), dimension(:,:,:,:) :: allocateMatching
-          allocate(toBeAllocated(size(allocateMatching,1), &
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
                size(allocateMatching,2),&
                size(allocateMatching,3),&
                size(allocateMatching,4)))
