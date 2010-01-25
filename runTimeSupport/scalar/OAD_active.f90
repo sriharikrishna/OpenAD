@@ -7,7 +7,9 @@
 
         use w2f__types
         implicit none
+
         private :: runTimeErrorStop, shapeChange
+
         public :: active, saxpy, sax, zero_deriv, &
 setderiv, set_neg_deriv, inc_deriv, dec_deriv, &
 convert_p2a_scalar, convert_a2p_scalar, &
@@ -22,6 +24,7 @@ oad_allocateMatching, oad_shapeTest
 
         integer :: count_mult = 0
         integer :: count_add = 0
+
         integer, parameter :: shapeChange=0
 
         !
@@ -35,7 +38,6 @@ oad_allocateMatching, oad_shapeTest
           ! inside of common block, such as in boxmodel
           ! initialization is required for correct adjoint
           real(w2f__8) :: d=0.0
-          ! real(w2f__8) :: d
         end type active
 
         interface saxpy
@@ -626,7 +628,7 @@ oad_allocateMatching, oad_shapeTest
           implicit none
           type(active), dimension(:), allocatable :: allocatedVar
           real(w2f__8), dimension(:) :: origVar
-          if (.not. all(shape(allocatedVar)==shape(origVar))) stop "ERROR: OAD run time library detected shape change"
+          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
         end subroutine
 
         subroutine oad_shapeTest_av(allocatedVar,origVar)
