@@ -44,7 +44,7 @@ C $OpenAD$ END DECLS
 C taping --------------------------------------------
 
 
-        subroutine push(x)
+        subroutine push_s0(x)
 C $OpenAD$ INLINE DECLS
           use OpenAD_tape
           implicit none
@@ -55,7 +55,7 @@ C $OpenAD$ END DECLS
         end subroutine 
 
 
-        subroutine pop(x)
+        subroutine pop_s0(x)
 C $OpenAD$ INLINE DECLS
           use OpenAD_tape
           implicit none
@@ -63,6 +63,27 @@ C $OpenAD$ INLINE DECLS
 C $OpenAD$ END DECLS
           double_tape_pointer=double_tape_pointer-1
           x=double_tape(double_tape_pointer)
+        end subroutine
+
+        subroutine push_s1(x)
+C $OpenAD$ INLINE DECLS
+          use OpenAD_tape
+          implicit none
+          double precision :: x(:)
+C $OpenAD$ END DECLS
+          double_tape(double_tape_pointer:)=x(:)
+          double_tape_pointer=double_tape_pointer+size(x)
+        end subroutine 
+
+
+        subroutine pop_s1(x)
+C $OpenAD$ INLINE DECLS
+          use OpenAD_tape
+          implicit none
+          double precision :: x(:)
+C $OpenAD$ END DECLS
+          double_tape_pointer=double_tape_pointer-size(x)
+          x(:)=double_tape(double_tape_pointer:)
         end subroutine
 
         subroutine apush(x)
