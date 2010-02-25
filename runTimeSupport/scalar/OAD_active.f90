@@ -32,8 +32,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           real(w2f__8) :: d=0.0
         end type
 
-        ! propagation
-
         interface saxpy
           module procedure saxpy_d0_a0_a0, saxpy_l0_a0_a0, saxpy_i0_a0_a0
           module procedure saxpy_d1_a1_a1, saxpy_l1_a1_a1, saxpy_i1_a1_a1
@@ -116,28 +114,32 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           module procedure allocateMatching_a1_d1
           module procedure allocateMatching_a1_a1
           module procedure allocateMatching_d1_a1
-          module procedure allocateMatching_r1_a1
           module procedure allocateMatching_a2_a2
           module procedure allocateMatching_d2_a2
-          module procedure allocateMatching_r2_a2
           module procedure allocateMatching_a4_a4
           module procedure allocateMatching_d4_a4
           module procedure allocateMatching_a5_a5
           module procedure allocateMatching_d5_a5
+
+          module procedure allocateMatching_r1_a1
+          module procedure allocateMatching_r2_a2
+
         end interface 
 
         interface oad_shapeTest
           module procedure shapeTest_a1_d1
           module procedure shapeTest_a1_a1
           module procedure shapeTest_d1_a1
-          module procedure shapeTest_r1_a1
           module procedure shapeTest_a2_a2
           module procedure shapeTest_d2_a2
-          module procedure shapeTest_r2_a2
           module procedure shapeTest_a4_a4
           module procedure shapeTest_d4_a4
           module procedure shapeTest_a5_a5
           module procedure shapeTest_d5_a5
+
+          module procedure shapeTest_r1_a1
+          module procedure shapeTest_r2_a2
+
         end interface 
 
         interface runTimeErrorStop
@@ -251,13 +253,13 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           type(active), intent(inout) :: y
           type(active), intent(in) :: x
           y%d=x%d
-        end subroutine 
+        end subroutine
 
         subroutine setderiv_a1_a1(y,x)
           type(active), intent(inout), dimension(:) :: y
           type(active), intent(in), dimension(:) :: x
           y%d=x%d
-        end subroutine 
+        end subroutine
 
         !
         ! set the derivative of y to be the negated derivative of x
@@ -269,13 +271,13 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           type(active), intent(inout) :: y
           type(active), intent(in) :: x
           y%d = -x%d
-        end subroutine 
+        end subroutine
 
         subroutine set_neg_deriv_a1_a1(y,x)
           type(active), intent(inout), dimension(:) :: y
           type(active), intent(in), dimension(:) :: x
           y%d = -x%d
-        end subroutine 
+        end subroutine
 
         !
         ! increment the derivative of y by the derivative of x
@@ -287,13 +289,13 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           type(active), intent(inout) :: y
           type(active), intent(in) :: x
           y%d = y%d + x%d
-        end subroutine 
+        end subroutine
 
         subroutine inc_deriv_a1_a1(y,x)
           type(active), intent(inout), dimension(:) :: y
           type(active), intent(in), dimension(:) :: x
           y%d = y%d + x%d
-        end subroutine 
+        end subroutine
 
         !
         ! decrement the derivative of y by the derivative of x
@@ -305,13 +307,13 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           type(active), intent(inout) :: y
           type(active), intent(in) :: x
           y%d = y%d - x%d
-        end subroutine 
+        end subroutine
 
         subroutine dec_deriv_a1_a1(y,x)
           type(active), intent(inout), dimension(:) :: y
           type(active), intent(in), dimension(:) :: x
           y%d = y%d - x%d
-        end subroutine 
+        end subroutine
 
         !
         ! set derivative components to 0.0
@@ -319,30 +321,30 @@ oad_convert, oad_allocateMatching, oad_shapeTest
         subroutine zero_deriv_a0(x)
           type(active), intent(inout) :: x
           x%d=0.0d0
-        end subroutine 
+        end subroutine
 
         subroutine zero_deriv_a1(x)
           type(active), dimension(:), intent(inout) :: x
           x%d=0.0d0
-        end subroutine 
+        end subroutine
 
         subroutine zero_deriv_a2(x)
           type(active), dimension(:,:), intent(inout) :: x
           x%d = 0.0d0
-        end subroutine 
+        end subroutine
 
         subroutine zero_deriv_a3(x)
           type(active), dimension(:,:,:), intent(inout) :: x
           x%d = 0.0d0
-        end subroutine 
+        end subroutine
 
         subroutine zero_deriv_a4(x)
           type(active), dimension(:,:,:,:), intent(inout) :: x
           x%d = 0.0d0
-        end subroutine 
+        end subroutine
 
         !
-        ! active/passive conversions
+        ! conversions
         !
         subroutine convert_d0_a0(convertTo, convertFrom)
           real(w2f__8), intent(out) :: convertTo
@@ -389,7 +391,7 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           type(active), intent(inout) :: convertTo
           real(w2f__8), intent(in) :: convertFrom
           convertTo%v=convertFrom
-        end subroutine 
+        end subroutine
         subroutine convert_a1_d1(convertTo, convertFrom)
           type(active), dimension(:), intent(inout) :: convertTo
           real(w2f__8), dimension(:), intent(in) :: convertFrom
@@ -471,7 +473,7 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           type(active), intent(inout) :: convertTo
           real(w2f__4), intent(in) :: convertFrom
           convertTo%v=convertFrom
-        end subroutine 
+        end subroutine
         subroutine convert_a1_r1(convertTo, convertFrom)
           type(active), dimension(:), intent(inout) :: convertTo
           real(w2f__4), dimension(:), intent(in) :: convertFrom
@@ -508,34 +510,27 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           convertTo%v=convertFrom
         end subroutine
 
+        !
+        ! allocations
+        !
         subroutine allocateMatching_a1_d1(toBeAllocated,allocateMatching)
           implicit none
           type(active), dimension(:), allocatable :: toBeAllocated
           real(w2f__8), dimension(:) :: allocateMatching
           if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
         end subroutine
-
         subroutine allocateMatching_a1_a1(toBeAllocated,allocateMatching)
           implicit none
           type(active), dimension(:), allocatable :: toBeAllocated
           type(active), dimension(:) :: allocateMatching
           if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
         end subroutine
-
         subroutine allocateMatching_d1_a1(toBeAllocated,allocateMatching)
           implicit none
           real(w2f__8), dimension(:), allocatable :: toBeAllocated
           type(active), dimension(:) :: allocateMatching
           if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
         end subroutine
-
-        subroutine allocateMatching_r1_a1(toBeAllocated,allocateMatching)
-          implicit none
-          real(w2f__4), dimension(:), allocatable :: toBeAllocated
-          type(active), dimension(:) :: allocateMatching
-          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
-        end subroutine
-
         subroutine allocateMatching_a2_a2(toBeAllocated,allocateMatching)
           implicit none
           type(active), dimension(:,:), allocatable :: toBeAllocated
@@ -543,7 +538,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
                size(allocateMatching,2)))
         end subroutine
-
         subroutine allocateMatching_d2_a2(toBeAllocated,allocateMatching)
           implicit none
           real(w2f__8), dimension(:,:), allocatable :: toBeAllocated
@@ -551,15 +545,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
                size(allocateMatching,2)))
         end subroutine
-
-        subroutine allocateMatching_r2_a2(toBeAllocated,allocateMatching)
-          implicit none
-          real(w2f__4), dimension(:,:), allocatable :: toBeAllocated
-          type(active), dimension(:,:) :: allocateMatching
-          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
-               size(allocateMatching,2)))
-        end subroutine
-
         subroutine allocateMatching_a4_a4(toBeAllocated,allocateMatching)
           implicit none
           type(active), dimension(:,:,:,:), allocatable :: toBeAllocated
@@ -569,7 +554,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
                size(allocateMatching,3),&
                size(allocateMatching,4)))
         end subroutine
-
         subroutine allocateMatching_d4_a4(toBeAllocated,allocateMatching)
           implicit none
           real(w2f__8), dimension(:,:,:,:), allocatable :: toBeAllocated
@@ -579,7 +563,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
                size(allocateMatching,3),&
                size(allocateMatching,4)))
         end subroutine
-
         subroutine allocateMatching_a5_a5(toBeAllocated,allocateMatching)
           implicit none
           type(active), dimension(:,:,:,:,:), allocatable :: toBeAllocated
@@ -590,7 +573,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
                size(allocateMatching,4),&
                size(allocateMatching,5)))
         end subroutine
-
         subroutine allocateMatching_d5_a5(toBeAllocated,allocateMatching)
           implicit none
           real(w2f__8), dimension(:,:,:,:,:), allocatable :: toBeAllocated
@@ -601,26 +583,77 @@ oad_convert, oad_allocateMatching, oad_shapeTest
                size(allocateMatching,4),&
                size(allocateMatching,5)))
         end subroutine
- 
+
+        subroutine allocateMatching_r1_a1(toBeAllocated,allocateMatching)
+          implicit none
+          real(w2f__4), dimension(:), allocatable :: toBeAllocated
+          type(active), dimension(:) :: allocateMatching
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
+        end subroutine
+        subroutine allocateMatching_r2_a2(toBeAllocated,allocateMatching)
+          implicit none
+          real(w2f__4), dimension(:,:), allocatable :: toBeAllocated
+          type(active), dimension(:,:) :: allocateMatching
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
+               size(allocateMatching,2)))
+        end subroutine
+
+        !
+        ! shape tests
+        !
         subroutine shapeTest_a1_d1(allocatedVar,origVar)
           implicit none
           type(active), dimension(:), allocatable :: allocatedVar
           real(w2f__8), dimension(:) :: origVar
           if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
         end subroutine
-
         subroutine shapeTest_a1_a1(allocatedVar,origVar)
           implicit none
           type(active), dimension(:), allocatable :: allocatedVar
           type(active), dimension(:) :: origVar
           if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
         end subroutine
-
         subroutine shapeTest_d1_a1(allocatedVar,origVar)
           implicit none
           real(w2f__8), dimension(:), allocatable :: allocatedVar
           type(active), dimension(:) :: origVar
           if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
+        end subroutine
+        subroutine shapeTest_a2_a2(allocatedVar,origVar)
+          implicit none
+          type(active), dimension(:,:), allocatable :: allocatedVar
+          type(active), dimension(:,:) :: origVar
+          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
+        end subroutine
+        subroutine shapeTest_d2_a2(allocatedVar,origVar)
+          implicit none
+          real(w2f__8), dimension(:,:), allocatable :: allocatedVar
+          type(active), dimension(:,:) :: origVar
+          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
+        end subroutine
+        subroutine shapeTest_a4_a4(allocatedVar,origVar)
+          implicit none
+          type(active), dimension(:,:,:,:), allocatable :: allocatedVar
+          type(active), dimension(:,:,:,:) :: origVar
+          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
+        end subroutine
+        subroutine shapeTest_d4_a4(allocatedVar,origVar)
+          implicit none
+          real(w2f__8), dimension(:,:,:,:), allocatable :: allocatedVar
+          type(active), dimension(:,:,:,:) :: origVar
+          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
+        end subroutine
+        subroutine shapeTest_a5_a5(allocatedVar,origVar)
+          implicit none
+          type(active), dimension(:,:,:,:,:), allocatable :: allocatedVar
+          type(active), dimension(:,:,:,:,:) :: origVar
+          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
+        end subroutine
+        subroutine shapeTest_d5_a5(allocatedVar,origVar)
+          implicit none
+          real(w2f__8), dimension(:,:,:,:,:), allocatable :: allocatedVar
+          type(active), dimension(:,:,:,:,:) :: origVar
+          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange) 
         end subroutine
 
         subroutine shapeTest_r1_a1(allocatedVar,origVar)
@@ -629,54 +662,11 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           type(active), dimension(:) :: origVar
           if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
         end subroutine
-
-        subroutine shapeTest_a2_a2(allocatedVar,origVar)
-          implicit none
-          type(active), dimension(:,:), allocatable :: allocatedVar
-          type(active), dimension(:,:) :: origVar
-          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
-        end subroutine
-
-        subroutine shapeTest_d2_a2(allocatedVar,origVar)
-          implicit none
-          real(w2f__8), dimension(:,:), allocatable :: allocatedVar
-          type(active), dimension(:,:) :: origVar
-          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
-        end subroutine
-
         subroutine shapeTest_r2_a2(allocatedVar,origVar)
           implicit none
           real(w2f__4), dimension(:,:), allocatable :: allocatedVar
           type(active), dimension(:,:) :: origVar
           if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
-        end subroutine
-
-        subroutine shapeTest_a4_a4(allocatedVar,origVar)
-          implicit none
-          type(active), dimension(:,:,:,:), allocatable :: allocatedVar
-          type(active), dimension(:,:,:,:) :: origVar
-          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
-        end subroutine
-
-        subroutine shapeTest_d4_a4(allocatedVar,origVar)
-          implicit none
-          real(w2f__8), dimension(:,:,:,:), allocatable :: allocatedVar
-          type(active), dimension(:,:,:,:) :: origVar
-          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
-        end subroutine
-
-        subroutine shapeTest_a5_a5(allocatedVar,origVar)
-          implicit none
-          type(active), dimension(:,:,:,:,:), allocatable :: allocatedVar
-          type(active), dimension(:,:,:,:,:) :: origVar
-          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
-        end subroutine
-
-        subroutine shapeTest_d5_a5(allocatedVar,origVar)
-          implicit none
-          real(w2f__8), dimension(:,:,:,:,:), allocatable :: allocatedVar
-          type(active), dimension(:,:,:,:,:) :: origVar
-          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange) 
         end subroutine
 
         subroutine runTimeErrorStopI(mesgId)
