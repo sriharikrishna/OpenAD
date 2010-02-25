@@ -1,17 +1,23 @@
+
+
 !#########################################################
 ! This file is part of OpenAD released under the LGPL.   #
 ! The full COPYRIGHT notice can be found in the top      #
 ! level directory of the OpenAD distribution             #
 !#########################################################
         module OAD_active
-
         use w2f__types
         implicit none
-
         private :: runTimeErrorStop, shapeChange
+        public :: active
 
-        public :: active,  &
-oad_convert, oad_allocateMatching, oad_shapeTest
+
+
+
+        public :: oad_convert, oad_allocateMatching, oad_shapeTest
+
+
+
 
         integer, parameter :: shapeChange=0
 
@@ -23,9 +29,7 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           sequence
           real(w2f__8) :: v 
         end type
-
         interface oad_convert
-
           module procedure convert_d0_a0
           module procedure convert_d1_a1
           module procedure convert_d2_a2
@@ -34,7 +38,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           module procedure convert_d5_a5
           module procedure convert_d6_a6
           module procedure convert_d7_a7
-
           module procedure convert_a0_d0
           module procedure convert_a1_d1
           module procedure convert_a2_d2
@@ -43,7 +46,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           module procedure convert_a5_d5
           module procedure convert_a6_d6
           module procedure convert_a7_d7
-
           module procedure convert_r0_a0
           module procedure convert_r1_a1
           module procedure convert_r2_a2
@@ -52,7 +54,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           module procedure convert_r5_a5
           module procedure convert_r6_a6
           module procedure convert_r7_a7
-
           module procedure convert_a0_r0
           module procedure convert_a1_r1
           module procedure convert_a2_r2
@@ -61,7 +62,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           module procedure convert_a5_r5
           module procedure convert_a6_r6
           module procedure convert_a7_r7
-
         end interface
 
         interface oad_allocateMatching
@@ -74,10 +74,8 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           module procedure allocateMatching_d4_a4
           module procedure allocateMatching_a5_a5
           module procedure allocateMatching_d5_a5
-
           module procedure allocateMatching_r1_a1
           module procedure allocateMatching_r2_a2
-
         end interface 
 
         interface oad_shapeTest
@@ -90,10 +88,8 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           module procedure shapeTest_d4_a4
           module procedure shapeTest_a5_a5
           module procedure shapeTest_d5_a5
-
           module procedure shapeTest_r1_a1
           module procedure shapeTest_r2_a2
-
         end interface 
 
         interface runTimeErrorStop
@@ -101,7 +97,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
         end interface 
 
         contains
-
         !
         ! conversions
         !
@@ -186,7 +181,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           real(w2f__8), dimension(:,:,:,:,:,:,:), intent(in) :: convertFrom
           convertTo%v=convertFrom
         end subroutine
-
         subroutine convert_r0_a0(convertTo, convertFrom)
           real(w2f__4), intent(out) :: convertTo
           type(active), intent(in) :: convertFrom
@@ -268,7 +262,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           real(w2f__4), dimension(:,:,:,:,:,:,:), intent(in) :: convertFrom
           convertTo%v=convertFrom
         end subroutine
-
         !
         ! allocations
         !
@@ -342,7 +335,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
                size(allocateMatching,4),&
                size(allocateMatching,5)))
         end subroutine
-
         subroutine allocateMatching_r1_a1(toBeAllocated,allocateMatching)
           implicit none
           real(w2f__4), dimension(:), allocatable :: toBeAllocated
@@ -356,7 +348,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
                size(allocateMatching,2)))
         end subroutine
-
         !
         ! shape tests
         !
@@ -414,7 +405,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           type(active), dimension(:,:,:,:,:) :: origVar
           if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange) 
         end subroutine
-
         subroutine shapeTest_r1_a1(allocatedVar,origVar)
           implicit none
           real(w2f__4), dimension(:), allocatable :: allocatedVar
@@ -427,7 +417,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           type(active), dimension(:,:) :: origVar
           if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
         end subroutine
-
         subroutine runTimeErrorStopI(mesgId)
           implicit none
 	  integer mesgId

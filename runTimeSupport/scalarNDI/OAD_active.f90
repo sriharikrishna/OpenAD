@@ -1,18 +1,20 @@
+
+
 !#########################################################
 ! This file is part of OpenAD released under the LGPL.   #
 ! The full COPYRIGHT notice can be found in the top      #
 ! level directory of the OpenAD distribution             #
 !#########################################################
         module OAD_active
-
         use w2f__types
         implicit none
-
         private :: runTimeErrorStop, shapeChange
+        public :: active
 
-        public :: active, saxpy, sax, zero_deriv, &
-setderiv, set_neg_deriv, inc_deriv, dec_deriv, &
-oad_convert, oad_allocateMatching, oad_shapeTest
+        public :: saxpy, sax, zero_deriv, setderiv
+        public :: set_neg_deriv, inc_deriv, dec_deriv
+
+        public :: oad_convert, oad_allocateMatching, oad_shapeTest
 
         integer :: count_mult = 0
         integer :: count_add = 0
@@ -29,9 +31,8 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           ! initialization does not work for active variables
           ! inside of common block, such as in boxmodel
           ! initialization is required for correct adjoint
-          real(w2f__8) :: d
+          real(w2f__8)  :: d 
         end type
-
         interface saxpy
           module procedure saxpy_d0_a0_a0, saxpy_l0_a0_a0, saxpy_i0_a0_a0
           module procedure saxpy_d1_a1_a1, saxpy_l1_a1_a1, saxpy_i1_a1_a1
@@ -64,14 +65,13 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           module procedure zero_deriv_a3
           module procedure zero_deriv_a4
         end interface
-        
+
         interface sax
           module procedure sax_d0_a0_a0, sax_l0_a0_a0, sax_i0_a0_a0
           module procedure sax_d1_a1_a1, sax_l1_a1_a1, sax_i1_a1_a1
         end interface
 
         interface oad_convert
-
           module procedure convert_d0_a0
           module procedure convert_d1_a1
           module procedure convert_d2_a2
@@ -80,7 +80,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           module procedure convert_d5_a5
           module procedure convert_d6_a6
           module procedure convert_d7_a7
-
           module procedure convert_a0_d0
           module procedure convert_a1_d1
           module procedure convert_a2_d2
@@ -89,7 +88,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           module procedure convert_a5_d5
           module procedure convert_a6_d6
           module procedure convert_a7_d7
-
           module procedure convert_r0_a0
           module procedure convert_r1_a1
           module procedure convert_r2_a2
@@ -98,7 +96,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           module procedure convert_r5_a5
           module procedure convert_r6_a6
           module procedure convert_r7_a7
-
           module procedure convert_a0_r0
           module procedure convert_a1_r1
           module procedure convert_a2_r2
@@ -107,7 +104,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           module procedure convert_a5_r5
           module procedure convert_a6_r6
           module procedure convert_a7_r7
-
         end interface
 
         interface oad_allocateMatching
@@ -120,10 +116,8 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           module procedure allocateMatching_d4_a4
           module procedure allocateMatching_a5_a5
           module procedure allocateMatching_d5_a5
-
           module procedure allocateMatching_r1_a1
           module procedure allocateMatching_r2_a2
-
         end interface 
 
         interface oad_shapeTest
@@ -136,10 +130,8 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           module procedure shapeTest_d4_a4
           module procedure shapeTest_a5_a5
           module procedure shapeTest_d5_a5
-
           module procedure shapeTest_r1_a1
           module procedure shapeTest_r2_a2
-
         end interface 
 
         interface runTimeErrorStop
@@ -147,7 +139,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
         end interface 
 
         contains
-        
         !
         ! chain rule saxpy to be used in forward and reverse modes
         !
@@ -156,42 +147,60 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           real(w2f__8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
-          y%d=y%d+x%d*a
+          
+          
+            y%d = y%d + x%d*a
+          
         end subroutine
 
         subroutine saxpy_i0_a0_a0(a,x,y)
           integer(kind=w2f__i4), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
-          y%d=y%d+x%d*a
+          
+          
+            y%d = y%d + x%d*a
+          
         end subroutine
         
         subroutine saxpy_l0_a0_a0(a,x,y)
           integer(kind=w2f__i8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
-          y%d=y%d+x%d*a
+          
+          
+            y%d = y%d + x%d*a
+          
         end subroutine
 
         subroutine saxpy_d1_a1_a1(a,x,y)
           real(w2f__8), dimension(:), intent(in) :: a
           type(active), dimension(:), intent(in) :: x
           type(active), dimension(:), intent(inout) :: y
-          y%d=y%d+x%d*a
+          
+          
+            y%d=y%d+x%d*a
+          
         end subroutine
 
         subroutine saxpy_i1_a1_a1(a,x,y)
           integer(kind=w2f__i4), dimension(:), intent(in) :: a
           type(active), dimension(:), intent(in) :: x
           type(active), dimension(:), intent(inout) :: y
-          y%d=y%d+x%d*a
+          
+          
+            y%d=y%d+x%d*a
+          
         end subroutine
         
         subroutine saxpy_l1_a1_a1(a,x,y)
           integer(kind=w2f__i8), dimension(:), intent(in) :: a
           type(active), dimension(:), intent(in) :: x
           type(active), dimension(:), intent(inout) :: y
-          y%d=y%d+x%d*a
+          
+          
+            y%d=y%d+x%d*a
+          
         end subroutine
 
         !
@@ -205,44 +214,62 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           real(w2f__8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
-          y%d=x%d*a
+          
+          
+            y%d = x%d*a
+          
         end subroutine
 
         subroutine sax_i0_a0_a0(a,x,y)
           integer(kind=w2f__i4), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
-          y%d=x%d*a
+          
+          
+            y%d = x%d*a
+          
         end subroutine
 
         subroutine sax_l0_a0_a0(a,x,y)
           integer(kind=w2f__i8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
-          y%d=x%d*a
+          
+          
+            y%d = x%d*a
+          
         end subroutine
         
         subroutine sax_d1_a1_a1(a,x,y)
           real(w2f__8), dimension(:), intent(in) :: a
           type(active), dimension(:), intent(in) :: x
           type(active), dimension(:), intent(inout) :: y
-          y%d=x%d*a
+          
+          
+            y%d=x%d*a
+          
         end subroutine
 
         subroutine sax_i1_a1_a1(a,x,y)
           integer(kind=w2f__i4), dimension(:), intent(in) :: a
           type(active), dimension(:), intent(in) :: x
           type(active), dimension(:), intent(inout) :: y
-          y%d=x%d*a
+          
+          
+            y%d=x%d*a
+          
         end subroutine
 
         subroutine sax_l1_a1_a1(a,x,y)
           integer(kind=w2f__i8), dimension(:), intent(in) :: a
           type(active), dimension(:), intent(in) :: x
           type(active), dimension(:), intent(inout) :: y
-          y%d=x%d*a
+          
+          
+            y%d=x%d*a
+          
         end subroutine
-        
+
         !
         ! set derivative of y to be equal to derivative of x
         ! note: making y inout allows for already existing active
@@ -252,13 +279,19 @@ oad_convert, oad_allocateMatching, oad_shapeTest
         subroutine setderiv_a0_a0(y,x)
           type(active), intent(inout) :: y
           type(active), intent(in) :: x
-          y%d=x%d
+          
+          
+            y%d = x%d
+          
         end subroutine
 
         subroutine setderiv_a1_a1(y,x)
           type(active), intent(inout), dimension(:) :: y
           type(active), intent(in), dimension(:) :: x
-          y%d=x%d
+          
+          
+            y%d = x%d
+          
         end subroutine
 
         !
@@ -270,13 +303,19 @@ oad_convert, oad_allocateMatching, oad_shapeTest
         subroutine set_neg_deriv_a0_a0(y,x)
           type(active), intent(inout) :: y
           type(active), intent(in) :: x
-          y%d = -x%d
+          
+          
+            y%d = -x%d
+          
         end subroutine
 
         subroutine set_neg_deriv_a1_a1(y,x)
           type(active), intent(inout), dimension(:) :: y
           type(active), intent(in), dimension(:) :: x
-          y%d = -x%d
+          
+          
+            y%d = -x%d
+          
         end subroutine
 
         !
@@ -288,13 +327,19 @@ oad_convert, oad_allocateMatching, oad_shapeTest
         subroutine inc_deriv_a0_a0(y,x)
           type(active), intent(inout) :: y
           type(active), intent(in) :: x
-          y%d = y%d + x%d
+          
+          
+            y%d = y%d + x%d
+          
         end subroutine
 
         subroutine inc_deriv_a1_a1(y,x)
           type(active), intent(inout), dimension(:) :: y
           type(active), intent(in), dimension(:) :: x
-          y%d = y%d + x%d
+          
+          
+            y%d = y%d + x%d
+          
         end subroutine
 
         !
@@ -306,41 +351,62 @@ oad_convert, oad_allocateMatching, oad_shapeTest
         subroutine dec_deriv_a0_a0(y,x)
           type(active), intent(inout) :: y
           type(active), intent(in) :: x
-          y%d = y%d - x%d
+          
+          
+            y%d = y%d - x%d
+          
         end subroutine
 
         subroutine dec_deriv_a1_a1(y,x)
           type(active), intent(inout), dimension(:) :: y
           type(active), intent(in), dimension(:) :: x
-          y%d = y%d - x%d
+          
+          
+            y%d = y%d - x%d
+          
         end subroutine
-
+        
         !
         ! set derivative components to 0.0
         !
         subroutine zero_deriv_a0(x)
           type(active), intent(inout) :: x
-          x%d=0.0d0
+          
+          
+             x%d=0.0d0
+           
         end subroutine
 
         subroutine zero_deriv_a1(x)
           type(active), dimension(:), intent(inout) :: x
-          x%d=0.0d0
+          
+          
+             x%d=0.0d0
+           
         end subroutine
 
         subroutine zero_deriv_a2(x)
           type(active), dimension(:,:), intent(inout) :: x
-          x%d = 0.0d0
+          
+          
+             x%d=0.0d0
+           
         end subroutine
 
         subroutine zero_deriv_a3(x)
           type(active), dimension(:,:,:), intent(inout) :: x
-          x%d = 0.0d0
+          
+          
+             x%d=0.0d0
+           
         end subroutine
 
         subroutine zero_deriv_a4(x)
           type(active), dimension(:,:,:,:), intent(inout) :: x
-          x%d = 0.0d0
+          
+          
+             x%d=0.0d0
+           
         end subroutine
 
         !
@@ -427,7 +493,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           real(w2f__8), dimension(:,:,:,:,:,:,:), intent(in) :: convertFrom
           convertTo%v=convertFrom
         end subroutine
-
         subroutine convert_r0_a0(convertTo, convertFrom)
           real(w2f__4), intent(out) :: convertTo
           type(active), intent(in) :: convertFrom
@@ -509,7 +574,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           real(w2f__4), dimension(:,:,:,:,:,:,:), intent(in) :: convertFrom
           convertTo%v=convertFrom
         end subroutine
-
         !
         ! allocations
         !
@@ -583,7 +647,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
                size(allocateMatching,4),&
                size(allocateMatching,5)))
         end subroutine
-
         subroutine allocateMatching_r1_a1(toBeAllocated,allocateMatching)
           implicit none
           real(w2f__4), dimension(:), allocatable :: toBeAllocated
@@ -597,7 +660,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
                size(allocateMatching,2)))
         end subroutine
-
         !
         ! shape tests
         !
@@ -655,7 +717,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           type(active), dimension(:,:,:,:,:) :: origVar
           if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange) 
         end subroutine
-
         subroutine shapeTest_r1_a1(allocatedVar,origVar)
           implicit none
           real(w2f__4), dimension(:), allocatable :: allocatedVar
@@ -668,7 +729,6 @@ oad_convert, oad_allocateMatching, oad_shapeTest
           type(active), dimension(:,:) :: origVar
           if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
         end subroutine
-
         subroutine runTimeErrorStopI(mesgId)
           implicit none
 	  integer mesgId
