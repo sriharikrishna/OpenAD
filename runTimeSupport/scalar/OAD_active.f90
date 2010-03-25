@@ -42,8 +42,10 @@
           module procedure setderiv_a0_a0
           module procedure setderiv_a1_a1
           module procedure setderiv_a2_a2
-          ! the following variants are NON-SYMMETRIC (forward-only)
+          module procedure setderiv_a3_a3
+          !~The following variants are asymmetric
           module procedure setderiv_a1_a0
+          module procedure setderiv_a2_a0
         end interface
 
         interface set_neg_deriv
@@ -54,11 +56,13 @@
         interface inc_deriv
           module procedure inc_deriv_a0_a0
           module procedure inc_deriv_a1_a1
+          module procedure inc_deriv_a2_a2
         end interface inc_deriv
 
         interface dec_deriv
           module procedure dec_deriv_a0_a0
           module procedure dec_deriv_a1_a1
+          module procedure dec_deriv_a2_a2
         end interface dec_deriv
 
         interface zero_deriv
@@ -114,13 +118,13 @@
           module procedure allocateMatching_a1_a1
           module procedure allocateMatching_d1_a1
           module procedure allocateMatching_a2_a2
-          module procedure allocateMatching_d2_a2
+          module procedure allocateMatching_d2_a2,allocateMatching_a2_d2
           module procedure allocateMatching_a4_a4
           module procedure allocateMatching_d4_a4
           module procedure allocateMatching_a5_a5
           module procedure allocateMatching_d5_a5
           module procedure allocateMatching_r1_a1
-          module procedure allocateMatching_r2_a2
+          module procedure allocateMatching_a2_r2,allocateMatching_r2_a2
         end interface 
 
         interface oad_shapeTest
@@ -303,12 +307,26 @@
             y%d = x%d
         end subroutine
 
+        subroutine setderiv_a3_a3(y,x)
+          type(active), intent(inout), dimension(:,:,:) :: y
+          type(active), intent(in), dimension(:,:,:) :: x
+            y%d = x%d
+        end subroutine
+
         subroutine setderiv_a1_a0(y,x)
           ! NB: this variant is NON-SYMMETRIC (forward only)
           type(active), intent(inout), dimension(:) :: y
           type(active), intent(in) :: x
             y%d = x%d
         end subroutine
+
+        subroutine setderiv_a2_a0(y,x)
+          ! NB: this variant is NON-SYMMETRIC (forward only)
+          type(active), intent(inout), dimension(:,:) :: y
+          type(active), intent(in) :: x
+            y%d = x%d
+        end subroutine
+
         !
         ! set the derivative of y to be the negated derivative of x
         ! note: making y inout allows for already existing active
@@ -357,6 +375,12 @@
           
         end subroutine
 
+        subroutine inc_deriv_a2_a2(y,x)
+          type(active), intent(inout), dimension(:,:) :: y
+          type(active), intent(in), dimension(:,:) :: x
+            y%d = y%d + x%d
+        end subroutine
+
         !
         ! decrement the derivative of y by the derivative of x
         ! note: making y inout allows for already existing active
@@ -381,6 +405,12 @@
           
         end subroutine
         
+        subroutine dec_deriv_a2_a2(y,x)
+          type(active), intent(inout), dimension(:,:) :: y
+          type(active), intent(in), dimension(:,:) :: x
+            y%d = y%d - x%d
+        end subroutine
+
         !
         ! set derivative components to 0.0
         !
@@ -624,6 +654,14 @@
           if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
                size(allocateMatching,2)))
         end subroutine
+        subroutine allocateMatching_a2_d2(toBeAllocated,allocateMatching)
+          implicit none
+          type(active), dimension(:,:), allocatable :: toBeAllocated
+          real(w2f__8), dimension(:,:) :: allocateMatching
+          if (.not. allocated(toBeAllocated)) &
+            allocate(toBeAllocated(size(allocateMatching,1), &
+                                   size(allocateMatching,2)))
+        end subroutine
         subroutine allocateMatching_a4_a4(toBeAllocated,allocateMatching)
           implicit none
           type(active), dimension(:,:,:,:), allocatable :: toBeAllocated
@@ -667,6 +705,14 @@
           real(w2f__4), dimension(:), allocatable :: toBeAllocated
           type(active), dimension(:) :: allocateMatching
           if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
+        end subroutine
+        subroutine allocateMatching_a2_r2(toBeAllocated,allocateMatching)
+          implicit none
+          type(active), dimension(:,:), allocatable :: toBeAllocated
+          real(w2f__4), dimension(:,:) :: allocateMatching
+          if (.not. allocated(toBeAllocated)) &
+            allocate(toBeAllocated(size(allocateMatching,1), &
+                                   size(allocateMatching,2)))
         end subroutine
         subroutine allocateMatching_r2_a2(toBeAllocated,allocateMatching)
           implicit none
