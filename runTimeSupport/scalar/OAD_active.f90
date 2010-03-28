@@ -36,6 +36,10 @@
         interface saxpy
           module procedure saxpy_d0_a0_a0, saxpy_l0_a0_a0, saxpy_i0_a0_a0
           module procedure saxpy_d1_a1_a1, saxpy_l1_a1_a1, saxpy_i1_a1_a1
+          module procedure saxpy_d1_a0_a1, saxpy_a1_a1_a1
+          module procedure saxpy_d0_a0_a1, saxpy_d0_a1_a1, saxpy_d0_a2_a2
+          module procedure saxpy_d2_a0_a2, saxpy_d2_a2_a2
+          module procedure saxpy_r0_a0_a0
         end interface
         
         interface setderiv
@@ -76,6 +80,12 @@
         interface sax
           module procedure sax_d0_a0_a0, sax_l0_a0_a0, sax_i0_a0_a0
           module procedure sax_d1_a1_a1, sax_l1_a1_a1, sax_i1_a1_a1
+          module procedure sax_d0_a1_a1, sax_d0_a2_a2
+          module procedure sax_d2_a2_a2
+          module procedure sax_r0_a0_a0
+          !~The following variants are asymmetric
+          module procedure sax_d0_a0_a1, sax_d0_a0_a2, sax_d1_a0_a1
+          module procedure sax_d2_a0_a2
         end interface
 
         interface oad_convert
@@ -114,16 +124,17 @@
         end interface
 
         interface oad_allocateMatching
+          module procedure allocateMatching_a1_r1,allocateMatching_r1_a1
           module procedure allocateMatching_a1_d1
           module procedure allocateMatching_a1_a1
           module procedure allocateMatching_d1_a1
           module procedure allocateMatching_a2_a2
           module procedure allocateMatching_d2_a2,allocateMatching_a2_d2
+          module procedure allocateMatching_d3_a3,allocateMatching_a3_d3
           module procedure allocateMatching_a4_a4
           module procedure allocateMatching_d4_a4
           module procedure allocateMatching_a5_a5
           module procedure allocateMatching_d5_a5
-          module procedure allocateMatching_r1_a1
           module procedure allocateMatching_a2_r2,allocateMatching_r2_a2
         end interface 
 
@@ -132,7 +143,7 @@
           module procedure shapeTest_a1_a1
           module procedure shapeTest_d1_a1
           module procedure shapeTest_a2_a2
-          module procedure shapeTest_d2_a2
+          module procedure shapeTest_d2_a2,shapeTest_d3_a3
           module procedure shapeTest_a4_a4
           module procedure shapeTest_d4_a4
           module procedure shapeTest_a5_a5
@@ -210,6 +221,62 @@
           
         end subroutine
 
+        subroutine saxpy_d1_a0_a1(a,x,y)
+          real(w2f__8), dimension(:), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+            y%d=y%d+x%d*a
+        end subroutine
+
+        subroutine saxpy_a1_a1_a1(a,x,y)
+          type(active), dimension(:), intent(in) :: a
+          type(active), dimension(:), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+            y%d=y%d+x%d*a%d
+        end subroutine
+
+        subroutine saxpy_d0_a0_a1(a,x,y)
+          real(w2f__8), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+            y%d=y%d+x%d*a
+        end subroutine
+
+        subroutine saxpy_d0_a1_a1(a,x,y)
+          real(w2f__8), intent(in) :: a
+          type(active), dimension(:), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+            y%d=y%d+x%d*a
+        end subroutine
+
+        subroutine saxpy_d0_a2_a2(a,x,y)
+          real(w2f__8), intent(in) :: a
+          type(active), dimension(:,:), intent(in) :: x
+          type(active), dimension(:,:), intent(inout) :: y
+            y%d=y%d+x%d*a
+        end subroutine
+
+        subroutine saxpy_d2_a0_a2(a,x,y)
+          real(w2f__8), dimension(:,:), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:,:), intent(inout) :: y
+            y%d=y%d+x%d*a
+        end subroutine
+
+        subroutine saxpy_d2_a2_a2(a,x,y)
+          real(w2f__8), dimension(:,:), intent(in) :: a
+          type(active), dimension(:,:), intent(in) :: x
+          type(active), dimension(:,:), intent(inout) :: y
+            y%d=y%d+x%d*a
+        end subroutine
+
+        subroutine saxpy_r0_a0_a0(a,x,y)
+          real(w2f__4), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), intent(inout) :: y
+            y%d = y%d + x%d*a
+        end subroutine
+
         !
         ! chain rule saxpy to be used in forward and reverse modes
         ! derivative component of y is equal to zero initially
@@ -275,6 +342,66 @@
           
             y%d=x%d*a
           
+        end subroutine
+
+        subroutine sax_d0_a1_a1(a,x,y)
+          real(w2f__8), intent(in) :: a
+          type(active), dimension(:), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+            y%d=x%d*a
+        end subroutine
+
+        subroutine sax_d0_a2_a2(a,x,y)
+          real(w2f__8), intent(in) :: a
+          type(active), dimension(:,:), intent(in) :: x
+          type(active), dimension(:,:), intent(inout) :: y
+            y%d=x%d*a
+        end subroutine
+
+        subroutine sax_d2_a2_a2(a,x,y)
+          real(w2f__8), dimension(:,:), intent(in) :: a
+          type(active), dimension(:,:), intent(in) :: x
+          type(active), dimension(:,:), intent(inout) :: y
+            y%d=x%d*a
+        end subroutine
+
+        subroutine sax_r0_a0_a0(a,x,y)
+          real(w2f__4), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), intent(inout) :: y
+            y%d = x%d*a
+        end subroutine
+
+        subroutine sax_d0_a0_a1(a,x,y)
+          ! NB: this variant is NON-SYMMETRIC (forward only)
+          real(w2f__8), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+            y%d = x%d*a
+        end subroutine
+
+        subroutine sax_d0_a0_a2(a,x,y)
+          ! NB: this variant is NON-SYMMETRIC (forward only)
+          real(w2f__8), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:,:), intent(inout) :: y
+            y%d = x%d*a
+        end subroutine
+
+        subroutine sax_d1_a0_a1(a,x,y)
+          ! NB: this variant is NON-SYMMETRIC (forward only)
+          real(w2f__8), dimension(:), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+            y%d = x%d*a
+        end subroutine
+
+        subroutine sax_d2_a0_a2(a,x,y)
+          ! NB: this variant is NON-SYMMETRIC (forward only)
+          real(w2f__8), dimension(:,:), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:,:), intent(inout) :: y
+            y%d = x%d*a
         end subroutine
 
         !
@@ -622,12 +749,26 @@
         !
         ! allocations
         !
+        subroutine allocateMatching_a1_r1(toBeAllocated,allocateMatching)
+          implicit none
+          type(active), dimension(:), allocatable :: toBeAllocated
+          real(w2f__4), dimension(:) :: allocateMatching
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
+        end subroutine
+        subroutine allocateMatching_r1_a1(toBeAllocated,allocateMatching)
+          implicit none
+          real(w2f__4), dimension(:), allocatable :: toBeAllocated
+          type(active), dimension(:) :: allocateMatching
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
+        end subroutine
+
         subroutine allocateMatching_a1_d1(toBeAllocated,allocateMatching)
           implicit none
           type(active), dimension(:), allocatable :: toBeAllocated
           real(w2f__8), dimension(:) :: allocateMatching
           if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
         end subroutine
+
         subroutine allocateMatching_a1_a1(toBeAllocated,allocateMatching)
           implicit none
           type(active), dimension(:), allocatable :: toBeAllocated
@@ -647,12 +788,14 @@
           if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
                size(allocateMatching,2)))
         end subroutine
+
         subroutine allocateMatching_d2_a2(toBeAllocated,allocateMatching)
           implicit none
           real(w2f__8), dimension(:,:), allocatable :: toBeAllocated
           type(active), dimension(:,:) :: allocateMatching
-          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
-               size(allocateMatching,2)))
+          if (.not. allocated(toBeAllocated)) &
+            allocate(toBeAllocated(size(allocateMatching,1), &
+                                   size(allocateMatching,2)))
         end subroutine
         subroutine allocateMatching_a2_d2(toBeAllocated,allocateMatching)
           implicit none
@@ -662,6 +805,26 @@
             allocate(toBeAllocated(size(allocateMatching,1), &
                                    size(allocateMatching,2)))
         end subroutine
+
+        subroutine allocateMatching_d3_a3(toBeAllocated,allocateMatching)
+          implicit none
+          real(w2f__8), dimension(:,:,:), allocatable :: toBeAllocated
+          type(active), dimension(:,:,:) :: allocateMatching
+          if (.not. allocated(toBeAllocated)) &
+            allocate(toBeAllocated(size(allocateMatching,1), &
+                                   size(allocateMatching,2), &
+                                   size(allocateMatching,3)))
+        end subroutine
+        subroutine allocateMatching_a3_d3(toBeAllocated,allocateMatching)
+          implicit none
+          type(active), dimension(:,:,:), allocatable :: toBeAllocated
+          real(w2f__8), dimension(:,:,:) :: allocateMatching
+          if (.not. allocated(toBeAllocated)) &
+            allocate(toBeAllocated(size(allocateMatching,1), &
+                                   size(allocateMatching,2), &
+                                   size(allocateMatching,3)))
+        end subroutine
+
         subroutine allocateMatching_a4_a4(toBeAllocated,allocateMatching)
           implicit none
           type(active), dimension(:,:,:,:), allocatable :: toBeAllocated
@@ -699,12 +862,6 @@
                size(allocateMatching,3),&
                size(allocateMatching,4),&
                size(allocateMatching,5)))
-        end subroutine
-        subroutine allocateMatching_r1_a1(toBeAllocated,allocateMatching)
-          implicit none
-          real(w2f__4), dimension(:), allocatable :: toBeAllocated
-          type(active), dimension(:) :: allocateMatching
-          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
         end subroutine
         subroutine allocateMatching_a2_r2(toBeAllocated,allocateMatching)
           implicit none
@@ -752,6 +909,12 @@
           implicit none
           real(w2f__8), dimension(:,:), allocatable :: allocatedVar
           type(active), dimension(:,:) :: origVar
+          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
+        end subroutine
+        subroutine shapeTest_d3_a3(allocatedVar,origVar)
+          implicit none
+          real(w2f__8), dimension(:,:,:), allocatable :: allocatedVar
+          type(active), dimension(:,:,:) :: origVar
           if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
         end subroutine
         subroutine shapeTest_a4_a4(allocatedVar,origVar)
