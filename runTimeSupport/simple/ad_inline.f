@@ -85,6 +85,26 @@ C $OpenAD$ END DECLS
         x(:)=double_tape(double_tape_pointer:)
       end subroutine
 
+      subroutine push_s2(x)
+C $OpenAD$ INLINE DECLS
+      use OpenAD_tape
+      implicit none
+      double precision :: x(:,:)
+C $OpenAD$ END DECLS
+        double_tape(double_tape_pointer:)=reshape(x,(/size(x,1)*size(x,2)/))
+        double_tape_pointer=double_tape_pointer+(size(x,1)*size(x,2))
+      end subroutine 
+
+      subroutine pop_s2(x)
+C $OpenAD$ INLINE DECLS
+      use OpenAD_tape
+      implicit none
+      double precision :: x(:,:)
+C $OpenAD$ END DECLS
+        double_tape_pointer=double_tape_pointer-(size(x,1)*size(x,2))
+        x(:,:)=reshape(double_tape(double_tape_pointer:),shape(x))
+      end subroutine
+
       subroutine apush(x)
 C $OpenAD$ INLINE DECLS
       use OpenAD_tape
