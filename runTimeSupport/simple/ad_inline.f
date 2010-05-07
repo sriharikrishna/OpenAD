@@ -71,7 +71,7 @@ C $OpenAD$ INLINE DECLS
       implicit none
       double precision :: x(:)
 C $OpenAD$ END DECLS
-        double_tape(double_tape_pointer:)=x(:)
+        double_tape(double_tape_pointer:double_tape_pointer+size(x)-1)=x(:)
         double_tape_pointer=double_tape_pointer+size(x)
       end subroutine 
 
