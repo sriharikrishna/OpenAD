@@ -119,6 +119,7 @@
           module procedure allocateMatching_d4_a4
           module procedure allocateMatching_a5_a5
           module procedure allocateMatching_d5_a5
+          module procedure allocateMatching_a5_d5
           module procedure allocateMatching_r1_a1
           module procedure allocateMatching_r2_a2
         end interface 
@@ -133,6 +134,7 @@
           module procedure shapeTest_d4_a4
           module procedure shapeTest_a5_a5
           module procedure shapeTest_d5_a5
+          module procedure shapeTest_a5_d5
           module procedure shapeTest_r1_a1
           module procedure shapeTest_r2_a2
         end interface 
@@ -650,6 +652,16 @@
                size(allocateMatching,4),&
                size(allocateMatching,5)))
         end subroutine
+        subroutine allocateMatching_a5_d5(toBeAllocated,allocateMatching)
+          implicit none
+          type(active), dimension(:,:,:,:,:), allocatable :: toBeAllocated
+          real(w2f__8), dimension(:,:,:,:,:) :: allocateMatching
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
+               size(allocateMatching,2),&
+               size(allocateMatching,3),&
+               size(allocateMatching,4),&
+               size(allocateMatching,5)))
+        end subroutine
         subroutine allocateMatching_r1_a1(toBeAllocated,allocateMatching)
           implicit none
           real(w2f__4), dimension(:), allocatable :: toBeAllocated
@@ -718,6 +730,12 @@
           implicit none
           real(w2f__8), dimension(:,:,:,:,:), allocatable :: allocatedVar
           type(active), dimension(:,:,:,:,:) :: origVar
+          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange) 
+        end subroutine
+        subroutine shapeTest_a5_d5(allocatedVar,origVar)
+          implicit none
+          type(active), dimension(:,:,:,:,:), allocatable :: allocatedVar
+          real(w2f__8), dimension(:,:,:,:,:) :: origVar
           if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange) 
         end subroutine
         subroutine shapeTest_r1_a1(allocatedVar,origVar)
