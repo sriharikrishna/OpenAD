@@ -12,7 +12,8 @@
         public :: saxpy, sax, zero_deriv, setderiv
         public :: set_neg_deriv, inc_deriv, dec_deriv
 #endif
-        public :: oad_convert, oad_allocateMatching, oad_shapeTest
+        public :: oad_convert
+        public :: oad_allocateMatching, oad_allocateShape, oad_shapeTest
 #ifndef TRACE
         integer :: count_mult = 0
         integer :: count_add = 0
@@ -145,6 +146,11 @@
           module procedure allocateMatching_r1_a1
           module procedure allocateMatching_r2_a2
 #endif
+        end interface 
+
+        interface oad_allocateShape
+          module procedure allocateShape_d1
+          module procedure allocateShape_d2
         end interface 
 
         interface oad_shapeTest
@@ -706,6 +712,21 @@
                size(allocateMatching,2)))
         end subroutine
 #endif
+        !
+        ! allocate shape
+        !
+        subroutine allocateShape_d1(toBeAllocated,s1)
+          implicit none
+          real(w2f__8), dimension(:), allocatable :: toBeAllocated
+          integer(w2f__i8) :: s1
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(s1))
+        end subroutine
+        subroutine allocateShape_d2(toBeAllocated,s1,s2)
+          implicit none
+          real(w2f__8), dimension(:,:), allocatable :: toBeAllocated
+          integer(w2f__i8) :: s1,s2
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(s1,s2))
+        end subroutine
         !
         ! shape tests
         !

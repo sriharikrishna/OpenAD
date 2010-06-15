@@ -14,7 +14,8 @@
 
 
 
-        public :: oad_convert, oad_allocateMatching, oad_shapeTest
+        public :: oad_convert
+        public :: oad_allocateMatching, oad_allocateShape, oad_shapeTest
 
 
 
@@ -77,6 +78,11 @@
           module procedure allocateMatching_a5_d5
           module procedure allocateMatching_r1_a1
           module procedure allocateMatching_r2_a2
+        end interface 
+
+        interface oad_allocateShape
+          module procedure allocateShape_d1
+          module procedure allocateShape_d2
         end interface 
 
         interface oad_shapeTest
@@ -359,6 +365,21 @@
           type(active), dimension(:,:) :: allocateMatching
           if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
                size(allocateMatching,2)))
+        end subroutine
+        !
+        ! allocate shape
+        !
+        subroutine allocateShape_d1(toBeAllocated,s1)
+          implicit none
+          real(w2f__8), dimension(:), allocatable :: toBeAllocated
+          integer(w2f__i8) :: s1
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(s1))
+        end subroutine
+        subroutine allocateShape_d2(toBeAllocated,s1,s2)
+          implicit none
+          real(w2f__8), dimension(:,:), allocatable :: toBeAllocated
+          integer(w2f__i8) :: s1,s2
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(s1,s2))
         end subroutine
         !
         ! shape tests
