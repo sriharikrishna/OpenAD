@@ -47,12 +47,11 @@
         
         interface setderiv
           module procedure setderiv_a0_a0
+          module procedure setderiv_a1_a0
           module procedure setderiv_a1_a1
+          module procedure setderiv_a2_a0
           module procedure setderiv_a2_a2
           module procedure setderiv_a3_a3
-          !~The following variants are asymmetric
-          module procedure setderiv_a1_a0
-          module procedure setderiv_a2_a0
         end interface
 
         interface set_neg_deriv
@@ -319,7 +318,7 @@
           type(active), intent(inout) :: y
           
           
-            y%d = x%d*a
+            y%d=x%d*a
           
         end subroutine
         subroutine sax_l0_a0_a0(a,x,y)
@@ -328,7 +327,7 @@
           type(active), intent(inout) :: y
           
           
-            y%d = x%d*a
+            y%d=x%d*a
           
         end subroutine
         subroutine sax_i0_a0_a0(a,x,y)
@@ -337,7 +336,7 @@
           type(active), intent(inout) :: y
           
           
-            y%d = x%d*a
+            y%d=x%d*a
           
         end subroutine
         subroutine sax_d0_a0_a1(a,x,y)
@@ -346,7 +345,7 @@
           type(active), dimension(:), intent(inout) :: y
           
           
-            y%d = x%d*a
+            y%d=x%d*a
           
         end subroutine
         subroutine sax_d0_a0_a2(a,x,y)
@@ -364,7 +363,7 @@
           type(active), dimension(:), intent(inout) :: y
           
           
-            y%d = x%d*a
+            y%d=x%d*a
           
         end subroutine
         subroutine sax_d0_a2_a2(a,x,y)
@@ -373,7 +372,7 @@
           type(active), dimension(:,:), intent(inout) :: y
           
           
-            y%d = x%d*a
+            y%d=x%d*a
           
         end subroutine
         subroutine sax_d1_a0_a1(a,x,y)
@@ -382,7 +381,7 @@
           type(active), dimension(:), intent(inout) :: y
           
           
-            y%d = x%d*a
+            y%d=x%d*a
           
         end subroutine
         subroutine sax_d1_a1_a1(a,x,y)
@@ -418,7 +417,7 @@
           type(active), dimension(:,:), intent(inout) :: y
           
           
-            y%d = x%d*a
+            y%d=x%d*a
           
         end subroutine
         subroutine sax_d2_a2_a2(a,x,y)
@@ -427,7 +426,7 @@
           type(active), dimension(:,:), intent(inout) :: y
           
           
-            y%d = x%d*a
+            y%d=x%d*a
           
         end subroutine
         subroutine sax_r0_a0_a0(a,x,y)
@@ -436,7 +435,7 @@
           type(active), intent(inout) :: y
           
           
-            y%d = x%d*a
+            y%d=x%d*a
           
         end subroutine
         !
@@ -444,7 +443,6 @@
         ! note: making y inout allows for already existing active
         ! variables to become the target of a derivative assignment
         !
-        
         subroutine setderiv_a0_a0(y,x)
           type(active), intent(inout) :: y
           type(active), intent(in) :: x
@@ -453,7 +451,14 @@
             y%d = x%d
           
         end subroutine
-
+        subroutine setderiv_a1_a0(y,x)
+          type(active), intent(inout), dimension(:) :: y
+          type(active), intent(in) :: x
+          
+          
+            y%d = x%d
+          
+        end subroutine
         subroutine setderiv_a1_a1(y,x)
           type(active), intent(inout), dimension(:) :: y
           type(active), intent(in), dimension(:) :: x
@@ -462,33 +467,30 @@
             y%d = x%d
           
         end subroutine
-
+        subroutine setderiv_a2_a0(y,x)
+          type(active), intent(inout), dimension(:,:) :: y
+          type(active), intent(in) :: x
+          
+          
+            y%d = x%d
+          
+        end subroutine
         subroutine setderiv_a2_a2(y,x)
           type(active), intent(inout), dimension(:,:) :: y
           type(active), intent(in), dimension(:,:) :: x
+          
+          
             y%d = x%d
+          
         end subroutine
-
         subroutine setderiv_a3_a3(y,x)
           type(active), intent(inout), dimension(:,:,:) :: y
           type(active), intent(in), dimension(:,:,:) :: x
+          
+          
             y%d = x%d
+          
         end subroutine
-
-        subroutine setderiv_a1_a0(y,x)
-          ! NB: this variant is NON-SYMMETRIC (forward only)
-          type(active), intent(inout), dimension(:) :: y
-          type(active), intent(in) :: x
-            y%d = x%d
-        end subroutine
-
-        subroutine setderiv_a2_a0(y,x)
-          ! NB: this variant is NON-SYMMETRIC (forward only)
-          type(active), intent(inout), dimension(:,:) :: y
-          type(active), intent(in) :: x
-            y%d = x%d
-        end subroutine
-
         !
         ! set the derivative of y to be the negated derivative of x
         ! note: making y inout allows for already existing active
