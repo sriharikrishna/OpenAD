@@ -55,11 +55,13 @@
         interface inc_deriv
           module procedure inc_deriv_a0_a0
           module procedure inc_deriv_a1_a1
+          module procedure inc_deriv_a2_a2
         end interface inc_deriv
 
         interface dec_deriv
           module procedure dec_deriv_a0_a0
           module procedure dec_deriv_a1_a1
+          module procedure dec_deriv_a2_a2
         end interface dec_deriv
 
         interface zero_deriv
@@ -355,6 +357,15 @@
           end do
         end subroutine
 
+        subroutine inc_deriv_a2_a2(y,x)
+          type(active), intent(inout), dimension(:,:) :: y
+          type(active), intent(in), dimension(:,:) :: x
+          integer :: i
+          do i=1,max_deriv_vec_len
+            y%d(i) = y%d(i) + x%d(i)
+          end do
+        end subroutine
+
         !
         ! decrement the derivative of y by the derivative of x
         ! note: making y inout allows for already existing active
@@ -373,6 +384,15 @@
         subroutine dec_deriv_a1_a1(y,x)
           type(active), intent(inout), dimension(:) :: y
           type(active), intent(in), dimension(:) :: x
+          integer :: i
+          do i=1,max_deriv_vec_len
+            y%d(i) = y%d(i) - x%d(i)
+          end do
+        end subroutine
+        
+        subroutine dec_deriv_a2_a2(y,x)
+          type(active), intent(inout), dimension(:,:) :: y
+          type(active), intent(in), dimension(:,:) :: x
           integer :: i
           do i=1,max_deriv_vec_len
             y%d(i) = y%d(i) - x%d(i)
