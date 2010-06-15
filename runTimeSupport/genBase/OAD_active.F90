@@ -57,7 +57,19 @@
 #ifndef TRACE
         interface saxpy
           module procedure saxpy_d0_a0_a0, saxpy_l0_a0_a0, saxpy_i0_a0_a0
-          module procedure saxpy_d1_a1_a1, saxpy_l1_a1_a1, saxpy_i1_a1_a1
+          module procedure saxpy_d0_a0_a1
+          module procedure saxpy_d0_a1_a1
+          module procedure saxpy_d0_a2_a2
+          module procedure saxpy_d1_a0_a1
+          module procedure saxpy_d1_a1_a1, saxpy_l1_a1_a1, saxpy_i1_a1_a1,  saxpy_a1_a1_a1
+          module procedure saxpy_d2_a0_a2
+          module procedure saxpy_d2_a2_a2
+# ifndef DEFAULT_R8
+          module procedure saxpy_r0_a0_a0
+          module procedure saxpy_r0_a1_a1
+          module procedure saxpy_r1_a0_a1
+          module procedure saxpy_r1_a1_a1
+# endif
         end interface
         
         interface setderiv
@@ -210,37 +222,69 @@
         !
         ! chain rule saxpy to be used in forward and reverse modes
         !
-        
         subroutine saxpy_d0_a0_a0(a,x,y)
           real(w2f__8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
           VECTOR_LOOP_VAR
           VECTOR_LOOP_BEGIN
-            y%DELEM = y%DELEM + x%DELEM*a
+            y%DELEM=y%DELEM + x%DELEM*a
           VECTOR_LOOP_END
         end subroutine
-
-        subroutine saxpy_i0_a0_a0(a,x,y)
-          integer(kind=w2f__i4), intent(in) :: a
-          type(active), intent(in) :: x
-          type(active), intent(inout) :: y
-          VECTOR_LOOP_VAR
-          VECTOR_LOOP_BEGIN
-            y%DELEM = y%DELEM + x%DELEM*a
-          VECTOR_LOOP_END
-        end subroutine
-        
         subroutine saxpy_l0_a0_a0(a,x,y)
           integer(kind=w2f__i8), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
           VECTOR_LOOP_VAR
           VECTOR_LOOP_BEGIN
-            y%DELEM = y%DELEM + x%DELEM*a
+            y%DELEM=y%DELEM + x%DELEM*a
           VECTOR_LOOP_END
         end subroutine
-
+        subroutine saxpy_i0_a0_a0(a,x,y)
+          integer(kind=w2f__i4), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM=y%DELEM + x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine saxpy_d0_a0_a1(a,x,y)
+          real(w2f__8), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM=y%DELEM + x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine saxpy_d0_a1_a1(a,x,y)
+          real(w2f__8), intent(in) :: a
+          type(active), dimension(:), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM=y%DELEM + x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine saxpy_d0_a2_a2(a,x,y)
+          real(w2f__8), intent(in) :: a
+          type(active), dimension(:,:), intent(in) :: x
+          type(active), dimension(:,:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM=y%DELEM + x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine saxpy_d1_a0_a1(a,x,y)
+          real(w2f__8), dimension(:), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM=y%DELEM+x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
         subroutine saxpy_d1_a1_a1(a,x,y)
           real(w2f__8), dimension(:), intent(in) :: a
           type(active), dimension(:), intent(in) :: x
@@ -250,17 +294,6 @@
             y%DELEM=y%DELEM+x%DELEM*a
           VECTOR_LOOP_END
         end subroutine
-
-        subroutine saxpy_i1_a1_a1(a,x,y)
-          integer(kind=w2f__i4), dimension(:), intent(in) :: a
-          type(active), dimension(:), intent(in) :: x
-          type(active), dimension(:), intent(inout) :: y
-          VECTOR_LOOP_VAR
-          VECTOR_LOOP_BEGIN
-            y%DELEM=y%DELEM+x%DELEM*a
-          VECTOR_LOOP_END
-        end subroutine
-        
         subroutine saxpy_l1_a1_a1(a,x,y)
           integer(kind=w2f__i8), dimension(:), intent(in) :: a
           type(active), dimension(:), intent(in) :: x
@@ -270,6 +303,80 @@
             y%DELEM=y%DELEM+x%DELEM*a
           VECTOR_LOOP_END
         end subroutine
+        subroutine saxpy_i1_a1_a1(a,x,y)
+          integer(kind=w2f__i4), dimension(:), intent(in) :: a
+          type(active), dimension(:), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM=y%DELEM+x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine saxpy_a1_a1_a1(a,x,y)
+          type(active), dimension(:), intent(in) :: a
+          type(active), dimension(:), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM=y%DELEM+x%DELEM*a%v
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine saxpy_d2_a0_a2(a,x,y)
+          real(w2f__8), dimension(:,:), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:,:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM=y%DELEM + x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine saxpy_d2_a2_a2(a,x,y)
+          real(w2f__8), dimension(:,:), intent(in) :: a
+          type(active), dimension(:,:), intent(in) :: x
+          type(active), dimension(:,:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM=y%DELEM + x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+# ifndef DEFAULT_R8
+        subroutine saxpy_r0_a0_a0(a,x,y)
+          real(w2f__4), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM=y%DELEM + x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine saxpy_r0_a1_a1(a,x,y)
+          real(w2f__4), intent(in) :: a
+          type(active), dimension(:), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM=y%DELEM + x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine saxpy_r1_a0_a1(a,x,y)
+          real(w2f__4), dimension(:), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM=y%DELEM + x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine saxpy_r1_a1_a1(a,x,y)
+          real(w2f__4), dimension(:), intent(in) :: a
+          type(active), dimension(:), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM=y%DELEM+x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+# endif
         !
         ! chain rule saxpy to be used in forward and reverse modes
         ! derivative component of y is equal to zero initially
@@ -492,7 +599,7 @@
           type(active), intent(in) :: x
           VECTOR_LOOP_VAR
           VECTOR_LOOP_BEGIN
-            y%DELEM = y%DELEM + x%DELEM
+            y%DELEM=y%DELEM + x%DELEM
           VECTOR_LOOP_END
         end subroutine
 
@@ -501,7 +608,7 @@
           type(active), intent(in), dimension(:) :: x
           VECTOR_LOOP_VAR
           VECTOR_LOOP_BEGIN
-            y%DELEM = y%DELEM + x%DELEM
+            y%DELEM=y%DELEM + x%DELEM
           VECTOR_LOOP_END
         end subroutine
 
@@ -510,7 +617,7 @@
           type(active), intent(in), dimension(:,:) :: x
           VECTOR_LOOP_VAR
           VECTOR_LOOP_BEGIN
-            y%DELEM = y%DELEM + x%DELEM
+            y%DELEM=y%DELEM + x%DELEM
           VECTOR_LOOP_END
         end subroutine
 
@@ -525,7 +632,7 @@
           type(active), intent(in) :: x
           VECTOR_LOOP_VAR
           VECTOR_LOOP_BEGIN
-            y%DELEM = y%DELEM - x%DELEM
+            y%DELEM=y%DELEM - x%DELEM
           VECTOR_LOOP_END
         end subroutine
 
@@ -534,7 +641,7 @@
           type(active), intent(in), dimension(:) :: x
           VECTOR_LOOP_VAR
           VECTOR_LOOP_BEGIN
-            y%DELEM = y%DELEM - x%DELEM
+            y%DELEM=y%DELEM - x%DELEM
           VECTOR_LOOP_END
         end subroutine
         
@@ -543,7 +650,7 @@
           type(active), intent(in), dimension(:,:) :: x
           VECTOR_LOOP_VAR
           VECTOR_LOOP_BEGIN
-            y%DELEM = y%DELEM - x%DELEM
+            y%DELEM=y%DELEM - x%DELEM
           VECTOR_LOOP_END
         end subroutine
         
