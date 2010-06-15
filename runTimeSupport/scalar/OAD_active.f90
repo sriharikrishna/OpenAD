@@ -160,6 +160,7 @@
           module procedure shapeTest_d4_a4
           module procedure shapeTest_a5_a5
           module procedure shapeTest_d5_a5
+          module procedure shapeTest_a5_d5
           module procedure shapeTest_r1_a1
           module procedure shapeTest_r2_a2
         end interface 
@@ -911,6 +912,16 @@
           implicit none
           real(w2f__8), dimension(:,:,:,:,:), allocatable :: toBeAllocated
           type(active), dimension(:,:,:,:,:) :: allocateMatching
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
+               size(allocateMatching,2),&
+               size(allocateMatching,3),&
+               size(allocateMatching,4),&
+               size(allocateMatching,5)))
+        end subroutine
+        subroutine allocateMatching_a5_d5(toBeAllocated,allocateMatching)
+          implicit none
+          type(active), dimension(:,:,:,:,:), allocatable :: toBeAllocated
+          real(w2f__8), dimension(:,:,:,:,:) :: allocateMatching
           if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching,1), &
                size(allocateMatching,2),&
                size(allocateMatching,3),&
