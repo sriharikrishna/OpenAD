@@ -82,13 +82,15 @@
 
         interface sax
           module procedure sax_d0_a0_a0, sax_l0_a0_a0, sax_i0_a0_a0
+          module procedure sax_d0_a0_a1
+          module procedure sax_d0_a0_a2
+          module procedure sax_d0_a1_a1
+          module procedure sax_d0_a2_a2
+          module procedure sax_d1_a0_a1
           module procedure sax_d1_a1_a1, sax_l1_a1_a1, sax_i1_a1_a1
-          module procedure sax_d0_a1_a1, sax_d0_a2_a2
+          module procedure sax_d2_a0_a2
           module procedure sax_d2_a2_a2
           module procedure sax_r0_a0_a0
-          !~The following variants are asymmetric
-          module procedure sax_d0_a0_a1, sax_d0_a0_a2, sax_d1_a0_a1
-          module procedure sax_d2_a0_a2
         end interface
 
         interface oad_convert
@@ -311,7 +313,6 @@
         ! note: y needs to be inout as otherwise value component gets
         ! zeroed out
         !
-        
         subroutine sax_d0_a0_a0(a,x,y)
           real(w2f__8), intent(in) :: a
           type(active), intent(in) :: x
@@ -321,17 +322,6 @@
             y%d = x%d*a
           
         end subroutine
-
-        subroutine sax_i0_a0_a0(a,x,y)
-          integer(kind=w2f__i4), intent(in) :: a
-          type(active), intent(in) :: x
-          type(active), intent(inout) :: y
-          
-          
-            y%d = x%d*a
-          
-        end subroutine
-
         subroutine sax_l0_a0_a0(a,x,y)
           integer(kind=w2f__i8), intent(in) :: a
           type(active), intent(in) :: x
@@ -341,7 +331,60 @@
             y%d = x%d*a
           
         end subroutine
-        
+        subroutine sax_i0_a0_a0(a,x,y)
+          integer(kind=w2f__i4), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), intent(inout) :: y
+          
+          
+            y%d = x%d*a
+          
+        end subroutine
+        subroutine sax_d0_a0_a1(a,x,y)
+          real(w2f__8), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+          
+          
+            y%d = x%d*a
+          
+        end subroutine
+        subroutine sax_d0_a0_a2(a,x,y)
+          real(w2f__8), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:,:), intent(inout) :: y
+          
+          
+            y%d = x%d*a
+          
+        end subroutine
+        subroutine sax_d0_a1_a1(a,x,y)
+          real(w2f__8), intent(in) :: a
+          type(active), dimension(:), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+          
+          
+            y%d = x%d*a
+          
+        end subroutine
+        subroutine sax_d0_a2_a2(a,x,y)
+          real(w2f__8), intent(in) :: a
+          type(active), dimension(:,:), intent(in) :: x
+          type(active), dimension(:,:), intent(inout) :: y
+          
+          
+            y%d = x%d*a
+          
+        end subroutine
+        subroutine sax_d1_a0_a1(a,x,y)
+          real(w2f__8), dimension(:), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+          
+          
+            y%d = x%d*a
+          
+        end subroutine
         subroutine sax_d1_a1_a1(a,x,y)
           real(w2f__8), dimension(:), intent(in) :: a
           type(active), dimension(:), intent(in) :: x
@@ -351,17 +394,6 @@
             y%d=x%d*a
           
         end subroutine
-
-        subroutine sax_i1_a1_a1(a,x,y)
-          integer(kind=w2f__i4), dimension(:), intent(in) :: a
-          type(active), dimension(:), intent(in) :: x
-          type(active), dimension(:), intent(inout) :: y
-          
-          
-            y%d=x%d*a
-          
-        end subroutine
-
         subroutine sax_l1_a1_a1(a,x,y)
           integer(kind=w2f__i8), dimension(:), intent(in) :: a
           type(active), dimension(:), intent(in) :: x
@@ -371,67 +403,42 @@
             y%d=x%d*a
           
         end subroutine
-
-        subroutine sax_d0_a1_a1(a,x,y)
-          real(w2f__8), intent(in) :: a
+        subroutine sax_i1_a1_a1(a,x,y)
+          integer(kind=w2f__i4), dimension(:), intent(in) :: a
           type(active), dimension(:), intent(in) :: x
           type(active), dimension(:), intent(inout) :: y
+          
+          
             y%d=x%d*a
+          
         end subroutine
-
-        subroutine sax_d0_a2_a2(a,x,y)
-          real(w2f__8), intent(in) :: a
-          type(active), dimension(:,:), intent(in) :: x
+        subroutine sax_d2_a0_a2(a,x,y)
+          real(w2f__8), dimension(:,:), intent(in) :: a
+          type(active), intent(in) :: x
           type(active), dimension(:,:), intent(inout) :: y
-            y%d=x%d*a
+          
+          
+            y%d = x%d*a
+          
         end subroutine
-
         subroutine sax_d2_a2_a2(a,x,y)
           real(w2f__8), dimension(:,:), intent(in) :: a
           type(active), dimension(:,:), intent(in) :: x
           type(active), dimension(:,:), intent(inout) :: y
-            y%d=x%d*a
+          
+          
+            y%d = x%d*a
+          
         end subroutine
-
         subroutine sax_r0_a0_a0(a,x,y)
           real(w2f__4), intent(in) :: a
           type(active), intent(in) :: x
           type(active), intent(inout) :: y
+          
+          
             y%d = x%d*a
+          
         end subroutine
-
-        subroutine sax_d0_a0_a1(a,x,y)
-          ! NB: this variant is NON-SYMMETRIC (forward only)
-          real(w2f__8), intent(in) :: a
-          type(active), intent(in) :: x
-          type(active), dimension(:), intent(inout) :: y
-            y%d = x%d*a
-        end subroutine
-
-        subroutine sax_d0_a0_a2(a,x,y)
-          ! NB: this variant is NON-SYMMETRIC (forward only)
-          real(w2f__8), intent(in) :: a
-          type(active), intent(in) :: x
-          type(active), dimension(:,:), intent(inout) :: y
-            y%d = x%d*a
-        end subroutine
-
-        subroutine sax_d1_a0_a1(a,x,y)
-          ! NB: this variant is NON-SYMMETRIC (forward only)
-          real(w2f__8), dimension(:), intent(in) :: a
-          type(active), intent(in) :: x
-          type(active), dimension(:), intent(inout) :: y
-            y%d = x%d*a
-        end subroutine
-
-        subroutine sax_d2_a0_a2(a,x,y)
-          ! NB: this variant is NON-SYMMETRIC (forward only)
-          real(w2f__8), dimension(:,:), intent(in) :: a
-          type(active), intent(in) :: x
-          type(active), dimension(:,:), intent(inout) :: y
-            y%d = x%d*a
-        end subroutine
-
         !
         ! set derivative of y to be equal to derivative of x
         ! note: making y inout allows for already existing active
@@ -533,7 +540,10 @@
         subroutine inc_deriv_a2_a2(y,x)
           type(active), intent(inout), dimension(:,:) :: y
           type(active), intent(in), dimension(:,:) :: x
+          
+          
             y%d = y%d + x%d
+          
         end subroutine
 
         !
@@ -563,9 +573,12 @@
         subroutine dec_deriv_a2_a2(y,x)
           type(active), intent(inout), dimension(:,:) :: y
           type(active), intent(in), dimension(:,:) :: x
+          
+          
             y%d = y%d - x%d
+          
         end subroutine
-
+        
         !
         ! set derivative components to 0.0
         !

@@ -92,7 +92,17 @@
 
         interface sax
           module procedure sax_d0_a0_a0, sax_l0_a0_a0, sax_i0_a0_a0
+          module procedure sax_d0_a0_a1
+          module procedure sax_d0_a0_a2
+          module procedure sax_d0_a1_a1
+          module procedure sax_d0_a2_a2
+          module procedure sax_d1_a0_a1
           module procedure sax_d1_a1_a1, sax_l1_a1_a1, sax_i1_a1_a1
+          module procedure sax_d2_a0_a2
+          module procedure sax_d2_a2_a2
+# ifndef DEFAULT_R8
+          module procedure sax_r0_a0_a0
+# endif
         end interface
 
 #endif
@@ -263,7 +273,6 @@
         ! note: y needs to be inout as otherwise value component gets
         ! zeroed out
         !
-        
         subroutine sax_d0_a0_a0(a,x,y)
           real(w2f__8), intent(in) :: a
           type(active), intent(in) :: x
@@ -273,17 +282,6 @@
             y%DELEM = x%DELEM*a
           VECTOR_LOOP_END
         end subroutine
-
-        subroutine sax_i0_a0_a0(a,x,y)
-          integer(kind=w2f__i4), intent(in) :: a
-          type(active), intent(in) :: x
-          type(active), intent(inout) :: y
-          VECTOR_LOOP_VAR
-          VECTOR_LOOP_BEGIN
-            y%DELEM = x%DELEM*a
-          VECTOR_LOOP_END
-        end subroutine
-
         subroutine sax_l0_a0_a0(a,x,y)
           integer(kind=w2f__i8), intent(in) :: a
           type(active), intent(in) :: x
@@ -293,7 +291,60 @@
             y%DELEM = x%DELEM*a
           VECTOR_LOOP_END
         end subroutine
-        
+        subroutine sax_i0_a0_a0(a,x,y)
+          integer(kind=w2f__i4), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM = x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine sax_d0_a0_a1(a,x,y)
+          real(w2f__8), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM = x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine sax_d0_a0_a2(a,x,y)
+          real(w2f__8), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:,:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM = x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine sax_d0_a1_a1(a,x,y)
+          real(w2f__8), intent(in) :: a
+          type(active), dimension(:), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM = x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine sax_d0_a2_a2(a,x,y)
+          real(w2f__8), intent(in) :: a
+          type(active), dimension(:,:), intent(in) :: x
+          type(active), dimension(:,:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM = x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine sax_d1_a0_a1(a,x,y)
+          real(w2f__8), dimension(:), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM = x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
         subroutine sax_d1_a1_a1(a,x,y)
           real(w2f__8), dimension(:), intent(in) :: a
           type(active), dimension(:), intent(in) :: x
@@ -303,17 +354,6 @@
             y%DELEM=x%DELEM*a
           VECTOR_LOOP_END
         end subroutine
-
-        subroutine sax_i1_a1_a1(a,x,y)
-          integer(kind=w2f__i4), dimension(:), intent(in) :: a
-          type(active), dimension(:), intent(in) :: x
-          type(active), dimension(:), intent(inout) :: y
-          VECTOR_LOOP_VAR
-          VECTOR_LOOP_BEGIN
-            y%DELEM=x%DELEM*a
-          VECTOR_LOOP_END
-        end subroutine
-
         subroutine sax_l1_a1_a1(a,x,y)
           integer(kind=w2f__i8), dimension(:), intent(in) :: a
           type(active), dimension(:), intent(in) :: x
@@ -323,7 +363,44 @@
             y%DELEM=x%DELEM*a
           VECTOR_LOOP_END
         end subroutine
-
+        subroutine sax_i1_a1_a1(a,x,y)
+          integer(kind=w2f__i4), dimension(:), intent(in) :: a
+          type(active), dimension(:), intent(in) :: x
+          type(active), dimension(:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM=x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine sax_d2_a0_a2(a,x,y)
+          real(w2f__8), dimension(:,:), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), dimension(:,:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM = x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+        subroutine sax_d2_a2_a2(a,x,y)
+          real(w2f__8), dimension(:,:), intent(in) :: a
+          type(active), dimension(:,:), intent(in) :: x
+          type(active), dimension(:,:), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM = x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+# ifndef DEFAULT_R8
+        subroutine sax_r0_a0_a0(a,x,y)
+          real(w2f__4), intent(in) :: a
+          type(active), intent(in) :: x
+          type(active), intent(inout) :: y
+          VECTOR_LOOP_VAR
+          VECTOR_LOOP_BEGIN
+            y%DELEM = x%DELEM*a
+          VECTOR_LOOP_END
+        end subroutine
+# endif
         !
         ! set derivative of y to be equal to derivative of x
         ! note: making y inout allows for already existing active
