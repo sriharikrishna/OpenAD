@@ -155,7 +155,9 @@
           module procedure shapeTest_a1_a1
           module procedure shapeTest_d1_a1
           module procedure shapeTest_a2_a2
-          module procedure shapeTest_d2_a2,shapeTest_d3_a3
+          module procedure shapeTest_d2_a2
+          module procedure shapeTest_a3_a3
+          module procedure shapeTest_d3_a3
           module procedure shapeTest_a4_a4
           module procedure shapeTest_d4_a4
           module procedure shapeTest_a5_a5
@@ -991,6 +993,12 @@
           type(active), dimension(:,:) :: origVar
           if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
         end subroutine
+        subroutine shapeTest_a3_a3(allocatedVar,origVar)
+          implicit none
+          type(active), dimension(:,:,:), allocatable :: allocatedVar
+          type(active), dimension(:,:,:) :: origVar
+          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange)
+        end subroutine
         subroutine shapeTest_d3_a3(allocatedVar,origVar)
           implicit none
           real(w2f__8), dimension(:,:,:), allocatable :: allocatedVar
@@ -1019,6 +1027,12 @@
           implicit none
           real(w2f__8), dimension(:,:,:,:,:), allocatable :: allocatedVar
           type(active), dimension(:,:,:,:,:) :: origVar
+          if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange) 
+        end subroutine
+        subroutine shapeTest_a5_d5(allocatedVar,origVar)
+          implicit none
+          type(active), dimension(:,:,:,:,:), allocatable :: allocatedVar
+          real(w2f__8), dimension(:,:,:,:,:) :: origVar
           if (.not. all(shape(allocatedVar)==shape(origVar))) call runTimeErrorStop(shapeChange) 
         end subroutine
         subroutine shapeTest_r1_a1(allocatedVar,origVar)
