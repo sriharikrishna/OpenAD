@@ -110,6 +110,7 @@
         end interface
 
         interface oad_allocateMatching
+          module procedure allocateMatching_d1_d1
           module procedure allocateMatching_a1_d1
           module procedure allocateMatching_a1_a1
           module procedure allocateMatching_d1_a1
@@ -120,6 +121,7 @@
           module procedure allocateMatching_a5_a5
           module procedure allocateMatching_d5_a5
           module procedure allocateMatching_a5_d5
+          module procedure allocateMatching_r1_r1
           module procedure allocateMatching_r1_a1
           module procedure allocateMatching_r2_a2
         end interface 
@@ -607,6 +609,12 @@
         !
         ! allocations
         !
+        subroutine allocateMatching_d1_d1(toBeAllocated,allocateMatching)
+          implicit none
+          real(w2f__8), dimension(:), allocatable :: toBeAllocated
+          real(w2f__8), dimension(:) :: allocateMatching
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
+        end subroutine
         subroutine allocateMatching_a1_d1(toBeAllocated,allocateMatching)
           implicit none
           type(active), dimension(:), allocatable :: toBeAllocated
@@ -686,6 +694,12 @@
                size(allocateMatching,3),&
                size(allocateMatching,4),&
                size(allocateMatching,5)))
+        end subroutine
+        subroutine allocateMatching_r1_r1(toBeAllocated,allocateMatching)
+          implicit none
+          real(w2f__4), dimension(:), allocatable :: toBeAllocated
+          real(w2f__4), dimension(:) :: allocateMatching
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
         end subroutine
         subroutine allocateMatching_r1_a1(toBeAllocated,allocateMatching)
           implicit none

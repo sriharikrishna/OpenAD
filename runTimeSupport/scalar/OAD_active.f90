@@ -127,7 +127,6 @@
         end interface
 
         interface oad_allocateMatching
-          module procedure allocateMatching_r1_r1
           module procedure allocateMatching_d1_d1
           module procedure allocateMatching_d2_d2
           module procedure allocateMatching_d1_r1,allocateMatching_r1_d1
@@ -142,6 +141,7 @@
           module procedure allocateMatching_d4_a4
           module procedure allocateMatching_a5_a5
           module procedure allocateMatching_d5_a5
+          module procedure allocateMatching_r1_r1
           module procedure allocateMatching_a2_r2,allocateMatching_r2_a2
         end interface 
 
@@ -768,22 +768,12 @@
         !
         ! allocations
         !
-        subroutine allocateMatching_r1_r1(toBeAllocated,allocateMatching)
-          implicit none
-          real(w2f__4), dimension(:), allocatable :: toBeAllocated
-          real(w2f__4), dimension(:) :: allocateMatching
-          if (.not. allocated(toBeAllocated)) &
-            allocate(toBeAllocated(size(allocateMatching)))
-        end subroutine
-
         subroutine allocateMatching_d1_d1(toBeAllocated,allocateMatching)
           implicit none
           real(w2f__8), dimension(:), allocatable :: toBeAllocated
           real(w2f__8), dimension(:) :: allocateMatching
-          if (.not. allocated(toBeAllocated)) &
-            allocate(toBeAllocated(size(allocateMatching)))
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
         end subroutine
-
         subroutine allocateMatching_d2_d2(toBeAllocated,allocateMatching)
           implicit none
           real(w2f__8), dimension(:,:), allocatable :: toBeAllocated
@@ -929,6 +919,12 @@
                size(allocateMatching,3),&
                size(allocateMatching,4),&
                size(allocateMatching,5)))
+        end subroutine
+        subroutine allocateMatching_r1_r1(toBeAllocated,allocateMatching)
+          implicit none
+          real(w2f__4), dimension(:), allocatable :: toBeAllocated
+          real(w2f__4), dimension(:) :: allocateMatching
+          if (.not. allocated(toBeAllocated)) allocate(toBeAllocated(size(allocateMatching)))
         end subroutine
         subroutine allocateMatching_a2_r2(toBeAllocated,allocateMatching)
           implicit none
