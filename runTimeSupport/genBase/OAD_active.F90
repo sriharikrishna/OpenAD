@@ -1162,7 +1162,7 @@
 #endif
         subroutine runTimeErrorStopI(mesgId)
           implicit none
-	  integer mesgId
+          integer mesgId
           select case (mesgId) 
           case (shapeChange)
              stop "ERROR: OAD run time library: detected shape change"
