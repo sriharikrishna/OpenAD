@@ -24,7 +24,7 @@
 
         integer :: max_deriv_vec_len
         parameter ( max_deriv_vec_len = 100 )
-        integer :: oad_ctmp_i1, oad_ctmp_i2, oad_ctmp_i3 & 
+        integer :: oad_ctmp_i1, oad_ctmp_i2, oad_ctmp_i3, & 
         oad_ctmp_i4, oad_ctmp_i5, oad_ctmp_i6, oad_ctmp_i7
 
         !
