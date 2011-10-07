@@ -63,17 +63,20 @@
           type(active), intent(in) :: x
           y%d = -x%d
         end subroutine
-        subroutine inc_deriv(y,x)
+        subroutine inc_deriv_s0_s0(y,x)
+          use OAD_active
           type(active), intent(inout) :: y
           type(active), intent(in) :: x
           y%d=y%d + x%d
         end subroutine
-        subroutine dec_deriv(y,x)
+        subroutine dec_deriv_s0_s0(y,x)
+          use OAD_active
           type(active), intent(inout) :: y
           type(active), intent(in) :: x
             y%d=y%d - x%d
         end subroutine
-        subroutine zero_deriv(x)
+        subroutine zero_deriv_s0(x)
+          use OAD_active
           type(active), intent(inout) :: x
           x%d=0.0d0
         end subroutine
