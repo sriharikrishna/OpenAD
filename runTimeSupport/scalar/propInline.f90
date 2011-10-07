@@ -45,13 +45,13 @@
           type(active), intent(inout) :: y(:)
           y%d=x%d*a
         end subroutine
-        subroutine set_deriv_s0_s0(y,x)
+        subroutine setderiv_s0_s0(y,x)
           use OAD_active
           type(active), intent(inout) :: y
           type(active), intent(in) :: x
           y%d = x%d
         end subroutine
-        subroutine set_deriv_s1_s1(y,x)
+        subroutine setderiv_s1_s1(y,x)
           use OAD_active
           type(active), intent(inout) :: y(:)
           type(active), intent(in) :: x(:)
