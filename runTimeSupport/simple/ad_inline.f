@@ -74,8 +74,9 @@ C $OpenAD$ INLINE DECLS
       implicit none
       double precision :: x(:)
 C $OpenAD$ END DECLS
-        double_tape(double_tape_pointer:double_tape_pointer+size(x)-1)=x(:)
-        double_tape_pointer=double_tape_pointer+size(x)
+        double_tape(double_tape_pointer:double_tape_pointer+size(x,1)-1)
+     +=x(:)
+        double_tape_pointer=double_tape_pointer+size(x,1)
       end subroutine 
 
       subroutine pop_s1(x)
@@ -84,8 +85,9 @@ C $OpenAD$ INLINE DECLS
       implicit none
       double precision :: x(:)
 C $OpenAD$ END DECLS
-        double_tape_pointer=double_tape_pointer-size(x)
-        x(:)=double_tape(double_tape_pointer:double_tape_pointer+size(x)-1)
+        double_tape_pointer=double_tape_pointer-size(x,1)
+        x(:)=double_tape(double_tape_pointer:double_tape_pointer+
+     +size(x,1)-1)
       end subroutine
 
       subroutine push_s2(x)
@@ -157,8 +159,9 @@ C $OpenAD$ INLINE DECLS
       implicit none
       integer :: x(:)
 C $OpenAD$ END DECLS
-        integer_tape(integer_tape_pointer:integer_tape_pointer+size(x)-1)=x(:)
-        integer_tape_pointer=integer_tape_pointer+size(x)
+      integer_tape(integer_tape_pointer:integer_tape_pointer+size(x)-1)
+     +=x(:)
+      integer_tape_pointer=integer_tape_pointer+size(x)
       end subroutine 
 
       subroutine pop_i_s1(x)
@@ -167,8 +170,9 @@ C $OpenAD$ INLINE DECLS
       implicit none
       integer :: x(:)
 C $OpenAD$ END DECLS
-        integer_tape_pointer=integer_tape_pointer-size(x)
-        x(:)=integer_tape(integer_tape_pointer:integer_tape_pointer+size(x)-1)
+        integer_tape_pointer=integer_tape_pointer-size(x,1)
+        x(:)=integer_tape(integer_tape_pointer:integer_tape_pointer
+     ++size(x,1)-1)
       end subroutine
 
       subroutine push_i_s2(x)
