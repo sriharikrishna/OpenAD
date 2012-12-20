@@ -9,6 +9,7 @@ C Checkpoint counter functions---------------------
       subroutine countcheckpoint()
 C $OpenAD$ INLINE DECLS
         implicit none
+        integer theSwitch 
 C $OpenAD$ END DECLS
         if(theSwitch.eq.0) then
           print *,"Checkpoint storage"
@@ -25,6 +26,7 @@ C Counter functions -------------------------------
 
        subroutine countmult(x)
 C $OpenAD$ INLINE DECLS
+         use OAD_active
          implicit none
          integer x
 C $OpenAD$ END DECLS
@@ -33,6 +35,7 @@ C $OpenAD$ END DECLS
 
        subroutine countadd(x)
 C $OpenAD$ INLINE DECLS
+         use OAD_active
          implicit none
          integer x
 C $OpenAD$ END DECLS
@@ -109,6 +112,7 @@ C $OpenAD$ END DECLS
       subroutine apush(x)
 C $OpenAD$ INLINE DECLS
       use OAD_tape
+      use OAD_active
       implicit none
       type(active) :: x
 C $OpenAD$ END DECLS
@@ -119,6 +123,7 @@ C $OpenAD$ END DECLS
       subroutine apop(x)
 C $OpenAD$ INLINE DECLS
       use OAD_tape
+      use OAD_active
       implicit none
       type(active) :: x
 C $OpenAD$ END DECLS
@@ -239,6 +244,7 @@ C ----------------------- Propagation -----------------------
 
       subroutine saxpy(a,x,y)
 C $OpenAD$ INLINE DECLS
+      use OAD_active
       double precision, intent(in) :: a
       type(active), intent(in) :: x
       type(active), intent(inout) :: y
@@ -248,6 +254,7 @@ C $OpenAD$ END DECLS
 
       subroutine zeroderiv(x)
 C $OpenAD$ INLINE DECLS
+      use OAD_active
       type(active), intent(out) :: x
 C $OpenAD$ END DECLS
       x%d=0.0d0
@@ -255,6 +262,7 @@ C $OpenAD$ END DECLS
 
       subroutine setderiv(y,x)
 C $OpenAD$ INLINE DECLS
+      use OAD_active
       type(active), intent(out) :: x
       type(active), intent(in) :: y
 C $OpenAD$ END DECLS
@@ -263,6 +271,7 @@ C $OpenAD$ END DECLS
 
       subroutine incderiv(y,x)
 C $OpenAD$ INLINE DECLS
+      use OAD_active
       type(active), intent(out) :: x
       type(active), intent(in) :: y
 C $OpenAD$ END DECLS
@@ -271,6 +280,7 @@ C $OpenAD$ END DECLS
 
       subroutine decderiv(y,x)
 C $OpenAD$ INLINE DECLS
+      use OAD_active
       type(active), intent(out) :: x
       type(active), intent(in) :: y
 C $OpenAD$ END DECLS
