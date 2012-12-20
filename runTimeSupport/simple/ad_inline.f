@@ -47,7 +47,7 @@ C taping --------------------------------------------
 
       subroutine push_s0(x)
 C $OpenAD$ INLINE DECLS
-      use OpenAD_tape
+      use OAD_tape
       implicit none
       double precision :: x
 C $OpenAD$ END DECLS
@@ -57,7 +57,7 @@ C $OpenAD$ END DECLS
 
       subroutine pop_s0(x)
 C $OpenAD$ INLINE DECLS
-      use OpenAD_tape
+      use OAD_tape
       implicit none
       double precision :: x
 C $OpenAD$ END DECLS
@@ -67,7 +67,7 @@ C $OpenAD$ END DECLS
 
       subroutine push_s1(x)
 C $OpenAD$ INLINE DECLS
-      use OpenAD_tape
+      use OAD_tape
       implicit none
       double precision :: x(:)
 C $OpenAD$ END DECLS
@@ -77,7 +77,7 @@ C $OpenAD$ END DECLS
 
       subroutine pop_s1(x)
 C $OpenAD$ INLINE DECLS
-      use OpenAD_tape
+      use OAD_tape
       implicit none
       double precision :: x(:)
 C $OpenAD$ END DECLS
@@ -87,7 +87,7 @@ C $OpenAD$ END DECLS
 
       subroutine push_s2(x)
 C $OpenAD$ INLINE DECLS
-      use OpenAD_tape
+      use OAD_tape
       implicit none
       double precision :: x(:,:)
 C $OpenAD$ END DECLS
@@ -98,7 +98,7 @@ C $OpenAD$ END DECLS
 
       subroutine pop_s2(x)
 C $OpenAD$ INLINE DECLS
-      use OpenAD_tape
+      use OAD_tape
       implicit none
       double precision :: x(:,:)
 C $OpenAD$ END DECLS
@@ -108,7 +108,7 @@ C $OpenAD$ END DECLS
 
       subroutine apush(x)
 C $OpenAD$ INLINE DECLS
-      use OpenAD_tape
+      use OAD_tape
       implicit none
       type(active) :: x
 C $OpenAD$ END DECLS
@@ -118,7 +118,7 @@ C $OpenAD$ END DECLS
 
       subroutine apop(x)
 C $OpenAD$ INLINE DECLS
-      use OpenAD_tape
+      use OAD_tape
       implicit none
       type(active) :: x
 C $OpenAD$ END DECLS
@@ -128,7 +128,7 @@ C $OpenAD$ END DECLS
 
       subroutine push_i_s0(x)
 C $OpenAD$ INLINE DECLS
-      use OpenAD_tape
+      use OAD_tape
       implicit none
       integer :: x
 C $OpenAD$ END DECLS
@@ -138,7 +138,7 @@ C $OpenAD$ END DECLS
 
       subroutine pop_i_s0(x)
 C $OpenAD$ INLINE DECLS
-      use OpenAD_tape
+      use OAD_tape
       implicit none
       integer :: x
 C $OpenAD$ END DECLS
@@ -148,7 +148,7 @@ C $OpenAD$ END DECLS
 
       subroutine push_i_s1(x)
 C $OpenAD$ INLINE DECLS
-      use OpenAD_tape
+      use OAD_tape
       implicit none
       integer :: x(:)
 C $OpenAD$ END DECLS
@@ -158,7 +158,7 @@ C $OpenAD$ END DECLS
 
       subroutine pop_i_s1(x)
 C $OpenAD$ INLINE DECLS
-      use OpenAD_tape
+      use OAD_tape
       implicit none
       integer :: x(:)
 C $OpenAD$ END DECLS
@@ -168,7 +168,7 @@ C $OpenAD$ END DECLS
 
       subroutine push_i_s2(x)
 C $OpenAD$ INLINE DECLS
-      use OpenAD_tape
+      use OAD_tape
       implicit none
       integer :: x(:,:)
 C $OpenAD$ END DECLS
@@ -179,7 +179,7 @@ C $OpenAD$ END DECLS
 
       subroutine pop_i_s2(x)
 C $OpenAD$ INLINE DECLS
-      use OpenAD_tape
+      use OAD_tape
       implicit none
       integer :: x(:,:)
 C $OpenAD$ END DECLS
@@ -189,7 +189,7 @@ C $OpenAD$ END DECLS
 
       subroutine push_b(x)
 C $OpenAD$ INLINE DECLS
-      use OpenAD_tape
+      use OAD_tape
       implicit none
       logical :: x
 C $OpenAD$ END DECLS
@@ -199,7 +199,7 @@ C $OpenAD$ END DECLS
 
       subroutine pop_b(x)
 C $OpenAD$ INLINE DECLS
-      use OpenAD_tape
+      use OAD_tape
       implicit none
       logical :: x
 C $OpenAD$ END DECLS
@@ -209,7 +209,7 @@ C $OpenAD$ END DECLS
 
       subroutine push_s(s)
 C $OpenAD$ INLINE DECLS
-        use OpenAD_tape
+        use OAD_tape
         implicit none
         character(*) :: s
 C $OpenAD$ END DECLS
@@ -223,7 +223,7 @@ C $OpenAD$ END DECLS
 
       subroutine pop_s(s)
 C $OpenAD$ INLINE DECLS
-        use OpenAD_tape
+        use OAD_tape
         implicit none
         character(*) :: s
 C $OpenAD$ END DECLS
