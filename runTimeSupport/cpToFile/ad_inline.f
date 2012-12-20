@@ -233,24 +233,24 @@ C $OpenAD$ END DECLS
       x=oad_lt(oad_lt_ptr)
       end subroutine
 
-      subroutine push_s(x)
+      subroutine push_s(s)
 C $OpenAD$ INLINE DECLS
       use OAD_tape
       implicit none
-      character*(80) :: x
+      character*(80) :: s
 C $OpenAD$ END DECLS
       if(oad_st_sz .lt. oad_st_ptr) call oad_st_grow()
-      oad_st(oad_st_ptr)=x; oad_st_ptr=oad_st_ptr+1
+      oad_st(oad_st_ptr)=s; oad_st_ptr=oad_st_ptr+1
       end subroutine 
 
-      subroutine pop_s(x)
+      subroutine pop_s(s)
 C $OpenAD$ INLINE DECLS
       use OAD_tape
       implicit none
-      character*(80) :: x
+      character*(80) :: s
 C $OpenAD$ END DECLS
       oad_st_ptr=oad_st_ptr-1
-      x=oad_st(oad_st_ptr)
+      s=oad_st(oad_st_ptr)
       end subroutine
 
 C ----------------------- Propagation -----------------------
