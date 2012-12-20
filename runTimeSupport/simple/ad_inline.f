@@ -229,7 +229,6 @@ C $OpenAD$ END DECLS
         character_tape_pointer=character_tape_pointer+len(s)
       end subroutine 
 
-
       subroutine pop_s(s)
 C $OpenAD$ INLINE DECLS
         use OAD_tape
