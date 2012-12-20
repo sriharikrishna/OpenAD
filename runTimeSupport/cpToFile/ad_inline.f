@@ -4,6 +4,48 @@
 ! level directory of the OpenAD distribution             #
 !#########################################################
 
+C Checkpoint counter functions---------------------
+
+      subroutine countcheckpoint()
+C $OpenAD$ INLINE DECLS
+        use OAD_tape
+        implicit none
+        integer theSwitch 
+C $OpenAD$ END DECLS
+        if(theSwitch.eq.0) then
+          print *,"Checkpoint storage"
+          print *, "Floating point: ", oad_dt_ptr
+          print *, "Integer: ", oad_it_ptr
+          print *, "Boolean: ", oad_lt_ptr
+          print *, "String: ", oad_st_ptr
+          theSwitch = 1
+        end if
+      end subroutine
+        
+
+C Counter functions -------------------------------
+
+       subroutine countmult(x)
+C $OpenAD$ INLINE DECLS
+         use OAD_active
+         implicit none
+         integer x
+C $OpenAD$ END DECLS
+         count_mult = count_mult + x
+       end subroutine
+
+       subroutine countadd(x)
+C $OpenAD$ INLINE DECLS
+         use OAD_active
+         implicit none
+         integer x
+C $OpenAD$ END DECLS
+         count_add = count_add + x
+       end subroutine
+
+
+
+
 C taping --------------------------------------------
 
 
