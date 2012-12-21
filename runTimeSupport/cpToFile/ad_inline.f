@@ -536,6 +536,44 @@ C $OpenAD$ END DECLS
 	read(unit=cp_io_unit) x%v
       end subroutine 
 
+      subroutine cp_arg_store_real_six_tensor(x)
+C $OpenAD$ INLINE DECLS
+        use OAD_cp
+        implicit none
+        double precision, dimension(:,:,:,:,:,:) :: x
+C $OpenAD$ END DECLS
+	write(unit=cp_io_unit) x
+      end subroutine 
+
+      subroutine cp_arg_restore_real_six_tensor(x)
+C $OpenAD$ INLINE DECLS
+        use OAD_cp
+        implicit none
+        double precision, dimension(:,:,:,:,:,:) :: x
+C $OpenAD$ END DECLS
+	read(unit=cp_io_unit) x
+      end subroutine 
+
+      subroutine cp_arg_store_real_six_tensor_a(x)
+C $OpenAD$ INLINE DECLS
+        use OAD_active
+        use OAD_cp
+        implicit none
+        type(active), dimension(:,:,:,:,:,:) :: x
+C $OpenAD$ END DECLS
+	write(unit=cp_io_unit) x%v
+      end subroutine 
+
+      subroutine cp_arg_restore_real_six_tensor_a(x)
+C $OpenAD$ INLINE DECLS
+        use OAD_active
+        use OAD_cp
+        implicit none
+        type(active), dimension(:,:,:,:,:,:) :: x
+C $OpenAD$ END DECLS
+	read(unit=cp_io_unit) x%v
+      end subroutine 
+
 C integers -----------------------------------------------------
       subroutine cp_arg_store_integer_scalar(i)
 C $OpenAD$ INLINE DECLS

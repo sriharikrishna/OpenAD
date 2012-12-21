@@ -808,6 +808,139 @@ C $OpenAD$ END DECLS
         end do
       end subroutine 
 
+      subroutine cp_arg_store_real_six_tensor(x)
+C $OpenAD$ INLINE DECLS
+        implicit none
+        double precision, dimension(:,:,:,:,:,:) :: x
+        integer cp_loop_variable_2
+        integer cp_loop_variable_3
+        integer cp_loop_variable_4
+        integer cp_loop_variable_5
+        integer cp_loop_variable_6
+        double precision, dimension(:), allocatable :: theArgFStack
+        integer theArgFStackoffset
+        integer theArgFStackSize
+C $OpenAD$ END DECLS
+        do cp_loop_variable_6=lbound(x,6),ubound(x,6)
+          do cp_loop_variable_5=lbound(x,5),ubound(x,5)
+            do cp_loop_variable_4=lbound(x,4),ubound(x,4)
+              do cp_loop_variable_3=lbound(x,3),ubound(x,3)
+                do cp_loop_variable_2=lbound(x,2),ubound(x,2)
+                  call cp_store_p_real_vector(x(:,cp_loop_variable_2,
+     +cp_loop_variable_3, cp_loop_variable_4,cp_loop_variable_5,
+     +cp_loop_variable_6),
+     +size(x(:,cp_loop_variable_2,cp_loop_variable_3, 
+     +cp_loop_variable_4,cp_loop_variable_5,cp_loop_variable_6)),
+     +theArgFStack,
+     +theArgFStackoffset,
+     +theArgFStackSize)
+                end do
+              end do
+            end do
+          end do
+        end do
+      end subroutine 
+
+      subroutine cp_arg_restore_real_six_tensor(x)
+C $OpenAD$ INLINE DECLS
+        implicit none
+        double precision, dimension(:,:,:,:,:,:) :: x
+        integer cp_loop_variable_1
+        integer cp_loop_variable_2
+        integer cp_loop_variable_3
+        integer cp_loop_variable_4
+        integer cp_loop_variable_5
+        integer cp_loop_variable_6
+        double precision, dimension(:), allocatable :: theArgFStack
+        integer theArgFStackoffset
+C $OpenAD$ END DECLS
+        do cp_loop_variable_6=ubound(x,6),lbound(x,6),-1
+          do cp_loop_variable_5=ubound(x,5),lbound(x,5),-1
+            do cp_loop_variable_4=ubound(x,4),lbound(x,4),-1
+              do cp_loop_variable_3=ubound(x,3),lbound(x,3),-1
+                do cp_loop_variable_2=ubound(x,2),lbound(x,2),-1
+                  do cp_loop_variable_1=ubound(x,1),lbound(x,1),-1
+                    x(cp_loop_variable_1,cp_loop_variable_2,
+     +cp_loop_variable_3,cp_loop_variable_4,cp_loop_variable_5,
+     +cp_loop_variable_6)=
+     +theArgFStack(theArgFStackoffset)
+                  theArgFStackoffset=theArgFStackoffset-1
+                  end do
+                end do
+              end do
+            end do
+          end do
+        end do
+      end subroutine 
+
+      subroutine cp_arg_store_real_six_tensor_a(x)
+C $OpenAD$ INLINE DECLS
+        use OAD_active
+        use OAD_cp
+        implicit none
+        type(active), dimension(:,:,:,:,:,:) :: x
+        integer cp_loop_variable_2
+        integer cp_loop_variable_3
+        integer cp_loop_variable_4
+        integer cp_loop_variable_5
+        integer cp_loop_variable_6
+        double precision, dimension(:), allocatable :: theArgFStack
+        integer theArgFStackoffset
+        integer theArgFStackSize
+C $OpenAD$ END DECLS
+        do cp_loop_variable_6=lbound(x,6),ubound(x,6)
+          do cp_loop_variable_5=lbound(x,5),ubound(x,5)
+            do cp_loop_variable_4=lbound(x,4),ubound(x,4)
+              do cp_loop_variable_3=lbound(x,3),ubound(x,3)
+                do cp_loop_variable_2=lbound(x,2),ubound(x,2)
+                  call cp_store_real_vector(x(:,cp_loop_variable_2,
+     +cp_loop_variable_3, cp_loop_variable_4,cp_loop_variable_5,
+     +cp_loop_variable_6),
+     +size(x(:,cp_loop_variable_2,cp_loop_variable_3, 
+     +cp_loop_variable_4,cp_loop_variable_5,cp_loop_variable_6)),
+     +theArgFStack,
+     +theArgFStackoffset,
+     +theArgFStackSize)
+                end do
+              end do
+            end do
+          end do
+        end do
+      end subroutine 
+
+      subroutine cp_arg_restore_real_six_tensor_a(x)
+C $OpenAD$ INLINE DECLS
+        use OAD_active
+        implicit none
+        type(active), dimension(:,:,:,:,:,:) :: x
+        integer cp_loop_variable_1
+        integer cp_loop_variable_2
+        integer cp_loop_variable_3
+        integer cp_loop_variable_4
+        integer cp_loop_variable_5
+        integer cp_loop_variable_6
+        double precision, dimension(:), allocatable :: theArgFStack
+        integer theArgFStackoffset
+C $OpenAD$ END DECLS
+        do cp_loop_variable_6=ubound(x,6),lbound(x,6),-1
+          do cp_loop_variable_5=ubound(x,5),lbound(x,5),-1
+            do cp_loop_variable_4=ubound(x,4),lbound(x,4),-1
+              do cp_loop_variable_3=ubound(x,3),lbound(x,3),-1
+                do cp_loop_variable_2=ubound(x,2),lbound(x,2),-1
+                  do cp_loop_variable_1=ubound(x,1),lbound(x,1),-1
+                    x(cp_loop_variable_1,cp_loop_variable_2,
+     +cp_loop_variable_3,cp_loop_variable_4,cp_loop_variable_5,
+     +cp_loop_variable_6)%v=
+     +theArgFStack(theArgFStackoffset)
+                  theArgFStackoffset=theArgFStackoffset-1
+                  end do
+                end do
+              end do
+            end do
+          end do
+        end do
+      end subroutine 
+
 C integers -----------------------------------------------------
       subroutine cp_arg_store_integer_scalar(i)
 C $OpenAD$ INLINE DECLS
