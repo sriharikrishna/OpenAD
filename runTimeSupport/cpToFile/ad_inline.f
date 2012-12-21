@@ -258,6 +258,7 @@ C ----------------------- Propagation -----------------------
       subroutine saxpy(a,x,y)
 C $OpenAD$ INLINE DECLS
       use OAD_active
+      implicit none
       double precision, intent(in) :: a
       type(active), intent(in) :: x
       type(active), intent(inout) :: y
@@ -268,6 +269,7 @@ C $OpenAD$ END DECLS
       subroutine zeroderiv(x)
 C $OpenAD$ INLINE DECLS
       use OAD_active
+      implicit none
       type(active), intent(out) :: x
 C $OpenAD$ END DECLS
       x%d=0.0d0
@@ -276,6 +278,7 @@ C $OpenAD$ END DECLS
       subroutine setderiv(y,x)
 C $OpenAD$ INLINE DECLS
       use OAD_active
+      implicit none
       type(active), intent(out) :: x
       type(active), intent(in) :: y
 C $OpenAD$ END DECLS
@@ -285,6 +288,7 @@ C $OpenAD$ END DECLS
       subroutine incderiv(y,x)
 C $OpenAD$ INLINE DECLS
       use OAD_active
+      implicit none
       type(active), intent(out) :: x
       type(active), intent(in) :: y
 C $OpenAD$ END DECLS
@@ -294,6 +298,7 @@ C $OpenAD$ END DECLS
       subroutine decderiv(y,x)
 C $OpenAD$ INLINE DECLS
       use OAD_active
+      implicit none
       type(active), intent(out) :: x
       type(active), intent(in) :: y
 C $OpenAD$ END DECLS
@@ -305,294 +310,294 @@ C Checkpointing stuff ---------------------------------------
 C reals -----------------------------------------------------
       subroutine cp_arg_store_real_scalar(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      double precision :: x
+        use OAD_cp
+        implicit none
+        double precision :: x
 C $OpenAD$ END DECLS
 	write(unit=cp_io_unit) x
       end subroutine 
 
       subroutine cp_arg_restore_real_scalar(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      double precision :: x
+        use OAD_cp
+        implicit none
+        double precision :: x
 C $OpenAD$ END DECLS
 	read(unit=cp_io_unit) x
       end subroutine 
 
       subroutine cp_arg_store_real_scalar_a(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_active
-      use OAD_cp
-      implicit none
-      type(active) :: x
+        use OAD_active
+        use OAD_cp
+        implicit none
+        type(active) :: x
 C $OpenAD$ END DECLS
 	write(unit=cp_io_unit) x%v
       end subroutine 
 
       subroutine cp_arg_restore_real_scalar_a(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_active
-      use OAD_cp
-      implicit none
-      type(active) :: x
+        use OAD_active
+        use OAD_cp
+        implicit none
+        type(active) :: x
 C $OpenAD$ END DECLS
       	read(unit=cp_io_unit) x%v
       end subroutine 
-      
+
       subroutine cp_arg_store_real_vector(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      double precision, dimension(:) :: x
+        use OAD_cp
+        implicit none
+        double precision, dimension(:) :: x
 C $OpenAD$ END DECLS
 	write(unit=cp_io_unit) x
       end subroutine 
 
       subroutine cp_arg_restore_real_vector(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      double precision, dimension(:) :: x
+        use OAD_cp
+        implicit none
+        double precision, dimension(:) :: x
 C $OpenAD$ END DECLS
       	read(unit=cp_io_unit) x
       end subroutine 
 
       subroutine cp_arg_store_real_vector_a(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_active
-      use OAD_cp
-      implicit none
-      type(active), dimension(:) :: x
+        use OAD_active
+        use OAD_cp
+        implicit none
+        type(active), dimension(:) :: x
 C $OpenAD$ END DECLS
 	write(unit=cp_io_unit) x%v
       end subroutine 
 
       subroutine cp_arg_restore_real_vector_a(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_active
-      use OAD_cp
-      implicit none
-      type(active), dimension(:) :: x
+        use OAD_active
+        use OAD_cp
+        implicit none
+        type(active), dimension(:) :: x
 C $OpenAD$ END DECLS
       	read(unit=cp_io_unit) x%v
       end subroutine 
 
       subroutine cp_arg_store_real_matrix(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      double precision, dimension(:,:) :: x
+        use OAD_cp
+        implicit none
+        double precision, dimension(:,:) :: x
 C $OpenAD$ END DECLS
 	write(unit=cp_io_unit) x
       end subroutine 
 
       subroutine cp_arg_restore_real_matrix(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      double precision, dimension(:,:) :: x
+        use OAD_cp
+        implicit none
+        double precision, dimension(:,:) :: x
 C $OpenAD$ END DECLS
         read(unit=cp_io_unit) x
       end subroutine 
 
       subroutine cp_arg_store_real_matrix_a(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_active
-      use OAD_cp
-      implicit none
-      type(active), dimension(:,:) :: x
+        use OAD_active
+        use OAD_cp
+        implicit none
+        type(active), dimension(:,:) :: x
 C $OpenAD$ END DECLS
 	write(unit=cp_io_unit) x%v
       end subroutine 
 
       subroutine cp_arg_restore_real_matrix_a(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_active
-      use OAD_cp
-      implicit none
-      type(active), dimension(:,:) :: x
+        use OAD_active
+        use OAD_cp
+        implicit none
+        type(active), dimension(:,:) :: x
 C $OpenAD$ END DECLS
       	read(unit=cp_io_unit) x%v
       end subroutine 
 
       subroutine cp_arg_store_real_three_tensor(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      double precision, dimension(:,:,:) :: x
+        use OAD_cp
+        implicit none
+        double precision, dimension(:,:,:) :: x
 C $OpenAD$ END DECLS
 	write(unit=cp_io_unit) x
       end subroutine 
 
       subroutine cp_arg_restore_real_three_tensor(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      double precision, dimension(:,:,:) :: x
+        use OAD_cp
+        implicit none
+        double precision, dimension(:,:,:) :: x
 C $OpenAD$ END DECLS
       	read(unit=cp_io_unit) x
       end subroutine 
 
       subroutine cp_arg_store_real_three_tensor_a(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_active
-      use OAD_cp
-      implicit none
-      type(active), dimension(:,:,:) :: x
+        use OAD_active
+        use OAD_cp
+        implicit none
+        type(active), dimension(:,:,:) :: x
 C $OpenAD$ END DECLS
 	write(unit=cp_io_unit) x%v
       end subroutine 
 
       subroutine cp_arg_restore_real_three_tensor_a(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_active
-      use OAD_cp
-      implicit none
-      type(active), dimension(:,:,:) :: x
+        use OAD_active
+        use OAD_cp
+        implicit none
+        type(active), dimension(:,:,:) :: x
 C $OpenAD$ END DECLS
       	read(unit=cp_io_unit) x%v
       end subroutine 
 
       subroutine cp_arg_store_real_four_tensor(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      double precision, dimension(:,:,:,:) :: x
+        use OAD_cp
+        implicit none
+        double precision, dimension(:,:,:,:) :: x
 C $OpenAD$ END DECLS
 	write(unit=cp_io_unit) x
       end subroutine 
 
       subroutine cp_arg_restore_real_four_tensor(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      double precision, dimension(:,:,:,:) :: x
+        use OAD_cp
+        implicit none
+        double precision, dimension(:,:,:,:) :: x
 C $OpenAD$ END DECLS
 	read(unit=cp_io_unit) x
       end subroutine 
 
       subroutine cp_arg_store_real_four_tensor_a(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_active
-      use OAD_cp
-      implicit none
-      type(active), dimension(:,:,:,:) :: x
+        use OAD_active
+        use OAD_cp
+        implicit none
+        type(active), dimension(:,:,:,:) :: x
 C $OpenAD$ END DECLS
 	write(unit=cp_io_unit) x%v
       end subroutine 
 
       subroutine cp_arg_restore_real_four_tensor_a(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_active
-      use OAD_cp
-      implicit none
-      type(active), dimension(:,:,:,:) :: x
+        use OAD_active
+        use OAD_cp
+        implicit none
+        type(active), dimension(:,:,:,:) :: x
 C $OpenAD$ END DECLS
 	read(unit=cp_io_unit) x%v
-      end subroutine 
+      end subroutine
 
       subroutine cp_arg_store_real_five_tensor(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      double precision, dimension(:,:,:,:,:) :: x
+        use OAD_cp
+        implicit none
+        double precision, dimension(:,:,:,:,:) :: x
 C $OpenAD$ END DECLS
 	write(unit=cp_io_unit) x
       end subroutine 
 
       subroutine cp_arg_restore_real_five_tensor(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      double precision, dimension(:,:,:,:,:) :: x
+        use OAD_cp
+        implicit none
+        double precision, dimension(:,:,:,:,:) :: x
 C $OpenAD$ END DECLS
 	read(unit=cp_io_unit) x
       end subroutine 
 
       subroutine cp_arg_store_real_five_tensor_a(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_active
-      use OAD_cp
-      implicit none
-      type(active), dimension(:,:,:,:,:) :: x
+        use OAD_active
+        use OAD_cp
+        implicit none
+        type(active), dimension(:,:,:,:,:) :: x
 C $OpenAD$ END DECLS
 	write(unit=cp_io_unit) x%v
       end subroutine 
 
       subroutine cp_arg_restore_real_five_tensor_a(x)
 C $OpenAD$ INLINE DECLS
-      use OAD_active
-      use OAD_cp
-      implicit none
-      type(active), dimension(:,:,:,:,:) :: x
+        use OAD_active
+        use OAD_cp
+        implicit none
+        type(active), dimension(:,:,:,:,:) :: x
 C $OpenAD$ END DECLS
 	read(unit=cp_io_unit) x%v
       end subroutine 
 
-
 C integers -----------------------------------------------------
-      subroutine cp_arg_store_integer_scalar(x)
+      subroutine cp_arg_store_integer_scalar(i)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      integer :: x
+        use OAD_cp
+        implicit none
+        integer :: i
 C $OpenAD$ END DECLS
-	write(unit=cp_io_unit) x
+	write(unit=cp_io_unit) i
       end subroutine 
 
-      subroutine cp_arg_restore_integer_scalar(x)
+      subroutine cp_arg_restore_integer_scalar(i)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      integer :: x
+        use OAD_cp
+        implicit none
+        integer :: i
 C $OpenAD$ END DECLS
-	read(unit=cp_io_unit) x
+	read(unit=cp_io_unit) i
       end subroutine 
 
-      subroutine cp_arg_store_integer_vector(x)
+      subroutine cp_arg_store_integer_vector(i)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      integer, dimension(:) :: x
+        use OAD_cp
+        implicit none
+        integer, dimension(:) :: i
 C $OpenAD$ END DECLS
-	write(unit=cp_io_unit) x
+	write(unit=cp_io_unit) i
       end subroutine 
 
-      subroutine cp_arg_restore_integer_vector(x)
+      subroutine cp_arg_restore_integer_vector(i)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      integer, dimension(:) :: x
+        use OAD_cp
+        implicit none
+        integer, dimension(:) :: i
 C $OpenAD$ END DECLS
-	read(unit=cp_io_unit) x
+	read(unit=cp_io_unit) i
       end subroutine 
 
-      subroutine cp_arg_store_integer_matrix(x)
+      subroutine cp_arg_store_integer_matrix(i)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      integer, dimension(:,:) :: x
+        use OAD_cp
+        implicit none
+        integer, dimension(:,:) :: i
 C $OpenAD$ END DECLS
-	write(unit=cp_io_unit) x
+	write(unit=cp_io_unit) i
       end subroutine 
 
-      subroutine cp_arg_restore_integer_matrix(x)
+      subroutine cp_arg_restore_integer_matrix(i)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      integer, dimension(:,:) :: x
+        use OAD_cp
+        implicit none
+        integer, dimension(:,:) :: i
 C $OpenAD$ END DECLS
-	read(unit=cp_io_unit) x
+	read(unit=cp_io_unit) i
       end subroutine 
 
-      subroutine cp_arg_store_integer_three_tensor(x)
+      subroutine cp_arg_store_integer_three_tensor(i)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      integer, dimension(:,:,:) :: x
+        use OAD_cp
+        implicit none
+        integer, dimension(:,:,:) :: i
 C $OpenAD$ END DECLS
-	write(unit=cp_io_unit) x
+	write(unit=cp_io_unit) i
       end subroutine 
 
       subroutine cp_arg_restore_integer_three_tensor(x)
@@ -660,38 +665,38 @@ C $OpenAD$ END DECLS
       end subroutine 
 
 C bools  -----------------------------------------------------
-      subroutine cp_arg_store_bool_scalar(x)
+      subroutine cp_arg_store_bool_scalar(b)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      logical :: x
+        use OAD_cp
+        implicit none
+        logical :: b
 C $OpenAD$ END DECLS
-        write(unit=cp_io_unit) x
+        write(unit=cp_io_unit) b
       end subroutine 
 
-      subroutine cp_arg_restore_bool_scalar(x)
+      subroutine cp_arg_restore_bool_scalar(b)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      logical :: x
+        use OAD_cp
+        implicit none
+        logical :: b
 C $OpenAD$ END DECLS
-        read (unit=cp_io_unit) x
+        read (unit=cp_io_unit) b
       end subroutine 
 
-      subroutine cp_arg_store_bool_matrix(x)
+      subroutine cp_arg_store_bool_matrix(b)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      logical, dimension(:,:) :: x
+        use OAD_cp
+        implicit none
+        logical, dimension(:,:) :: b
 C $OpenAD$ END DECLS
-	write(unit=cp_io_unit) x
+	write(unit=cp_io_unit) b
       end subroutine 
 
-      subroutine cp_arg_restore_bool_matrix(x)
+      subroutine cp_arg_restore_bool_matrix(b)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      logical, dimension(:,:) :: x
+        use OAD_cp
+        implicit none
+        logical, dimension(:,:) :: b
 C $OpenAD$ END DECLS
-	read(unit=cp_io_unit) x
+	read(unit=cp_io_unit) b
       end subroutine 
