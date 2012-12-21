@@ -600,68 +600,68 @@ C $OpenAD$ END DECLS
 	write(unit=cp_io_unit) i
       end subroutine 
 
-      subroutine cp_arg_restore_integer_three_tensor(x)
+      subroutine cp_arg_restore_integer_three_tensor(i)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      integer, dimension(:,:,:) :: x
+        use OAD_cp
+        implicit none
+        integer, dimension(:,:,:) :: i
 C $OpenAD$ END DECLS
-        read(unit=cp_io_unit) x
+        read(unit=cp_io_unit) i
       end subroutine 
 
-      subroutine cp_arg_store_integer_four_tensor(x)
+      subroutine cp_arg_store_integer_four_tensor(i)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      integer, dimension(:,:,:,:) :: x
+        use OAD_cp
+        implicit none
+        integer, dimension(:,:,:,:) :: i
 C $OpenAD$ END DECLS
-        write(unit=cp_io_unit) x
+        write(unit=cp_io_unit) i
       end subroutine 
 
-      subroutine cp_arg_restore_integer_four_tensor(x)
+      subroutine cp_arg_restore_integer_four_tensor(i)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      integer, dimension(:,:,:,:) :: x
+        use OAD_cp
+        implicit none
+        integer, dimension(:,:,:,:) :: i
 C $OpenAD$ END DECLS
-        read(unit=cp_io_unit) x
+        read(unit=cp_io_unit) i
       end subroutine 
 
-      subroutine cp_arg_store_integer_five_tensor(x)
+      subroutine cp_arg_store_integer_five_tensor(i)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      integer, dimension(:,:,:,:,:) :: x
+        use OAD_cp
+        implicit none
+        integer, dimension(:,:,:,:,:) :: i
 C $OpenAD$ END DECLS
-        write(unit=cp_io_unit) x
+        write(unit=cp_io_unit) i
       end subroutine 
 
-      subroutine cp_arg_restore_integer_five_tensor(x)
+      subroutine cp_arg_restore_integer_five_tensor(i)
 C $OpenAD$ INLINE DECLS
-      use OAD_cp
-      implicit none
-      integer, dimension(:,:,:,:,:) :: x
+        use OAD_cp
+        implicit none
+        integer, dimension(:,:,:,:,:) :: i
 C $OpenAD$ END DECLS
-        read (unit=cp_io_unit) x
+        read (unit=cp_io_unit) i
       end subroutine 
 
 C strings  -----------------------------------------------------
-      subroutine cp_arg_store_string_scalar(x)
+      subroutine cp_arg_store_string_scalar(s)
 C $OpenAD$ INLINE DECLS
       use OAD_cp
       implicit none
-      character*(80) :: x
+      character*(80) :: s
 C $OpenAD$ END DECLS 
-        write(unit=cp_io_unit) x
+        write(unit=cp_io_unit) s
       end subroutine 
       
-      subroutine cp_arg_restore_string_scalar(x)
+      subroutine cp_arg_restore_string_scalar(s)
 C $OpenAD$ INLINE DECLS
       use OAD_cp
       implicit none
-      character*(80) :: x
+      character*(80) :: s
 C $OpenAD$ END DECLS
-        read (unit=cp_io_unit) x
+        read (unit=cp_io_unit) s
       end subroutine 
 
 C bools  -----------------------------------------------------

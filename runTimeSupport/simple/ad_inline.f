@@ -901,6 +901,161 @@ C $OpenAD$ END DECLS
         end do
       end subroutine 
 
+      subroutine cp_arg_store_integer_three_tensor(i)
+C $OpenAD$ INLINE DECLS
+        use OAD_cp
+        implicit none
+        integer, dimension(:,:,:) :: i
+        integer cp_loop_variable_2
+        integer cp_loop_variable_3
+        integer, dimension(:), allocatable :: theArgIStack
+        integer theArgIStackoffset
+        integer theArgIStackSize
+C $OpenAD$ END DECLS
+        do cp_loop_variable_3=lbound(i,3),ubound(i,3)
+          do cp_loop_variable_2=lbound(i,2),ubound(i,2)
+            call cp_store_integer_vector(i(:,cp_loop_variable_2,
+     +cp_loop_variable_3),
+     +size(i(:,cp_loop_variable_2,cp_loop_variable_3)),
+     +theArgIStack,
+     +theArgIStackoffset,
+     +theArgIStackSize)
+           end do
+        end do
+      end subroutine 
+
+      subroutine cp_arg_restore_integer_three_tensor(i)
+C $OpenAD$ INLINE DECLS
+        implicit none
+        integer, dimension(:,:,:) :: i
+        integer cp_loop_variable_1
+        integer cp_loop_variable_2
+        integer cp_loop_variable_3
+        integer, dimension(:), allocatable :: theArgIStack
+        integer theArgIStackoffset
+C $OpenAD$ END DECLS
+        do cp_loop_variable_3=ubound(i,3),lbound(i,3),-1
+          do cp_loop_variable_2=ubound(i,2),lbound(i,2),-1
+            do cp_loop_variable_1=ubound(i,1),lbound(i,1),-1
+              i(cp_loop_variable_1,cp_loop_variable_2,
+     +cp_loop_variable_3)=
+     +theArgIStack(theArgIStackoffset)
+                  theArgIStackoffset=theArgIStackoffset-1
+            end do
+          end do
+        end do
+      end subroutine 
+
+      subroutine cp_arg_store_integer_four_tensor(i)
+C $OpenAD$ INLINE DECLS
+        use OAD_cp
+        implicit none
+        integer, dimension(:,:,:,:) :: i
+        integer cp_loop_variable_2
+        integer cp_loop_variable_3
+        integer cp_loop_variable_4
+        integer, dimension(:), allocatable :: theArgIStack
+        integer theArgIStackoffset
+        integer theArgIStackSize
+C $OpenAD$ END DECLS
+        do cp_loop_variable_4=lbound(i,4),ubound(i,4)
+          do cp_loop_variable_3=lbound(i,3),ubound(i,3)
+            do cp_loop_variable_2=lbound(i,2),ubound(i,2)
+              call cp_store_integer_vector(i(:,cp_loop_variable_2,
+     +cp_loop_variable_3, cp_loop_variable_4),
+     +size(i(:,cp_loop_variable_2,cp_loop_variable_3, 
+     +cp_loop_variable_4)),
+     +theArgIStack,
+     +theArgIStackoffset,
+     +theArgIStackSize)
+            end do
+          end do
+        end do
+      end subroutine 
+
+      subroutine cp_arg_restore_integer_four_tensor(i)
+C $OpenAD$ INLINE DECLS
+        implicit none
+        integer, dimension(:,:,:,:) :: i
+        integer cp_loop_variable_1
+        integer cp_loop_variable_2
+        integer cp_loop_variable_3
+        integer cp_loop_variable_4
+        integer, dimension(:), allocatable :: theArgIStack
+        integer theArgIStackoffset
+C $OpenAD$ END DECLS
+        do cp_loop_variable_4=ubound(i,4),lbound(i,4),-1
+          do cp_loop_variable_3=ubound(i,3),lbound(i,3),-1
+            do cp_loop_variable_2=ubound(i,2),lbound(i,2),-1
+              do cp_loop_variable_1=ubound(i,1),lbound(i,1),-1
+                i(cp_loop_variable_1,cp_loop_variable_2,
+     +cp_loop_variable_3,cp_loop_variable_4)=
+     +theArgIStack(theArgIStackoffset)
+                  theArgIStackoffset=theArgIStackoffset-1
+              end do
+            end do
+          end do
+        end do
+      end subroutine 
+
+      subroutine cp_arg_store_integer_five_tensor(i)
+C $OpenAD$ INLINE DECLS
+        use OAD_cp
+        implicit none
+        integer, dimension(:,:,:,:,:) :: i
+        integer cp_loop_variable_2
+        integer cp_loop_variable_3
+        integer cp_loop_variable_4
+        integer cp_loop_variable_5
+        integer, dimension(:), allocatable :: theArgIStack
+        integer theArgIStackoffset
+        integer theArgIStackSize
+C $OpenAD$ END DECLS
+        do cp_loop_variable_5=lbound(i,5),ubound(i,5)
+          do cp_loop_variable_4=lbound(i,4),ubound(i,4)
+            do cp_loop_variable_3=lbound(i,3),ubound(i,3)
+              do cp_loop_variable_2=lbound(i,2),ubound(i,2)
+                call cp_store_integer_vector(i(:,cp_loop_variable_2,
+     +cp_loop_variable_3, cp_loop_variable_4,cp_loop_variable_5),
+     +size(i(:,cp_loop_variable_2,cp_loop_variable_3, 
+     +cp_loop_variable_4,cp_loop_variable_5)),
+     +theArgIStack,
+     +theArgIStackoffset,
+     +theArgIStackSize)
+              end do
+            end do
+          end do
+        end do
+      end subroutine 
+
+      subroutine cp_arg_restore_integer_five_tensor(i)
+C $OpenAD$ INLINE DECLS
+        implicit none
+        integer, dimension(:,:,:,:,:) :: i
+        integer cp_loop_variable_1
+        integer cp_loop_variable_2
+        integer cp_loop_variable_3
+        integer cp_loop_variable_4
+        integer cp_loop_variable_5
+        integer, dimension(:), allocatable :: theArgIStack
+        integer theArgIStackoffset
+C $OpenAD$ END DECLS
+        do cp_loop_variable_5=ubound(i,5),lbound(i,5),-1
+          do cp_loop_variable_4=ubound(i,4),lbound(i,4),-1
+            do cp_loop_variable_3=ubound(i,3),lbound(i,3),-1
+              do cp_loop_variable_2=ubound(i,2),lbound(i,2),-1
+                do cp_loop_variable_1=ubound(i,1),lbound(i,1),-1
+                  i(cp_loop_variable_1,cp_loop_variable_2,
+     +cp_loop_variable_3,cp_loop_variable_4,cp_loop_variable_5)=
+     +theArgIStack(theArgIStackoffset)
+                  theArgIStackoffset=theArgIStackoffset-1
+                end do
+              end do
+            end do
+          end do
+        end do
+      end subroutine 
+
 C strings  -----------------------------------------------------
       subroutine cp_arg_store_string_scalar(s)
 C $OpenAD$ INLINE DECLS
@@ -917,8 +1072,7 @@ C $OpenAD$ END DECLS
      +theArgSStackoffset, 
      +theArgSStackSize)
       end subroutine 
-
-
+      
       subroutine cp_arg_restore_string_scalar(s)
 C $OpenAD$ INLINE DECLS
         use OAD_cp
@@ -948,7 +1102,6 @@ C $OpenAD$ END DECLS
      +theArgBStackSize)
       end subroutine 
 
-
       subroutine cp_arg_restore_bool_scalar(b)
 C $OpenAD$ INLINE DECLS
         implicit none
@@ -958,4 +1111,41 @@ C $OpenAD$ INLINE DECLS
 C $OpenAD$ END DECLS
         b=theArgBStack(theArgBStackoffset)
         theArgBStackoffset=theArgBStackoffset-1
+      end subroutine 
+
+      subroutine cp_arg_store_bool_matrix(b)
+C $OpenAD$ INLINE DECLS
+        use OAD_cp
+        implicit none
+        logical, dimension(:,:) :: b
+        integer cp_loop_variable_2
+        logical, dimension(:), allocatable :: theArgBStack
+        integer theArgBStackoffset
+        integer theArgBStackSize
+C $OpenAD$ END DECLS
+        do cp_loop_variable_2=lbound(b,2),ubound(b,2)
+        call cp_store_bool_vector(b(:,cp_loop_variable_2),
+     +size(b(:,cp_loop_variable_2)),
+     +theArgBStack,
+     +theArgBStackoffset,
+     +theArgBStackSize)
+        end do
+      end subroutine 
+
+      subroutine cp_arg_restore_bool_matrix(b)
+C $OpenAD$ INLINE DECLS
+        implicit none
+        logical, dimension(:,:) :: b
+        integer cp_loop_variable_1
+        integer cp_loop_variable_2
+        logical, dimension(:), allocatable :: theArgBStack
+        integer theArgBStackoffset
+C $OpenAD$ END DECLS
+        do cp_loop_variable_2=ubound(b,2),lbound(b,2),-1
+           do cp_loop_variable_1=ubound(b,1),lbound(b,1),-1
+            b(cp_loop_variable_1,cp_loop_variable_2)=
+     +theArgBStack(theArgBStackoffset)
+            theArgBStackoffset=theArgBStackoffset-1
+           end do
+        end do
       end subroutine 
