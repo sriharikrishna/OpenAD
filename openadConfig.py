@@ -32,7 +32,7 @@ class openadConfig:
   def __init__(self, includeTests=False, includeExtras=False, includeDev=False):
     self.orderedRepoList=[] # we need something that is explicitly ordered
     riceSvnUrl = 'http://hpc.svn.rice.edu/r/'
-    ANLSvnUrl = 'http://svn.mcs.anl.gov/repos/'
+    ANLSvnUrl = 'https://svn.mcs.anl.gov/repos/'
     ANLMercurialUrl = 'http://mercurial.mcs.anl.gov//ad/'
     self.OpenADRepos = {} # key is repoName, val is pair (repo Instance ,  boolean for required repo)
     name="OpenAD";        self.orderedRepoList.append(name)
