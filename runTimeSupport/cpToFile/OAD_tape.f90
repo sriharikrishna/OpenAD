@@ -11,7 +11,9 @@ module OAD_tape
        init, dump_tapestats, & 
        dt_grow, it_grow, lt_grow, st_grow, &
        push_i0, push_d1, push_i1, & 
-       pop_i0, pop_d1, pop_i1 
+       pop_i0, pop_d1, pop_i1, & 
+       push_d4, push_d6, & 
+       pop_d4, pop_d6
     
   public :: &
        oad_dt, oad_dt_ptr, oad_dt_sz, oad_dt_grow, &
@@ -61,11 +63,13 @@ module OAD_tape
   interface oad_tape_push
      module procedure push_i0
      module procedure push_d1, push_i1
+     module procedure push_d4, push_d6
   end interface
 
   interface oad_tape_pop
      module procedure pop_i0
      module procedure pop_d1, pop_i1
+     module procedure pop_d4, pop_d6
   end interface
 
 contains
@@ -220,6 +224,32 @@ contains
     oad_it(oad_it_ptr:oad_it_ptr+chunk-1)=v; oad_it_ptr=oad_it_ptr+chunk
   end subroutine push_i1
 
+  subroutine push_d4(v)
+    implicit none
+    double precision :: v(:,:,:,:)
+    integer :: chunk(1), dims(4)
+    dims=shape(v)
+    chunk(1)=dims(1)*dims(2)*dims(3)*dims(4)
+    do while (oad_dt_sz .lt. oad_dt_ptr+chunk(1)) 
+       call oad_dt_grow()
+    end do
+    oad_dt(oad_dt_ptr:oad_dt_ptr+chunk(1)-1)=reshape(v,chunk) 
+    oad_dt_ptr=oad_dt_ptr+chunk(1)
+  end subroutine push_d4
+
+  subroutine push_d6(v)
+    implicit none
+    double precision :: v(:,:,:,:,:,:)
+    integer :: chunk(1), dims(6)
+    dims=shape(v)
+    chunk(1)=dims(1)*dims(2)*dims(3)*dims(4)*dims(5)*dims(6)
+    do while (oad_dt_sz .lt. oad_dt_ptr+chunk(1)) 
+       call oad_dt_grow()
+    end do
+    oad_dt(oad_dt_ptr:oad_dt_ptr+chunk(1)-1)=reshape(v,chunk) 
+    oad_dt_ptr=oad_dt_ptr+chunk(1)
+  end subroutine push_d6
+
   subroutine pop_d1(v)
     implicit none
     double precision :: v(:)
@@ -237,5 +267,25 @@ contains
     oad_it_ptr=oad_it_ptr-chunk
     v=oad_it(oad_it_ptr:oad_it_ptr+chunk-1)
   end subroutine pop_i1
+
+  subroutine pop_d4(v)
+    implicit none
+    double precision :: v(:,:,:,:)
+    integer :: chunk, dims(4)
+    dims=shape(v)
+    chunk=dims(1)*dims(2)*dims(3)*dims(4)
+    oad_dt_ptr=oad_dt_ptr-chunk
+    v=reshape(oad_dt(oad_dt_ptr:oad_dt_ptr+chunk-1),dims) 
+  end subroutine pop_d4
+
+  subroutine pop_d6(v)
+    implicit none
+    double precision :: v(:,:,:,:,:,:)
+    integer :: chunk, dims(6)
+    dims=shape(v)
+    chunk=dims(1)*dims(2)*dims(3)*dims(4)*dims(5)*dims(6)
+    oad_dt_ptr=oad_dt_ptr-chunk
+    v=reshape(oad_dt(oad_dt_ptr:oad_dt_ptr+chunk-1),dims) 
+  end subroutine pop_d6
 
 end module
