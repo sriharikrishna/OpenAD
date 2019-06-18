@@ -34,55 +34,41 @@ class openadConfig:
     riceSvnUrl = 'http://hpc.svn.rice.edu/r/'
     ANLSvnUrl = 'https://svn.mcs.anl.gov/repos/'
     ANLMercurialUrl = 'http://mercurial.mcs.anl.gov//ad/'
+    GitUrl = 'https://github.com/sriharikrishna/'
     self.OpenADRepos = {} # key is repoName, val is pair (repo Instance ,  boolean for required repo)
     name="OpenAD";        self.orderedRepoList.append(name)
-    self.OpenADRepos[name]=(Repository.SVNRepository(ANLSvnUrl+name,OpenADRoot,'.',None,'trunk',None),True)
+    self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",OpenADRoot,'.',None,None,None),True)
     name="Open64";        self.orderedRepoList.append(name)
     self.OpenADRepos[name]=(Repository.SVNRepository(ANLSvnUrl+'Open64',OpenADRoot,name,None,'tags/version-openad',"OPEN64_BASE"),True)
     name="OpenADFortTk";  self.orderedRepoList.append(name)
-    if includeDev:
-      self.OpenADRepos[name]=(Repository.MercurialRepository(ANLMercurialUrl+name,OpenADRoot,name,None,None,'OPENADFORTTK_BASE'),True)
-    else:
-      self.OpenADRepos[name]=(Repository.SVNRepository(ANLSvnUrl+name,OpenADRoot,name,None,'trunk','OPENADFORTTK_BASE'),True)  
+    self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",OpenADRoot,name,None,None,'OPENADFORTTK_BASE'),True)
     name="OpenAnalysis";  self.orderedRepoList.append(name)
-    if includeDev:
-      self.OpenADRepos[name]=(Repository.MercurialRepository(ANLMercurialUrl+name,OpenADRoot,name,None,None,'OPENANALYSIS_BASE'),True)
-    else:
-      self.OpenADRepos[name]=(Repository.SVNRepository(ANLSvnUrl+'OpenAnalysis',OpenADRoot,name,None,'tags/version-openad','OPENANALYSIS_BASE'),True)
+    self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",OpenADRoot,name,None,None,'OPENANALYSIS_BASE'),True)
     name="xercesc";       self.orderedRepoList.append(name)
     self.OpenADRepos[name]=(Repository.SVNRepository(riceSvnUrl+name,OpenADRoot,name,None,'tags/version-openad','XERCESC_BASE'),True)
     name="xaifBooster";   self.orderedRepoList.append(name)
-    if includeDev:
-      self.OpenADRepos[name]=(Repository.MercurialRepository(ANLMercurialUrl+name,OpenADRoot,name,None,None,'XAIFBOOSTER_BASE'),True)
-    else:
-      self.OpenADRepos[name]=(Repository.SVNRepository(ANLSvnUrl+name,OpenADRoot,name,None,'trunk','XAIFBOOSTER_BASE'),True)
+    self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",OpenADRoot,name,None,None,'XAIFBOOSTER_BASE'),True)
     name="xaif";          self.orderedRepoList.append(name)
-    if includeDev:
-      self.OpenADRepos[name]=(Repository.MercurialRepository(ANLMercurialUrl+name,OpenADRoot,name,None,None,'XAIFSCHEMA_BASE'),True)
-    else:
-      self.OpenADRepos[name]=(Repository.SVNRepository(ANLSvnUrl+name,OpenADRoot,name,None,'trunk','XAIFSCHEMA_BASE'),True)
+    self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",OpenADRoot,name,None,None,'XAIFSCHEMA_BASE'),True)
     name="angel";         self.orderedRepoList.append(name)
-    if includeDev:
-      self.OpenADRepos[name]=(Repository.MercurialRepository(ANLMercurialUrl+name,OpenADRoot,name,None,None,'ANGEL_BASE'),True)
-    else:
-      self.OpenADRepos[name]=(Repository.SVNRepository('https://svn.code.sf.net/p/angellib/code',OpenADRoot,name,None,'trunk','ANGEL_BASE'),True)
+    self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",OpenADRoot,name,None,None,'ANGEL_BASE'),True)
     name="boost";         self.orderedRepoList.append(name)
-    self.OpenADRepos[name]=(Repository.SVNRepository('http://svn.boost.org/svn/boost',OpenADRoot,name,'boost','tags/release/Boost_1_45_0','BOOST_BASE'),True)
+    self.OpenADRepos[name]=(Repository.GitRepository("https://github.com/boostorg/boost.git",OpenADRoot,name,None,'boost-1.49.0','BOOST_BASE'),True)
     if includeExtras:
       name="RevolveF9X"; self.orderedRepoList.append(name)
-      self.OpenADRepos[name]=(Repository.MercurialRepository(ANLMercurialUrl+name,OpenADRoot,name,None,None,None),False)
+      self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",OpenADRoot,name,None,None,None),False)
       name="Examples"; self.orderedRepoList.append(name)
-      self.OpenADRepos[name]=(Repository.MercurialRepository(ANLMercurialUrl+'OpenADExamples',OpenADRoot,name,None,None,None),False)
+      self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+'OpenADExamples'+".git",OpenADRoot,name,None,None,None),False)
     if includeDev:
       name="SourceProcessing"; self.orderedRepoList.append(name)
-      self.OpenADRepos[name]=(Repository.MercurialRepository(ANLMercurialUrl+name,os.path.join(OpenADRoot,'OpenADFortTk','tools'),name,None,None,None),False)
+      self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",os.path.join(OpenADRoot,'OpenADFortTk','tools'),name,None,None,None),False)
     if includeTests:
       name="RegressionOpenAD"; self.orderedRepoList.append(name)
-      self.OpenADRepos[name]=(Repository.MercurialRepository(ANLMercurialUrl+name,OpenADRoot,'Regression',None,None,None),False)
+      self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",OpenADRoot,'Regression',None,None,None),False)
       name="RegressionOpenADFortTk"; self.orderedRepoList.append(name)
-      self.OpenADRepos[name]=(Repository.MercurialRepository(ANLMercurialUrl+name,os.path.join(OpenADRoot,'OpenADFortTk'),'Regression',None,None,None),False)
+      self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",os.path.join(OpenADRoot,'OpenADFortTk'),'Regression',None,None,None),False)
       name="RegressionSourceProcessing"; self.orderedRepoList.append(name)
-      self.OpenADRepos[name]=(Repository.MercurialRepository(ANLMercurialUrl+name,os.path.join(OpenADRoot,'OpenADFortTk','tools','SourceProcessing'),'Regression',None,None,None),False)
+      self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",os.path.join(OpenADRoot,'OpenADFortTk','tools','SourceProcessing'),'Regression',None,None,None),False)
 
     self.setPythonOpenADEnvVars()
     

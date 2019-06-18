@@ -393,6 +393,172 @@ class MercurialRepository(Repository):
     self.cmdDesc.setCmd(cmd)
     self.cmdDesc.setDesc(desc)
 
+class Detect:
+
+  @staticmethod
+  def makeRepo(dir,subDir):
+    # figure out what it is
+    matches=0
+    repo=None
+    if (CVSRepository.isRepo(dir,subDir)):
+        matches+=1
+        repo=CVSRepository.instanceFrom(dir,subDir)
+    if (SVNRepository.isRepo(dir,subDir)):
+        matches+=1
+        repo=SVNRepository.instanceFrom(dir,subDir)
+    if (GitRepository.isRepo(dir,subDir)):
+        matches+=1
+        repo=GitRepository.instanceFrom(dir,subDir)
+    if (MercurialRepository.isRepo(dir,subDir)):
+        matches+=1
+        repo=MercurialRepository.instanceFrom(dir,subDir)
+    if (matches>1):
+        raise RepositoryException, "more than one possible repository type for "+dir   
+    if (matches<1):
+        if (NoRepository.isRepo(dir,subDir)):
+           repo=NoRepository.instanceFrom(dir,subDir)
+        else : 
+           raise RepositoryException, "cannot determine type for "+dir
+    return repo
+
+    
+class GitRepository(Repository):
+
+  @staticmethod
+  def isRepo(dir,subDir):
+    return os.path.isdir(os.path.join(dir,'.git'))
+
+  @staticmethod
+  def instanceFrom(dir,subDir):
+    if (not GitRepository.isRepo(dir,subDir)):
+      raise RepositoryException, dir+" is not a Git repository"
+    fName=tempfile.mktemp()
+    os.system('cd '+dir+'; git config --get remote.origin.url > '+fName+'; cd ../')
+    infoFile=open(fName)
+    urlString=infoFile.readline().strip()
+    infoFile.close()
+    os.remove(fName)
+    if (urlString==''):
+      raise RepositoryException, "cannot find url for "+dir
+    fName=tempfile.mktemp()
+    os.system('cd '+dir+'; git rev-parse HEAD > '+fName+'; cd ../')
+    infoFile=open(fName)
+    versionString=infoFile.readline().strip()
+    infoFile.close()
+    os.remove(fName)
+    if (versionString==''):
+      raise RepositoryException, "cannot find version for "+dir
+    fName=tempfile.mktemp()
+    os.system('cd '+dir+'; git tag --contains '+versionString+' > '+fName+'; cd ../')
+    infoFile=open(fName)
+    versionTagString=''
+    while(1):
+      tmpString=infoFile.readline().strip()
+      if (tmpString==''):
+        break
+      versionTagString=tmpString
+    if(versionString==versionTagString):
+      versionTagString=None
+    if(versionTagString==''):
+      versionTagString=None
+    infoFile.close()
+    os.remove(fName)
+    (localPath,localName)=os.path.split(dir)
+    return GitRepository(urlString,localPath,localName,None,versionTagString,versionString)
+
+  def __init__(self,url,localPath, localName,subdir,tag,var,rev=None):
+    Repository.__init__(self,url,localPath,localName,subdir,tag,var,rev)
+
+  def kind(self):
+    return 'git'
+
+  def writeable(self):
+    return (re.search('http://', self.getUrl()) is None)
+
+  def locallyModified(self):
+    # local changes
+    fName=tempfile.mktemp()
+    os.system('cd '+self.getLocalRepoPath()+'; git status > '+fName)
+    changes=(os.stat(fName)[6]>0)
+    os.remove(fName)
+    return (changes)
+
+  def incoming(self):
+    fName=tempfile.mktemp()
+    os.system('cd '+self.getLocalRepoPath()+'; git fetch && git log ..origin/master > '+fName)
+    info=os.stat(fName)
+    os.remove(fName)
+    return (info[6]>0)
+
+  def outgoing(self):
+    fName=tempfile.mktemp()
+    os.system('cd '+self.getLocalRepoPath()+'; git fetch && git log origin/master.. > '+fName)
+    info=os.stat(fName)
+    os.remove(fName)
+    return (info[6]>0)
+
+  def getVersion(self,localRev=False):
+    version=''
+    fName=tempfile.mktemp()
+    os.system('cd '+self.getLocalRepoPath()+'; git rev-parse HEAD > '+fName)
+    infoFile=open(fName)
+    print(fName)
+    lines=infoFile.readlines()
+    print(lines)
+    infoFile.close()
+    os.remove(fName)
+    return version+lines[0].strip()
+
+  def getVersionTag(self,localRev=False):
+    versionTag=''
+    fName=tempfile.mktemp()
+    print(self.getUrl() + " " + self.getVersion())
+    os.system('cd '+self.getLocalRepoPath()+'; git tag --contains '+self.getVersion()+' > '+fName)
+    infoFile=open(fName)
+    versionTagString=''
+    while(1):
+      tmpString=infoFile.readline().strip()
+      if (tmpString==''):
+        break
+      versionTagString=tmpString
+    if(versionString==versionTagString):
+      versionTagString=None
+    if(versionTagString==''):
+      versionTagString=None
+    infoFile.close()
+    os.remove(fName)
+    return versionTagString
+
+  def update(self):
+    if not os.path.exists(os.path.join(self.getLocalRepoPath(),'.git')):
+      raise RepositoryException("directory "+self.getLocalRepoPath()+" has no Git data")
+    cmd="cd "+self.getLocalRepoPath()+" && git pull origin "
+    if self.rev:
+      cmd+="; git checkout "+str(self.rev)
+    if self.tag:
+      cmd+=" "+str(self.tag)+ " "
+    self.cmdDesc.setCmd(cmd)
+    self.cmdDesc.setDesc("updating "+self.getLocalRepoPath())
+
+  def checkout(self):
+    cmd=""
+    desc="cloning into "
+    if self.getSubdir() is not None:
+      raise RepositoryException("For a Git repository one cannot specify a subdirectory to be cloned")
+    if self.getLocalPath() is not None:
+      cmd="cd "+self.getLocalPath()+" && "
+      desc+=os.path.join(self.getLocalPath(),self.getLocalName())
+    else:
+      desc+=self.getLocalName()
+    cmd+="git clone "
+    if self.rev:
+      cmd+="; git checkout "+str(self.rev)+ " "
+    if self.tag:
+      cmd+=" --branch "+str(self.tag)+ " "
+    cmd+=self.getUrl()+" "+self.getLocalRepoPath()
+    self.cmdDesc.setCmd(cmd)
+    self.cmdDesc.setDesc(desc)
+
   def pendingUpdate(self):
     # tip
     fName=tempfile.mktemp()
@@ -419,16 +585,17 @@ class Detect:
     if (SVNRepository.isRepo(dir,subDir)):
         matches+=1
         repo=SVNRepository.instanceFrom(dir,subDir)
+    if (GitRepository.isRepo(dir,subDir)):
+        matches+=1
+        repo=GitRepository.instanceFrom(dir,subDir)
     if (MercurialRepository.isRepo(dir,subDir)):
         matches+=1
         repo=MercurialRepository.instanceFrom(dir,subDir)
     if (matches>1):
-        raise RepositoryException, "more than one possible repository type for "+dir   
+        raise RepositoryException, "more than one possible repository type for "+dir
     if (matches<1):
         if (NoRepository.isRepo(dir,subDir)):
            repo=NoRepository.instanceFrom(dir,subDir)
-        else : 
+        else :
            raise RepositoryException, "cannot determine type for "+dir
     return repo
-
-    
