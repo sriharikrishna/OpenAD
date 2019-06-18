@@ -59,9 +59,8 @@ class openadConfig:
       self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",OpenADRoot,name,None,None,None),False)
       name="Examples"; self.orderedRepoList.append(name)
       self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+'OpenADExamples'+".git",OpenADRoot,name,None,None,None),False)
-    if includeDev:
-      name="SourceProcessing"; self.orderedRepoList.append(name)
-      self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",os.path.join(OpenADRoot,'OpenADFortTk','tools'),name,None,None,None),False)
+    name="SourceProcessing"; self.orderedRepoList.append(name)
+    self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",os.path.join(OpenADRoot,'OpenADFortTk','tools'),name,None,None,None),False)
     if includeTests:
       name="RegressionOpenAD"; self.orderedRepoList.append(name)
       self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",OpenADRoot,'Regression',None,None,None),False)
