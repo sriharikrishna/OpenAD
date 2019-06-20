@@ -39,7 +39,7 @@ class openadConfig:
     name="OpenAD";        self.orderedRepoList.append(name)
     self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",OpenADRoot,'.',None,None,None),True)
     name="Open64";        self.orderedRepoList.append(name)
-    self.OpenADRepos[name]=(Repository.SVNRepository(ANLSvnUrl+'Open64',OpenADRoot,name,None,'tags/version-openad',"OPEN64_BASE"),True)
+    self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",OpenADRoot,name,None,'version-openad',"OPEN64_BASE"),True)
     name="OpenADFortTk";  self.orderedRepoList.append(name)
     self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",OpenADRoot,name,None,None,'OPENADFORTTK_BASE'),True)
     name="OpenAnalysis";  self.orderedRepoList.append(name)
