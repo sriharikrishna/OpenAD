@@ -53,7 +53,7 @@ class openadConfig:
     name="angel";         self.orderedRepoList.append(name)
     self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",OpenADRoot,name,None,None,'ANGEL_BASE'),True)
     name="boost";         self.orderedRepoList.append(name)
-    self.OpenADRepos[name]=(Repository.GitRepository("https://github.com/boostorg/boost.git",OpenADRoot,name,None,'boost-1.49.0','BOOST_BASE'),True)
+    self.OpenADRepos[name]=(Repository.Bundle("http://sourceforge.net/projects/boost/files/boost/1.49.0/boost_1_49_0.tar.gz",OpenADRoot,name,None,None,'BOOST_BASE',downloadedfilename='boost_1_49_0.tar.gz',suffix = 'tar.gz',extractedfilename = 'boost_1_49_0'),True)
     if includeExtras:
       name="RevolveF9X"; self.orderedRepoList.append(name)
       self.OpenADRepos[name]=(Repository.GitRepository(GitUrl+name+".git",OpenADRoot,name,None,None,None),False)

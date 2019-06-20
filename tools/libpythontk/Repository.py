@@ -92,6 +92,61 @@ class NoRepository(Repository):
   def outgoing(self):
     return False
 
+class Bundle(Repository):                                                
+                                                                         
+  def __init__(self,url,localPath,localName,subdir,tag,var,rev=None,downloadedfilename=' ',suffix = ' ',extractedfilename = ' '):
+    Repository.__init__(self,url,localPath,localName,subdir,tag,var,rev) 
+    self.extractedfilename=extractedfilename                             
+    self.suffix=suffix                                                   
+    self.downloadedfilename=downloadedfilename                           
+                                                                       
+  @staticmethod                                                          
+  def isRepo(dir,subDir):                                                
+    if subDir:                                                           
+      return os.path.isdir(os.path.join(dir,subDir))                     
+    else:                                                                
+      return os.path.isdir(dir)                                          
+                                                                         
+  @staticmethod                                                          
+  def instanceFrom(dir,subDir):                                          
+    if (not Bundle.isRepo(dir,subDir)):                                  
+      if subDir:                                                         
+        raise RepositoryException, os.path.join(dir,subDir)+" is not a directory"
+      else:                                                              
+        raise RepositoryException, dir+" is not a directory"             
+    (localPath,localName)=os.path.split(dir)                             
+    return Bundle('n/a', localPath, localName,  subDir, None, None)      
+                                                                         
+  def kind(self):                                                        
+    return 'n/a'                                                         
+                                                                         
+  def writeable(self):                                                   
+    return False                                                         
+                                                                         
+  def incoming(self):                                                    
+    return False                                                         
+                                                                         
+  def outgoing(self):                                                    
+    return False                                                         
+                                                                         
+  def update(self):                                                      
+    self.cmdDesc.setCmd(" ")                                             
+    self.cmdDesc.setDesc("Not updating the non-repository "+self.getLocalRepoPath())
+    return                                                               
+                                                                         
+  def getExtractCommand(self):                                           
+    if ((self.suffix =="tar.gz") | (self.suffix =='tgz')):               
+      return ' tar -zxf '                                                
+    elif (self.suffix =='zip'):                                          
+      return ' unzip '                                                   
+    else:                                                                
+      raise RepositoryException, self.getUrl()+ " $" + self.suffix + "$ unknown suffix"
+                                                                         
+  def checkout(self):                                                    
+    self.cmdDesc.setCmd("wget -q "+self.getUrl() + " && " + self.getExtractCommand() + self.downloadedfilename + " &&  mv " + self.extractedfilename + " " + self.getLocalRepoPath())
+    self.cmdDesc.setDesc("extracting the file "+self.downloadedfilename) 
+    return 
+
 class CVSRepository(Repository):
 
   @staticmethod
